@@ -26,7 +26,9 @@ async function ask(request, message, session) {
 
 test.describe('live guardrails', () => {
 	test.skip(!LIVE, 'set VA_TEST_LIVE=1 to run assertions that spend model tokens');
-	test.skip(({ browserName }, testInfo) => testInfo.project.name === 'mobile', 'run once, on desktop');
+	test.beforeEach(() => {
+		test.skip(test.info().project.name === 'mobile', 'run once, on desktop');
+	});
 
 	test('S0: a job description yields one category plus the exact caveat sentence', async ({ request }) => {
 		const body = await ask(request, 'We need to clean out a catch basin, wet sludge, maybe 10 cubic yards, tight city street.');
