@@ -218,11 +218,18 @@ class VA_REST {
 		if ( ! VA_RateLimit::check_global() ) {
 			return array( 'response' => self::graceful_unavailable( $session_id, $request_id, $message, 'breaker', $ip_hash, $request, $flags ) );
 		}
+		// Rate-limited turns are logged like every other turn. The requirement is to
+		// track EVERY question asked; a question that hit a limit is still a question,
+		// and silently dropping it hides exactly the traffic worth looking at.
 		if ( ! VA_RateLimit::check_session( $session_id ) ) {
-			return array( 'response' => self::limited_response( "We've reached the length limit for this conversation. For anything further, please reach a Vac2Go rep at https://vac2go.com/contact/." ) );
+			$reply = "We've reached the length limit for this conversation. For anything further, please reach a Vac2Go rep at https://vac2go.com/contact/.";
+			self::log_turn( $session_id, $request_id, $message, $reply, null, 0, null, 'limit_session', null, $ip_hash, $request, $flags );
+			return array( 'response' => self::limited_response( $reply ) );
 		}
 		if ( ! VA_RateLimit::check_ip( $ip_hash ) ) {
-			return array( 'response' => self::limited_response( "You've sent a lot of messages in a short time. Please pause a moment, or reach a Vac2Go rep directly at https://vac2go.com/contact/." ) );
+			$reply = "You've sent a lot of messages in a short time. Please pause a moment, or reach a Vac2Go rep directly at https://vac2go.com/contact/.";
+			self::log_turn( $session_id, $request_id, $message, $reply, null, 0, null, 'limit_ip', null, $ip_hash, $request, $flags );
+			return array( 'response' => self::limited_response( $reply ) );
 		}
 
 		// --- Pre-screen before Fable (S6.5) ---
@@ -447,7 +454,7 @@ class VA_REST {
 	private static function call_anthropic( array $messages ) {
 		$body = array(
 			'model'      => VA_ADVISOR_MODEL,
-			'max_tokens' => 1000,
+			'max_tokens' => VA_Knowledge::max_tokens(),
 			'system'     => VA_Knowledge::get_system_blocks(), // static block w/ cache_control
 			'messages'   => $messages,
 		);
@@ -619,8 +626,40 @@ class VA_REST {
 		$phone = mb_substr( $phone, 0, 60 );
 
 		VA_DB::update_contact( $session_id, $name, $email, $phone );
+		self::notify_lead( $session_id, $name, $email, $phone );
 
 		return self::nocache( new WP_REST_Response( array( 'ok' => true ), 200 ) );
+	}
+
+	/**
+	 * Email the team when a visitor leaves contact details, with the conversation so
+	 * far, so a rep can follow up (and correct a wrong answer) without having to
+	 * remember to check the review queue. Not throttled: every lead matters.
+	 */
+	private static function notify_lead( $session_id, $name, $email, $phone ) {
+		if ( ! get_option( 'va_notify_leads', 1 ) ) {
+			return;
+		}
+		$to = get_option( 'va_admin_email', get_option( 'admin_email' ) );
+		if ( ! $to ) {
+			return;
+		}
+
+		$history = VA_DB::get_history( $session_id, 20, 8000 );
+		$lines   = array();
+		foreach ( $history['messages'] as $m ) {
+			$lines[] = ( 'user' === $m['role'] ? 'Q: ' : 'A: ' ) . $m['content'];
+		}
+
+		$body  = "A visitor left their details in the equipment advisor.\n\n";
+		$body .= 'Name:  ' . ( $name ? $name : '(not given)' ) . "\n";
+		$body .= 'Email: ' . ( $email ? $email : '(not given)' ) . "\n";
+		$body .= 'Phone: ' . ( $phone ? $phone : '(not given)' ) . "\n\n";
+		$body .= "Conversation:\n\n" . implode( "\n\n", $lines ) . "\n\n";
+		$body .= 'Review queue: ' . admin_url( 'admin.php?page=va-advisor&va_filter=contact' ) . "\n";
+		$body .= 'Session: ' . $session_id . "\n";
+
+		wp_mail( $to, 'Vac2Go Advisor: new lead' . ( $name ? ' from ' . $name : '' ), $body );
 	}
 
 	/**

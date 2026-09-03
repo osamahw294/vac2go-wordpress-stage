@@ -72,6 +72,8 @@ class VA_DB {
 			'va_system_prompt'      => null, // set below (needs VA_Knowledge)
 			'va_banned_patterns'    => null,
 			'va_capture_mode'       => 'email_only',
+			'va_capture_name'       => 1,
+			'va_answer_length'      => 'short',
 			'va_rate_ip_hourly'     => 30,
 			'va_rate_ip_minute'     => 6,
 			'va_rate_session_turns' => 40,
@@ -79,6 +81,8 @@ class VA_DB {
 			'va_global_daily'       => 5000,
 			'va_streaming'          => 1,
 			'va_stream_pad'         => 4096,
+			'va_notify_leads'       => 1,
+			'va_corrections_in_prompt' => 1,
 			'va_daily_token_ceiling'=> 2000000,
 			'va_price_in_per_m'     => 3.0,
 			'va_price_out_per_m'    => 15.0,
@@ -333,6 +337,25 @@ class VA_DB {
 			array( '%d', '%s', '%d', '%s' ),
 			array( '%d' )
 		);
+	}
+
+	/**
+	 * Corrections a human has written, newest first, for feeding back to the model.
+	 *
+	 * @return array<int,array{question:string,correction_text:string}>
+	 */
+	public static function get_corrections( $limit = 25 ) {
+		global $wpdb;
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT question, correction_text FROM ' . self::table() .
+				" WHERE marked_incorrect = 1 AND correction_text IS NOT NULL AND correction_text <> ''" .
+				' ORDER BY corrected_at DESC, id DESC LIMIT %d',
+				(int) $limit
+			),
+			ARRAY_A
+		);
+		return $rows ? $rows : array();
 	}
 
 	/**

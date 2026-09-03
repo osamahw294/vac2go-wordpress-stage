@@ -26,6 +26,9 @@ class VA_Filter {
 
 	const LEAK_FALLBACK = "I can only help with Vac2Go equipment questions. For anything else, the team at vac2go.com/contact can help.";
 
+	/** Shorter than this and the canary would match ordinary words, so the stage is skipped. */
+	const MIN_CANARY_LEN = 12;
+
 	/**
 	 * Default committal/pricing pattern list, one regex per line (admin-editable).
 	 */
@@ -143,9 +146,11 @@ class VA_Filter {
 		$raw   = (string) $text;
 		$match = VA_Text::normalize_for_matching( $raw );
 
-		// Stage 2: canary.
+		// Stage 2: canary. Require a real length: a short or truncated canary would
+		// appear inside ordinary prose and block every legitimate answer. Better to skip
+		// this stage than to reject everything.
 		$canary = VA_Knowledge::canary();
-		if ( '' !== $canary && false !== stripos( $match, $canary ) ) {
+		if ( strlen( $canary ) >= self::MIN_CANARY_LEN && false !== stripos( $match, $canary ) ) {
 			return self::blocked( 'canary', 'prompt_leak: canary token in output', $raw, self::LEAK_FALLBACK );
 		}
 

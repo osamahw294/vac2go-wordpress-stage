@@ -516,17 +516,23 @@
 	function renderContactCard() {
 		var mode = cfg.captureMode || 'email_only';
 		var fields = '';
-		fields += '<label>Name<input type="text" class="va-c-name" autocomplete="name"></label>';
+		// Name is its own toggle, so "just give me your email" is a real option.
+		if (cfg.captureName !== false) {
+			fields += '<label>Name<input type="text" class="va-c-name" autocomplete="name"></label>';
+		}
 		if (mode === 'email_only' || mode === 'email_or_phone' || mode === 'email_and_phone') {
 			fields += '<label>Email<input type="email" class="va-c-email" autocomplete="email"></label>';
 		}
 		if (mode === 'phone_only' || mode === 'email_or_phone' || mode === 'email_and_phone') {
 			fields += '<label>Phone<input type="tel" class="va-c-phone" autocomplete="tel"></label>';
 		}
+		var withName = cfg.captureName !== false;
 		var helper =
 			mode === 'email_or_phone'
-				? 'Leave your name and an email or phone so a rep can follow up.'
-				: 'Leave your details so a Vac2Go rep can follow up if needed.';
+				? (withName ? 'Leave your name and an email or phone so a rep can follow up.'
+				            : 'Leave an email or phone so a rep can follow up.')
+				: (withName ? 'Leave your details so a Vac2Go rep can follow up if needed.'
+				            : 'Leave your ' + (mode === 'phone_only' ? 'phone number' : 'email') + ' so a Vac2Go rep can follow up if needed.');
 
 		contactCard.innerHTML =
 			'<div class="va-contact-inner">' +

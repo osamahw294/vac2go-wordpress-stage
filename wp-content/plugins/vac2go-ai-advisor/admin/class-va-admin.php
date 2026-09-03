@@ -72,6 +72,8 @@ class VA_Admin {
 		register_setting( 'va_advisor_settings', 'va_banned_patterns', $string( array( __CLASS__, 'sanitize_patterns' ) ) );
 		register_setting( 'va_advisor_settings', 'va_profanity_list', $string( array( __CLASS__, 'sanitize_wordlist' ) ) );
 		register_setting( 'va_advisor_settings', 'va_capture_mode', $string( array( __CLASS__, 'sanitize_capture_mode' ) ) );
+		register_setting( 'va_advisor_settings', 'va_capture_name', $int );
+		register_setting( 'va_advisor_settings', 'va_answer_length', $string( array( __CLASS__, 'sanitize_answer_length' ) ) );
 		register_setting( 'va_advisor_settings', 'va_enabled', $int );
 		register_setting( 'va_advisor_settings', 'va_rate_ip_minute', $int );
 		register_setting( 'va_advisor_settings', 'va_rate_ip_hourly', $int );
@@ -80,6 +82,8 @@ class VA_Admin {
 		register_setting( 'va_advisor_settings', 'va_global_daily', $int );
 		register_setting( 'va_advisor_settings', 'va_streaming', $int );
 		register_setting( 'va_advisor_settings', 'va_stream_pad', $int );
+		register_setting( 'va_advisor_settings', 'va_notify_leads', $int );
+		register_setting( 'va_advisor_settings', 'va_corrections_in_prompt', $int );
 		register_setting( 'va_advisor_settings', 'va_daily_token_ceiling', $int );
 		register_setting( 'va_advisor_settings', 'va_price_in_per_m', array( 'type' => 'number', 'sanitize_callback' => 'floatval' ) );
 		register_setting( 'va_advisor_settings', 'va_price_out_per_m', array( 'type' => 'number', 'sanitize_callback' => 'floatval' ) );
@@ -117,6 +121,11 @@ class VA_Admin {
 			}
 		}
 		return implode( "\n", $out );
+	}
+
+	public static function sanitize_answer_length( $value ) {
+		$valid = array( 'short', 'medium', 'long' );
+		return in_array( $value, $valid, true ) ? $value : 'short';
 	}
 
 	public static function sanitize_capture_mode( $value ) {

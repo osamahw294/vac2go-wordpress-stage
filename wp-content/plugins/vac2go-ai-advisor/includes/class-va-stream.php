@@ -264,7 +264,7 @@ class VA_Stream {
 	private static function stream_model( array $messages ) {
 		$body = array(
 			'model'      => VA_ADVISOR_MODEL,
-			'max_tokens' => 1000,
+			'max_tokens' => VA_Knowledge::max_tokens(),
 			'system'     => VA_Knowledge::get_system_blocks(),
 			'messages'   => $messages,
 			'stream'     => true,

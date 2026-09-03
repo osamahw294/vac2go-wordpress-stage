@@ -12,10 +12,10 @@ if ( ! current_user_can( 'manage_options' ) ) {
 
 $capture_mode = VA_Knowledge::get_capture_mode();
 $modes        = array(
-	'email_only'      => 'Name + email only',
-	'phone_only'      => 'Name + phone only',
-	'email_or_phone'  => 'Name + (email or phone)',
-	'email_and_phone' => 'Name + email + phone',
+	'email_only'      => 'Email',
+	'phone_only'      => 'Phone',
+	'email_or_phone'  => 'Email or phone',
+	'email_and_phone' => 'Email and phone',
 );
 
 $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KEY ) && 'REPLACE_ME' !== VA_ANTHROPIC_KEY;
@@ -70,6 +70,18 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 			</tr>
 		</table>
 
+		<h2>Answer length</h2>
+		<?php $len = VA_Knowledge::get_answer_length(); ?>
+		<select name="va_answer_length">
+			<option value="short" <?php selected( $len, 'short' ); ?>>Short, 2 to 4 sentences (recommended)</option>
+			<option value="medium" <?php selected( $len, 'medium' ); ?>>Medium, a short paragraph or two</option>
+			<option value="long" <?php selected( $len, 'long' ); ?>>Long, a few paragraphs</option>
+		</select>
+		<p class="description">
+			Shorter answers also arrive faster, since the customer is waiting on the words being written. This is applied on top of whatever the system prompt below says, so you do not need to edit the prompt to change it. Guardrails are unaffected: the caveat sentence, the "I don't know" rule and the refusal scripts always apply in full.
+			Length comes from the rules above, not from the token cap. The cap (<strong><?php echo (int) VA_Knowledge::max_tokens(); ?></strong> tokens) is only a runaway guard, and has to be generous because the model's own reasoning is drawn from the same budget before it writes anything.
+		</p>
+
 		<h2>System prompt (knowledge base)</h2>
 		<p class="description">The full knowledge base and guardrails sent to the model on every request. An internal integrity marker is appended automatically at runtime; you do not need to include it here.</p>
 		<textarea name="va_system_prompt" rows="24" class="large-text code"><?php echo esc_textarea( get_option( 'va_system_prompt', VA_Knowledge::default_system_prompt() ) ); ?></textarea>
@@ -82,12 +94,41 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 		<p class="description">One word per line, matched on word boundaries, case-insensitive.</p>
 		<textarea name="va_profanity_list" rows="6" class="large-text code"><?php echo esc_textarea( get_option( 'va_profanity_list', VA_Filter::default_profanity_text() ) ); ?></textarea>
 
-		<h2>Contact capture mode</h2>
+		<h2>Review feedback loop</h2>
+		<input type="hidden" name="va_corrections_in_prompt" value="0">
+		<label>
+			<input type="checkbox" name="va_corrections_in_prompt" value="1" <?php checked( 1, (int) get_option( 'va_corrections_in_prompt', 1 ) ); ?>>
+			<strong>Teach the advisor from corrections.</strong> Answers you mark incorrect in the Review Queue, together with what you wrote they should have said, are sent to the model as authoritative guidance.
+		</label>
+		<p class="description">
+			The 25 most recent corrections are included, up to roughly 6,000 characters, newest first. They are sent as a separate block after the system prompt, so prompt caching is unaffected. Corrections can never override the guardrails, so one cannot be used to authorise a price or an availability commitment.
+			<?php
+			$correction_count = class_exists( 'VA_DB' ) ? count( VA_DB::get_corrections( 25 ) ) : 0;
+			?>
+			<br><strong><?php echo (int) $correction_count; ?></strong> correction<?php echo 1 === $correction_count ? '' : 's'; ?> currently in use.
+		</p>
+
+		<h2>Lead notifications</h2>
+		<input type="hidden" name="va_notify_leads" value="0">
+		<label>
+			<input type="checkbox" name="va_notify_leads" value="1" <?php checked( 1, (int) get_option( 'va_notify_leads', 1 ) ); ?>>
+			<strong>Email me when a visitor leaves their details.</strong> Sent to the alert address below, with the full conversation, so a rep can follow up without watching the queue.
+		</label>
+
+		<h2>Contact capture</h2>
+		<p class="description">What the advisor asks for once a visitor shows real interest. It asks once per conversation and never blocks the chat.</p>
 		<select name="va_capture_mode">
 			<?php foreach ( $modes as $val => $label ) : ?>
 				<option value="<?php echo esc_attr( $val ); ?>" <?php selected( $capture_mode, $val ); ?>><?php echo esc_html( $label ); ?></option>
 			<?php endforeach; ?>
 		</select>
+		<p>
+			<input type="hidden" name="va_capture_name" value="0">
+			<label>
+				<input type="checkbox" name="va_capture_name" value="1" <?php checked( 1, (int) get_option( 'va_capture_name', 1 ) ); ?>>
+				Also ask for a name
+			</label>
+		</p>
 
 		<h2>Rate limits and spend</h2>
 		<table class="form-table" role="presentation">
