@@ -1,0 +1,124 @@
+/* content.css — shared styles for the Content bucket pages (about, contact, faq, careers,
+   meet-the-team, training-videos, rent-a-truck, why-*, discover-*). Owned by the Content agent.
+   Do NOT put header/footer rules here (those live in each page's inline critical CSS + shared parts). */
+
+/* ---------- generic content wrap ---------- */
+.hw-c-wrap{width:100%;max-width:1280px;margin:0 auto;padding:0 30px}
+.hw-c-sec{padding:57px 0}
+
+/* ---------- RED hero band (why-choose, training-videos) ---------- */
+.hw-hero-red{background:var(--red);padding:57px 0;text-align:center}
+.hw-hero-red h1{font-family:Poppins,Helvetica,Arial,sans-serif;font-weight:600;font-size:75px;line-height:1.1;color:#fff;text-transform:uppercase;margin:0;letter-spacing:0}
+
+/* ---------- PHOTO hero (faq overlay title / rent / discover / municipalities / training article) ---------- */
+.hw-hero-photo{position:relative;height:470px;background-size:cover;background-position:center;background-repeat:no-repeat}
+.hw-hero-photo.hw-hero-overlay{display:flex;align-items:center;justify-content:center}
+.hw-hero-photo .hw-hero-title{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:700;font-size:50px;line-height:1;color:#fff;text-align:center;margin:0}
+
+/* dark page title (below a photo hero) */
+.hw-page-title{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:700;font-size:36px;line-height:1.1;color:rgba(10,0,0,.75);text-align:left;margin:0 0 22px}
+
+/* ---------- article body text ---------- */
+.hw-article p{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-size:18px;line-height:1.7;color:#666;margin:0 0 20px}
+.hw-article a{color:var(--red);text-decoration:none;font-weight:700}
+.hw-article strong{color:#333}
+.hw-article ul{margin:0 0 20px;padding-left:22px}
+.hw-article li{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-size:18px;line-height:1.7;color:#666}
+
+/* ---------- feature cards (about / why-choose) ---------- */
+.hw-cards{max-width:1280px;margin:0 auto;padding:20px 0}
+.hw-card{display:flex;align-items:center;gap:40px;border:2px solid #e5e5e5;border-radius:20px;padding:25px 40px;margin:0 0 30px;box-shadow:0 12px 18px -6px rgba(0,0,0,.3);background:#fff}
+.hw-card-ico{flex:0 0 250px;text-align:center}
+.hw-card-ico img{width:250px;height:auto;max-width:100%}
+.hw-card-body{flex:1}
+.hw-card-body h2{font-family:Montserrat,Helvetica,Arial,sans-serif;font-weight:700;font-size:30px;line-height:1.1;color:var(--red);margin:0 0 10px;text-transform:uppercase}
+.hw-card-body p{font-family:Montserrat,Helvetica,Arial,sans-serif;font-weight:500;font-size:16px;line-height:1.6;color:#666;margin:0}
+
+/* ---------- numbered steps (rent-a-truck / discover) ---------- */
+.hw-steps{max-width:1080px;margin:0 auto}
+.hw-step{display:flex;align-items:flex-start;gap:36px;padding:18px 0}
+.hw-step.alt{background:#f2f2f2}
+.hw-step-num{flex:0 0 150px;height:150px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:700;font-size:80px;line-height:1}
+.hw-step-body{flex:1;padding-top:14px}
+.hw-step-body h2{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:700;font-size:26px;line-height:1.2;color:var(--red);margin:0 0 10px}
+.hw-step-body p{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#333;margin:0 0 8px}
+.hw-step-body .lead{color:var(--red);font-weight:700}
+
+/* ---------- values (V A C 2 G O) grid cards (careers) ---------- */
+.hw-values{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1080px;margin:0 auto}
+.hw-value{border:1px solid #e5e5e5;border-top:4px solid var(--red);background:#fff;padding:26px;box-shadow:0 8px 16px -8px rgba(0,0,0,.15)}
+.hw-value .big{font-family:Poppins,Helvetica,Arial,sans-serif;font-weight:700;font-size:44px;line-height:1;color:var(--red);margin:0 0 12px}
+.hw-value h3{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:700;font-size:18px;color:#111;margin:0 0 8px}
+.hw-value p{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#666;margin:0}
+
+/* ---------- team grid (meet-the-team) ---------- */
+.hw-team{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;max-width:1080px;margin:0 auto}
+.hw-team-card{text-align:center}
+.hw-team-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;margin:0 0 12px}
+.hw-team-card .nm{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:700;font-size:15px;color:#111;margin:0}
+.hw-team-card .rl{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-style:italic;font-size:13px;color:#666;margin:2px 0 0}
+
+/* ---------- shared GF contact section ("Need a unit or have a question?") ---------- */
+.hw-form-sec{background:#333;background-size:cover;background-position:center;padding:57px 0;color:#fff}
+.hw-form-sec .hw-c-wrap{max-width:1080px}
+.hw-form-sec h2{font-family:Poppins,Helvetica,Arial,sans-serif;font-weight:600;font-size:40px;line-height:1.1;color:#fff;text-align:center;margin:0 0 10px}
+.hw-form-sec .sub{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-size:16px;color:#fff;text-align:center;margin:0 0 26px}
+.hw-form-sec .sub a{color:var(--red);font-weight:700;text-decoration:none}
+/* Gravity Forms field styling to match production (dark inputs, red borders, white labels) */
+.hw-form-sec .gform_wrapper .gfield_label{color:#fff !important;font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:700;font-size:14px}
+.hw-form-sec .gform_wrapper .gfield_required{color:var(--red)}
+.hw-form-sec .gform_wrapper input[type=text],
+.hw-form-sec .gform_wrapper input[type=email],
+.hw-form-sec .gform_wrapper input[type=tel],
+.hw-form-sec .gform_wrapper select,
+.hw-form-sec .gform_wrapper textarea{background:#000 !important;color:#fff !important;border:1px solid var(--red) !important;border-radius:0 !important;padding:10px 12px !important;width:100% !important;font-family:"Open Sans",Helvetica,Arial,sans-serif}
+.hw-form-sec .gform_wrapper textarea{min-height:150px}
+.hw-form-sec .gform_wrapper .gform_footer input[type=submit],
+.hw-form-sec .gform_wrapper .gform_footer button{background:var(--red) !important;color:#fff !important;border:0 !important;border-radius:3px !important;padding:10px 22px !important;font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:700;cursor:pointer}
+.hw-form-sec .gform_wrapper .gchoice label,
+.hw-form-sec .gform_wrapper legend{color:#fff !important}
+.hw-form-sec .gform_wrapper .gfield_consent_description,
+.hw-form-sec .gform_wrapper .gfield_description{color:#cfcfcf !important;font-size:12px}
+
+/* ---------- logos strip ---------- */
+.hw-logos{padding:46px 0;background:#fff}
+.hw-logos-row{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap;max-width:1200px;margin:0 auto}
+.hw-logos-row img{height:auto;width:auto;max-height:120px;max-width:206px;object-fit:contain}
+
+/* ---------- red CTA band (rent-a-truck / careers) ---------- */
+.hw-cta-red{background:var(--red);padding:52px 0;text-align:center}
+.hw-cta-red.hw-cta-grad{background:linear-gradient(90deg,#000 0%,#000 45%,var(--red) 100%);text-align:left}
+.hw-cta-red h2{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:700;font-size:34px;line-height:1.2;color:#fff;margin:0}
+.hw-cta-red p{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-size:16px;color:#fff;margin:8px 0 0}
+
+/* ---------- buttons ---------- */
+.hw-btn{display:inline-block;background:var(--red);color:#fff;font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;text-decoration:none;padding:14px 26px;border-radius:3px;letter-spacing:.3px}
+.hw-btn-outline{background:transparent;border:2px solid #fff}
+.hw-btn-white{background:#fff;color:#111}
+
+/* ---------- 3-image gallery strip (article pages) ---------- */
+.hw-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.hw-gallery img{width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+
+/* ---------- mobile ---------- */
+@media (max-width:767px){
+  .hw-c-wrap{padding:0 18px}
+  .hw-hero-red h1{font-size:38px}
+  .hw-hero-photo{height:230px}
+  .hw-hero-photo .hw-hero-title{font-size:32px}
+  .hw-page-title{font-size:28px}
+  .hw-article p,.hw-article li{font-size:16px}
+  .hw-card{flex-direction:column;gap:16px;padding:22px;text-align:center}
+  .hw-card-ico{flex:none}
+  .hw-card-ico img{width:180px}
+  .hw-card-body h2{font-size:24px}
+  .hw-step{gap:18px}
+  .hw-step-num{flex:0 0 92px;height:92px;font-size:48px}
+  .hw-values{grid-template-columns:1fr;max-width:420px}
+  .hw-team{grid-template-columns:repeat(2,1fr);max-width:420px}
+  .hw-logos-row{gap:24px}
+  .hw-logos-row img{max-width:140px}
+  .hw-cta-red h2{font-size:26px}
+  .hw-cta-red.hw-cta-grad{text-align:center}
+  .hw-gallery{grid-template-columns:1fr}
+}

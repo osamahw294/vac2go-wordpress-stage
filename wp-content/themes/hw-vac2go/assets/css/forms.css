@@ -1,0 +1,99 @@
+/* forms.css — shared layout for the two Gravity-Forms pages (trucks-for-sale, truck-repair).
+   Owned by the forms subagent. Header/footer come from the shared template-parts. */
+
+.hw-cwrap{width:100%;max-width:1280px;margin:0 auto;padding:0 30px}
+
+/* ---------- shared dark form section + Gravity Forms overrides ---------- */
+.hw-form-sec{background:#111 center/cover no-repeat;padding:57px 0;color:#fff}
+.hw-form-sec h1,.hw-form-sec .hw-fh{font-family:Poppins,Helvetica,Arial,sans-serif;font-weight:600;font-size:40px;line-height:1.1;color:#fff;text-align:center;margin:0 0 10px}
+.hw-form-sec .sub{font-family:Poppins,Helvetica,Arial,sans-serif;font-weight:500;font-size:18px;line-height:1.6;color:#fff;text-align:center;margin:0 0 26px}
+.hw-form-sec .sub a{color:var(--red);font-weight:700;text-decoration:none}
+.hw-form-sec .gform_wrapper .gfield_label{color:#fff !important;font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:700;font-size:14px}
+.hw-form-sec .gform_wrapper .gfield_required{color:var(--red)}
+.hw-form-sec .gform_wrapper input[type=text],
+.hw-form-sec .gform_wrapper input[type=email],
+.hw-form-sec .gform_wrapper input[type=tel],
+.hw-form-sec .gform_wrapper select,
+.hw-form-sec .gform_wrapper textarea{background:#000 !important;color:#fff !important;border:1px solid var(--red) !important;border-radius:0 !important;padding:10px 12px !important;width:100% !important;font-family:"Open Sans",Helvetica,Arial,sans-serif}
+.hw-form-sec .gform_wrapper textarea{min-height:150px}
+.hw-form-sec .gform_wrapper .gform_footer input[type=submit],
+.hw-form-sec .gform_wrapper .gform_footer button{background:var(--red) !important;color:#fff !important;border:0 !important;border-radius:3px !important;padding:10px 22px !important;font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:700;cursor:pointer}
+.hw-form-sec .gform_wrapper .gchoice label,
+.hw-form-sec .gform_wrapper legend{color:#fff !important}
+.hw-form-sec .gform_wrapper .gfield_consent_description,
+.hw-form-sec .gform_wrapper .gfield_description{color:#cfcfcf !important;font-size:12px}
+
+/* ---------- footer logos + social (matches production global footer) ---------- */
+.hw-logos{padding:46px 0 8px;background:#fff}
+.hw-logos-row{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap;max-width:1200px;margin:0 auto}
+.hw-logos-row img{height:auto;width:auto;max-height:120px;max-width:206px;object-fit:contain}
+.hw-social{background:#fff;padding:4px 0 34px;text-align:center}
+.hw-social a{display:inline-block;width:28px;height:28px;margin:0 5px;border-radius:4px;vertical-align:middle;line-height:0}
+.hw-social svg{width:16px;height:16px;fill:#fff;margin:6px}
+.hw-fb{background:#3b5998}.hw-tw{background:#1da1f2}.hw-li{background:#0077b5}.hw-ig{background:#ea2c59}.hw-yt{background:#c4302b}
+.hw-social-red a{background:var(--red)}
+.tr-form .left .hw-social{background:transparent;padding:0;margin:0 0 6px}
+
+/* ============================ TRUCKS FOR SALE ============================ */
+.tfs-hero{background:var(--red);padding:16px 0}
+.tfs-hero h1{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:700;font-size:70px;line-height:1.1;color:#fff;text-align:center;margin:0}
+.tfs-black{background:#000;padding:42px 0 56px}
+.tfs-black h1{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:700;font-size:42px;line-height:1.25;color:#fff;text-align:center;margin:0 0 30px}
+.tfs-black .sm{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:700;font-style:italic;font-size:24px;line-height:1.4;color:#fff;text-align:center;margin:0 0 10px;max-width:1000px;margin-left:auto;margin-right:auto}
+.tfs-chad{background:#fff;padding:57px 0}
+.tfs-chad .row{display:flex;gap:40px;align-items:flex-start;max-width:1152px;margin:0 auto}
+.tfs-chad .photo{flex:0 0 320px}
+.tfs-chad .photo img{width:320px;height:320px;object-fit:cover;display:block}
+.tfs-chad h4{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:500;font-size:18px;color:#333;margin:0 0 2px}
+.tfs-chad .pos{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:500;font-size:14px;color:#aaa;margin:0 0 18px}
+.tfs-chad p{font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:500;font-size:14px;color:#666;line-height:1.7;margin:0 0 14px;max-width:780px}
+.tfs-chad .contact{color:#666}
+.tfs-fin{background:#ededed url(/wp-content/uploads/2024/05/4907157-scaled.jpg) center/cover no-repeat;padding:42px 0}
+.tfs-fin .hw-cwrap{max-width:1152px}
+.tfs-fin p{font-family:Poppins,Helvetica,Arial,sans-serif;font-weight:500;font-size:24px;line-height:1.5;color:#000;text-align:left;margin:0 0 22px}
+.tfs-fin p:last-child{margin-bottom:0}
+.tfs-fin a{color:var(--red);font-weight:700;text-decoration:none}
+
+/* ============================ TRUCK REPAIR ============================ */
+.tr-hero{display:flex;align-items:stretch;min-height:560px}
+.tr-hero .img{flex:1 1 50%;background:url(/wp-content/uploads/2021/06/Vac2Go-Truck-Repair.jpg) center/cover no-repeat;min-height:360px}
+.tr-hero .panel{flex:1 1 50%;background:#ededed;padding:44px 58px;display:flex;flex-direction:column;justify-content:center}
+.tr-hero .panel .lead{font-family:Poppins,Helvetica,Arial,sans-serif;font-weight:600;font-style:italic;font-size:30px;line-height:1.2;color:#333;text-align:center;margin:0 0 20px}
+.tr-hero .panel h1{font-family:Poppins,Helvetica,Arial,sans-serif;font-weight:600;font-size:30px;line-height:1.2;color:#333;text-align:left;margin:0 0 10px}
+.tr-hero .panel h2{font-family:Poppins,Helvetica,Arial,sans-serif;font-weight:500;font-size:17px;line-height:1.3;color:#333;text-align:left;margin:0 0 10px}
+.tr-hero .panel ul{margin:0;padding-left:20px;list-style:disc}
+.tr-hero .panel li{font-family:Poppins,Helvetica,Arial,sans-serif;font-weight:500;font-size:15px;line-height:1.9;color:#000}
+.tr-black{background:#000;padding:22px 0}
+.tr-black p{font-family:Poppins,Helvetica,Arial,sans-serif;font-weight:500;font-size:28px;line-height:1.35;color:#fff;text-align:center;max-width:1000px;margin:0 auto}
+.tr-red{background:var(--red);padding:30px 0}
+.tr-red h1{font-family:Poppins,Helvetica,Arial,sans-serif;font-weight:500;font-size:36px;line-height:1.25;color:#fff;text-align:center;margin:0}
+.tr-form .row{display:flex;gap:40px;align-items:flex-start;max-width:1280px;margin:0 auto;padding:0 30px}
+.tr-form .left{flex:0 0 38%;text-align:center;font-family:Poppins,Helvetica,Arial,sans-serif}
+.tr-form .left .logo{max-width:312px;width:100%;height:auto;margin:0 auto 24px;display:block}
+.tr-form .left .phone{font-weight:700;font-size:18px;line-height:1.9;color:#fff;margin:0 0 18px}
+.tr-form .left .phone a{color:var(--red);text-decoration:none}
+.tr-form .left .mission{font-weight:500;font-size:16px;line-height:1.6;color:#fff;margin:20px 0 0}
+.tr-form .right{flex:1 1 62%}
+.tr-form .right .hw-fh{margin-bottom:20px}
+
+/* ============================ mobile ============================ */
+@media (max-width:767px){
+  .tfs-hero h1{font-size:44px}
+  .tfs-black h1{font-size:30px}
+  .tfs-black .sm{font-size:20px}
+  .tfs-chad .row{flex-direction:column;align-items:center;text-align:center;gap:24px}
+  .tfs-chad .photo{flex:none}
+  .tfs-chad p{max-width:100%}
+  .tfs-fin p{font-size:20px;text-align:center}
+  .tr-hero{flex-direction:column}
+  .tr-hero .img{min-height:260px}
+  .tr-hero .panel{padding:30px 22px}
+  .tr-hero .panel .lead,.tr-hero .panel h1{font-size:24px}
+  .tr-black p{font-size:22px}
+  .tr-red h1{font-size:26px}
+  .tr-form .row{flex-direction:column;gap:28px;padding:0 18px}
+  .tr-form .left,.tr-form .right{flex:none;width:100%}
+  .hw-form-sec h1,.hw-form-sec .hw-fh{font-size:30px}
+  .hw-logos-row{gap:22px}
+  .hw-logos-row img{max-width:150px}
+}

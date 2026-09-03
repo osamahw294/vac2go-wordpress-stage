@@ -1,0 +1,2753 @@
+{
+  "name": "dica/divi-carouselitem",
+  "d4Shortcode": "dica_divi_carouselitem",
+  "title": "Divi Carousel Item",
+  "titles": "Divi Carousel Items",
+  "category": "child-module",
+  "childrenName": [],
+  "allowAllElements": true,
+  "settings": {
+    "content": "auto",
+    "design": "auto",
+    "advanced": "auto",
+    "groups": {
+      "contentElements": {
+        "panel": "content",
+        "priority": 5,
+        "groupName": "contentElements",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Elements"
+          }
+        }
+      },
+      "main_content": {
+        "panel": "content",
+        "groupName": "main_content",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Main Content",
+            "preset": "content"
+
+          }
+        },
+        "priority": 0
+      },
+      "link": {
+        "panel": "content",
+        "groupName": "link",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Title & Image Link"
+          }
+        },
+        "priority": 1
+      },
+      "button_settings": {
+        "panel": "content",
+        "groupName": "button_settings",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Button Settings"
+          }
+        },
+        "priority": 2
+      },
+      "image_settings": {
+        "panel": "content",
+        "groupName": "image_settings",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Image Settings"
+          }
+        },
+        "priority": 3
+      },
+      "meta": {
+        "panel": "content",
+        "groupName": "meta",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Meta"
+          }
+        },
+        "priority": 4
+      },
+      "contentLink": {
+        "panel": "content",
+        "groupName": "link",
+        "priority": 5,
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Link",
+            "preset": "content"
+          }
+        }
+      },
+      "image_styles": {
+        "panel": "design",
+        "groupName": "image_styles",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Image Styles"
+          }
+        },
+        "priority": 6
+      },
+      "image_filter": {
+        "panel": "design",
+        "groupName": "image_filter",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Image Filter"
+          }
+        },
+        "priority": 7
+      },
+      "icon_settings": {
+        "panel": "design",
+        "groupName": "icon_settings",
+        "multiElements": true,
+        "displayCondition": {
+          "show_if": {
+            "use_icon": "on"
+          }
+        },
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Icon settings"
+          }
+        },
+        "priority": 8
+      },
+      "title_style": {
+        "panel": "design",
+        "groupName": "title_style",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Title Style"
+          }
+        },
+        "priority": 9
+      },
+      "subtitle_style": {
+        "panel": "design",
+        "groupName": "subtitle_style",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Subtitle Style"
+          }
+        },
+        "priority": 10
+      },
+      "content_style": {
+        "panel": "design",
+        "groupName": "content_style",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Content Style"
+          }
+        },
+        "priority": 11
+      },
+      "button": {
+        "panel": "design",
+        "groupName": "button",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Button"
+          }
+        },
+        "priority": 12
+      },
+      "social_media_style": {
+        "panel": "design",
+        "groupName": "social_media_style",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Social Media Style"
+          }
+        },
+        "priority": 13
+      },
+      "rating_style": {
+        "panel": "design",
+        "groupName": "rating_style",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Rating Style"
+          }
+        },
+        "priority": 14
+      },
+      "dg_custom_spacing": {
+        "panel": "design",
+        "groupName": "dg_custom_spacing",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Spacing"
+          }
+        },
+        "priority": 15
+      },
+      "item_border": {
+        "panel": "design",
+        "groupName": "item_border",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Item border"
+          }
+        },
+        "priority": 16
+      },
+      "css_attributes": {
+        "panel": "advanced",
+        "groupName": "css_attributes",
+        "multiElements": true,
+        "priority": 0,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Hash ID"
+          }
+        }
+      },
+      "buttonAttributes": {
+        "panel": "advanced",
+        "groupName": "buttonAttributes",
+        "multiElements": true,
+        "show_if": {
+          "item_type": "Button"
+        },
+        "priority": 1,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Button Attributes"
+          }
+        }
+      }
+    }
+  },
+  "parentsName": "dica/divi-carousel",
+  "customCssFields": {
+    "inner_wrapper": {
+      "subName": "inner_wrapper",
+      "label": "Inner Wrapper",
+      "selectorSuffix": "  > div:not([class^='et-vb']):first-of-type"
+    },
+    "image": {
+      "subName": "image",
+      "label": "Image",
+      "selectorSuffix": "  > div:not([class^='et-vb']):first-of-type .dica-image-container img"
+    }
+  },
+  "attributes": {
+    "module": {
+      "type": "object",
+      "selector": "{{selector}}",
+      "settings": {
+        "meta": {
+          "adminLabel": {
+            "component": {
+              "type": "group",
+              "name": "divi/admin-label"
+            }
+          }
+        },
+        "advanced": {
+          "link": {},
+          "loop": {},
+          "elements": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "contentElements",
+              "priority": 5,
+              "render": true,
+              "component": {
+                "type": "group",
+                "name": "divi/elements",
+                "props": {
+                  "grouped": false
+                }
+              }
+            }
+          }
+        },
+        "decoration": {
+          "attributes": {},
+          "background": {
+            "component": {
+              "type": "group",
+              "name": "divi/background",
+              "props": {
+                "hidePanels": [
+                  "video"
+                ]
+              }
+            }
+          },
+          "boxShadow": {},
+          "filters": [],
+          "transform": {},
+          "transition": {},
+          "zIndex": {},
+          "sticky": {},
+          "scroll": {},
+          "interactions": {},
+          "position": {},
+          "overflow": {},
+          "disabledOn": {},
+          "conditions": {}
+        }
+      },
+      "default": {
+        "meta": {
+          "adminLabel": {
+            "desktop": {
+              "value": "Divi Carousel Item"
+            }
+          }
+        }
+      },
+      "styleProps": {
+        "border": {
+          "important": true
+        },
+        "boxShadow": {
+          "selectors": {
+            "desktop": {
+              "value": "{{selector}} > div:not([class^='et-vb']):first-of-type, #et-boc {{selector}} > div:not([class^='et-vb']):first-of-type"
+            }
+          }
+        },
+        "overflow": {
+          "selectors": {
+            "desktop": {
+              "value": ".dica_divi_carousel .dica-container {{selector}}.dica_divi_carouselitem > div:first-of-type, #et-boc .dica_divi_carousel .dica-container {{selector}}.dica_divi_carouselitem > div:first-of-type"
+            }
+          }
+        },
+        "background": {
+          "selectors": {
+            "desktop": {
+              "value": ".dica_divi_carousel {{selector}} > div:not([class^='et-vb']):first-of-type"
+            }
+          }
+        }
+      }
+    },
+    "settings_obj_settings": {
+      "type": "object",
+      "selector": "{{selector}}.dica_divi_carouselitem .dica-image-container img.dica-item-image",
+      "inlineEditor": true,
+      "settings": {
+        "innerContent": {
+          "groupType": "group-items",
+          "items": {
+            "url": {
+              "groupSlug": "link",
+              "render": true,
+              "subName": "url",
+              "label": "Url",
+              "description": "If you would like to make your blurb a link, input your destination URL here.",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              }
+            },
+            "url_new_window": {
+              "groupSlug": "link",
+              "render": true,
+              "subName": "url_new_window",
+              "label": "Url Opens",
+              "description": "Here you can choose whether or not your link opens in a new window",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/select",
+                "props": {
+                  "options": {
+                    "off": {
+                      "label": "In The Same Window"
+                    },
+                    "on": {
+                      "label": "In The New Tab"
+                    }
+                  }
+                }
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "url_new_window": "off"
+                  }
+                }
+              }
+            },
+            "dg_hash_id": {
+              "groupSlug": "css_attributes",
+              "render": true,
+              "subName": "dg_hash_id",
+              "label": "Hash ID",
+              "description": "unique id for hash navigation.",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              }
+            }
+          }
+        }
+      }
+    },
+    "title_obj_settings": {
+      "type": "object",
+      "selector": "{{selector}}.dica_divi_carouselitem .dica-item-content .item-title",
+      "inlineEditor": true,
+      "settings": {
+        "innerContent": {
+          "groupType": "group-items",
+          "items": {
+            "title": {
+              "groupSlug": "main_content",
+              "render": true,
+              "subName": "title",
+              "label": "Title",
+              "description": "Title entered here will appear inside the module.",
+              "features": {
+                "dynamicContent": {
+                  "type": "text"
+                },
+                "sticky": false,
+                "hover": false,
+                "responsive": false,
+                "preset": "content"
+
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              }
+            },
+            "title_position": {
+              "groupSlug": "title_style",
+              "render": true,
+              "subName": "title_position",
+              "label": "Title Position",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false,
+                "preset": "content"
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "title_position": "default"
+                  }
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/select",
+                "props": {
+                  "options": {
+                    "default": {
+                      "label": "Default"
+                    },
+                    "bottom": {
+                      "label": "Bottom"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "decoration": {
+          "font": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "title_style",
+              "attrName": "title_obj_settings.decoration.font",
+              "label": "Title",
+              "render": true,
+              "component": {
+                "type": "group",
+                "name": "divi/font",
+                "props": {
+                  "grouped": false,
+                  "fieldLabel": "Title",
+                  "fields": {
+                    "headingLevel": {
+                      "render": true
+                    }
+                  },
+                  "defaultGroupAttr": {
+                    "font": {
+                      "desktop": {
+                        "value": {
+                          "size": "20px"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "styleProps": {
+        "font": {
+          "important": true
+        }
+      }
+    },
+    "subtitle_obj_settings": {
+      "type": "object",
+      "selector": ".dica_divi_carousel {{selector}}.dica_divi_carouselitem .dica-item-content .item-subtitle",
+      "inlineEditor": true,
+      "settings": {
+        "innerContent": {
+          "groupType": "group-items",
+          "items": {
+            "sub_title": {
+              "groupSlug": "main_content",
+              "render": true,
+              "subName": "sub_title",
+              "label": "Subtitle",
+              "description": "Subtitle entered here will appear inside the module.",
+              "features": {
+                "dynamicContent": {
+                  "type": "text"
+                },
+                "sticky": false,
+                "hover": false,
+                "responsive": false,
+                "preset": "content"
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              }
+            },
+            "subtitle_tag": {
+              "groupSlug": "subtitle_style",
+              "render": true,
+              "subName": "subtitle_tag",
+              "label": "SubTitle Tag",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "subtitle_tag": "h6"
+                  }
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/select",
+                "props": {
+                  "options": {
+                    "h1": {
+                      "label": "h1 tag"
+                    },
+                    "h2": {
+                      "label": "h2 tag"
+                    },
+                    "h3": {
+                      "label": "h3 tag"
+                    },
+                    "h4": {
+                      "label": "h4 tag"
+                    },
+                    "h5": {
+                      "label": "h5 tag"
+                    },
+                    "h6": {
+                      "label": "h6 tag"
+                    }
+                  }
+                }
+              }
+            },
+            "subtitle_position": {
+              "groupSlug": "subtitle_style",
+              "render": true,
+              "subName": "subtitle_position",
+              "label": "Subtitle Position",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "subtitle_position": "default"
+                  }
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/select",
+                "props": {
+                  "options": {
+                    "default": {
+                      "label": "Default"
+                    },
+                    "bottom": {
+                      "label": "Bottom"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "decoration": {
+          "font": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "subtitle_style",
+              "attrName": "subtitle_obj_settings.decoration.font",
+              "label": "Subtitle",
+              "render": true,
+              "component": {
+                "type": "group",
+                "name": "divi/font",
+                "props": {
+                  "grouped": false,
+                  "fieldLabel": "Subtitle",
+                  "fields": {
+                    "headingLevel": {
+                      "render": false
+                    }
+                  },
+                  "defaultGroupAttr": {
+                    "font": {
+                      "desktop": {
+                        "value": {
+                          "size": "20px"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "content_obj_settings": {
+      "type": "object",
+      "selector": ".dica_divi_carousel {{selector}}.dica_divi_carouselitem .dica-item-content .content,.dica_divi_carousel {{selector}}.dica_divi_carouselitem .dica-item-content .content *",
+      "inlineEditor": true,
+      "settings": {
+        "innerContent": {
+          "groupType": "group-items",
+          "items": {
+            "content": {
+              "groupSlug": "main_content",
+              "render": true,
+              "subName": "content",
+              "label": "Content",
+              "description": "Content entered here will appear inside the module.",
+              "features": {
+                "dynamicContent": {
+                  "type": "text"
+                },
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/richtext"
+              }
+            },
+            "field_enable_content_limit": {
+              "groupSlug": "main_content",
+              "render": true,
+              "subName": "field_enable_content_limit",
+              "label": "Content Limit",
+              "description": "If you would like to reduce length of content. ",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
+              }
+            },
+            "field_limit_content_length": {
+              "groupSlug": "main_content",
+              "render": true,
+              "subName": "field_limit_content_length",
+              "label": "Set Content Length",
+              "description": "Set the content limitation by character.",
+              "features": {
+                "sticky": false,
+                "hover": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "field_limit_content_length": "50"
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if": {
+                  "field_enable_content_limit": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/range",
+                "props": {
+                  "defaultUnit": "",
+                  "min": 1,
+                  "minLimit": 1,
+                  "step": 1
+                }
+              }
+            },
+            "field_read_more": {
+              "groupSlug": "main_content",
+              "render": true,
+              "subName": "field_read_more",
+              "label": "Read More",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "displayCondition": {
+                "show_if": {
+                  "field_enable_content_limit": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              }
+            },
+            "field_show_less": {
+              "groupSlug": "main_content",
+              "render": true,
+              "subName": "field_show_less",
+              "label": "Show Less",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false,
+                "preset": "content"
+              },
+              "displayCondition": {
+                "show_if": {
+                  "field_enable_content_limit": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              }
+            }
+          }
+        },
+        "decoration": {
+          "font": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "content_style",
+              "label": "Body",
+              "render": true,
+              "component": {
+                "type": "group",
+                "name": "divi/font",
+                "props": {
+                  "grouped": false,
+                  "fieldLabel": "Body",
+                  "fields": {
+                    "headingLevel": {
+                      "render": false
+                    }
+                  },
+                  "defaultGroupAttr": {
+                    "font": {
+                      "desktop": {
+                        "value": {
+                          "size": "14px"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "styleProps": {
+        "font": {
+          "important": true
+        }
+      }
+    },
+    "item_obj_settings": {
+      "type": "object",
+      "selector": ".dica_divi_carousel .dica-container {{selector}}.dica_divi_carouselitem > div:not([class^='et-vb']):first-of-type, #et-boc .dica_divi_carousel .dica-container {{selector}}.dica_divi_carouselitem > div:not([class^='et-vb']):first-of-type",
+      "inlineEditor": true,
+      "settings": {
+        "decoration": {
+          "border": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "item_border",
+              "attrName": "item_obj_settings.decoration.border",
+              "label": "",
+              "render": true,
+              "component": {
+                "type": "group",
+                "name": "divi/border",
+                "props": {
+                  "grouped": false,
+                  "fieldLabel": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "styleProps": {
+        "border": {
+          "important": true,
+          "selectors": {
+            "desktop": {
+              "value": "#et-boc .dica_divi_carousel .dica-container {{selector}}.dica_divi_carouselitem > div:not([class^='et-vb']):first-of-type, .dica_divi_carousel .dica-container {{selector}}.dica_divi_carouselitem > div:not([class^='et-vb']):first-of-type",
+              "hover": "#et-boc .dica_divi_carousel .dica-container {{selector}}.dica_divi_carouselitem > div:not([class^='et-vb']):first-of-type:hover, .dica_divi_carousel .dica-container {{selector}}.dica_divi_carouselitem > div:not([class^='et-vb']):first-of-type:hover"
+            }
+          }
+        }
+      }
+    },
+    "social_obj_settings": {
+      "type": "object",
+      "selector": ".dica_divi_carousel .dica-container {{selector}} .social-media-container li a, #et-boc .dica_divi_carousel .dica-container {{selector}} .social-media-container li a",
+      "inlineEditor": true,
+      "settings": {
+        "innerContent": {
+          "groupType": "group-items",
+          "items": {
+            "use_social_media": {
+              "groupSlug": "meta",
+              "render": true,
+              "subName": "use_social_media",
+              "label": "Use Social Media",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "use_social_media": "off"
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if_not": {
+                  "use_rating": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
+              }
+            },
+            "facebook_url": {
+              "groupSlug": "meta",
+              "render": true,
+              "subName": "facebook_url",
+              "label": "Facebook Url",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_social_media": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              }
+            },
+            "twitter_url": {
+              "groupSlug": "meta",
+              "render": true,
+              "subName": "twitter_url",
+              "label": "Twitter Url",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_social_media": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              }
+            },
+            "linkedin_url": {
+              "groupSlug": "meta",
+              "render": true,
+              "subName": "linkedin_url",
+              "label": "Linkedin Url",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_social_media": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              }
+            },
+            "instagram_url": {
+              "groupSlug": "meta",
+              "render": true,
+              "subName": "instagram_url",
+              "label": "Instagram Url",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_social_media": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              }
+            },
+            "email_address": {
+              "groupSlug": "meta",
+              "render": true,
+              "subName": "email_address",
+              "label": "Email Address",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_social_media": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              }
+            },
+            "social_target": {
+              "groupSlug": "meta",
+              "render": true,
+              "subName": "social_target",
+              "label": "Open Social Media Url",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "social_target": "off"
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_social_media": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/select",
+                "props": {
+                  "options": {
+                    "off": {
+                      "label": "In The Same Window"
+                    },
+                    "on": {
+                      "label": "In The New Tab"
+                    }
+                  }
+                }
+              }
+            },
+            "social_media_alignment": {
+              "groupSlug": "social_media_style",
+              "render": true,
+              "subName": "social_media_alignment",
+              "priority": 0,
+              "label": "Alignment",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "social_media_alignment": "left"
+                  }
+                }
+              },
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}} .dica-item .social-media-container .social-media"
+                },
+                "css_type": "justify-content"
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/button-options",
+                "props": {
+                  "showLabel": true,
+                  "options": {
+                    "left": {
+                      "icon": "divi/text-align-left"
+                    },
+                    "center": {
+                      "icon": "divi/text-align-center"
+                    },
+                    "right": {
+                      "icon": "divi/text-align-right"
+                    },
+                    "space-between": {
+                      "icon": "divi/text-align-justify"
+                    }
+                  }
+                }
+              },
+              "multipleChoices": false
+            },
+            "social_media_position": {
+              "groupSlug": "social_media_style",
+              "render": true,
+              "priority": 1,
+              "subName": "social_media_position",
+              "label": "Position",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "social_media_position": "sm-bottom"
+                  }
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/select",
+                "props": {
+                  "options": {
+                    "sm-top": {
+                      "label": "Top"
+                    },
+                    "sm-under-title": {
+                      "label": "Middle"
+                    },
+                    "sm-bottom": {
+                      "label": "Bottom"
+                    }
+                  }
+                }
+              }
+            },
+            "social_icon_size": {
+              "groupSlug": "social_media_style",
+              "render": true,
+              "subName": "social_icon_size",
+              "label": "Icon size",
+              "priority": 2,
+              "customCssAttr": {
+                "selectors": {
+                  "selector": ".dica_divi_carousel {{selector}} .social-media-container .social-media li a:before"
+                },
+                "css_type": "font-size"
+              },
+              "features": {
+                "sticky": false,
+                "hover": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "social_icon_size": "14px"
+                  }
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/range",
+                "props": {
+                  "defaultUnit": "px"
+                }
+              }
+            },
+            "facebook_color": {
+              "groupSlug": "social_media_style",
+              "render": false,
+              "subName": "facebook_color",
+              "label": "Facebook Color",
+              "tab_attribute": "social_tab_obj_settings",
+              "attrName": "social_obj_settings.innerContent",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}} .dica-item .social-media li.dg_facebook a",
+                  "hover": "{{selector}} .dica-item .social-media li.dg_facebook:hover a"
+                },
+                "css_type": "color"
+              },
+              "tab_slug": "color",
+              "features": {
+                "sticky": false,
+                "dynamicContent": {
+                  "type": "color"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            },
+            "twitter_color": {
+              "groupSlug": "social_media_style",
+              "render": false,
+              "subName": "twitter_color",
+              "label": "Twitter Color",
+              "tab_attribute": "social_tab_obj_settings",
+              "attrName": "social_obj_settings.innerContent",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}} .dica-item .social-media li.dg_twitter a",
+                  "hover": "{{selector}} .dica-item .social-media li.dg_twitter:hover a"
+                },
+                "css_type": "color"
+              },
+              "tab_slug": "color",
+              "features": {
+                "sticky": false,
+                "dynamicContent": {
+                  "type": "color"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            },
+            "linkedin_color": {
+              "groupSlug": "social_media_style",
+              "render": false,
+              "subName": "linkedin_color",
+              "label": "Linkedin Color",
+              "tab_attribute": "social_tab_obj_settings",
+              "attrName": "social_obj_settings.innerContent",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}} .dica-item .social-media li.dg_linkedin a",
+                  "hover": "{{selector}} .dica-item .social-media li.dg_linkedin:hover a"
+                },
+                "css_type": "color"
+              },
+              "tab_slug": "color",
+              "features": {
+                "sticky": false,
+                "dynamicContent": {
+                  "type": "color"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            },
+            "instagram_color": {
+              "groupSlug": "social_media_style",
+              "render": false,
+              "subName": "instagram_color",
+              "label": "Instagram Color",
+              "tab_attribute": "social_tab_obj_settings",
+              "attrName": "social_obj_settings.innerContent",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}} .dica-item .social-media li.dg_instagram a",
+                  "hover": "{{selector}} .dica-item .social-media li.dg_instagram:hover a"
+                },
+                "css_type": "color"
+              },
+              "tab_slug": "color",
+              "features": {
+                "sticky": false,
+                "dynamicContent": {
+                  "type": "color"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            },
+            "email_color": {
+              "groupSlug": "social_media_style",
+              "render": false,
+              "subName": "email_color",
+              "label": "Email Color",
+              "tab_attribute": "social_tab_obj_settings",
+              "attrName": "social_obj_settings.innerContent",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}} .dica-item .social-media li.dg_email a",
+                  "hover": "{{selector}} .dica-item .social-media li.dg_email:hover a"
+                },
+                "css_type": "color"
+              },
+              "tab_slug": "color",
+              "features": {
+                "sticky": false,
+                "dynamicContent": {
+                  "type": "color"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            },
+
+            "facebook_bgcolor": {
+              "groupSlug": "social_media_style",
+              "render": false,
+              "subName": "facebook_bgcolor",
+              "label": "Facebook Background Color",
+              "tab_attribute": "social_tab_obj_settings",
+              "attrName": "social_obj_settings.innerContent",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}} .dica-item .social-media li.dg_facebook a",
+                  "hover": "{{selector}} .dica-item .social-media li.dg_facebook:hover a"
+                },
+                "css_type": "background-color"
+              },
+              "tab_slug": "bg",
+              "features": {
+                "sticky": false,
+                "dynamicContent": {
+                  "type": "color"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            },
+            "twitter_bgcolor": {
+              "groupSlug": "social_media_style",
+              "render": false,
+              "subName": "twitter_bgcolor",
+              "label": "Twitter Background Color",
+              "tab_attribute": "social_tab_obj_settings",
+              "attrName": "social_obj_settings.innerContent",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}} .dica-item .social-media li.dg_twitter a",
+                  "hover": "{{selector}} .dica-item .social-media li.dg_twitter:hover a"
+                },
+                "css_type": "background-color"
+              },
+              "tab_slug": "bg",
+              "features": {
+                "sticky": false,
+                "dynamicContent": {
+                  "type": "color"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            },
+            "linkedin_bgcolor": {
+              "groupSlug": "social_media_style",
+              "render": false,
+              "subName": "linkedin_bgcolor",
+              "label": "Linkedin Background Color",
+              "tab_attribute": "social_tab_obj_settings",
+              "attrName": "social_obj_settings.innerContent",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}} .dica-item .social-media li.dg_linkedin a",
+                  "hover": "{{selector}} .dica-item .social-media li.dg_linkedin:hover a"
+                },
+                "css_type": "background-color"
+              },
+              "tab_slug": "bg",
+              "features": {
+                "sticky": false,
+                "dynamicContent": {
+                  "type": "color"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            },
+            "instagram_bgcolor": {
+              "groupSlug": "social_media_style",
+              "render": false,
+              "subName": "instagram_bgcolor",
+              "label": "Instagram Background Color",
+              "tab_attribute": "social_tab_obj_settings",
+              "attrName": "social_obj_settings.innerContent",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}} .dica-item .social-media li.dg_instagram a",
+                  "hover": "{{selector}} .dica-item .social-media li.dg_instagram:hover a"
+                },
+                "css_type": "background-color"
+              },
+              "tab_slug": "bg",
+              "features": {
+                "sticky": false,
+                "dynamicContent": {
+                  "type": "color"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            },
+            "email_bgcolor": {
+              "groupSlug": "social_media_style",
+              "render": false,
+              "subName": "email_bgcolor",
+              "label": "Email Background Color",
+              "tab_attribute": "social_tab_obj_settings",
+              "attrName": "social_obj_settings.innerContent",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}} .dica-item .social-media li.dg_email a",
+                  "hover": "{{selector}} .dica-item .social-media li.dg_email:hover a"
+                },
+                "css_type": "background-color"
+              },
+              "tab_slug": "bg",
+              "features": {
+                "sticky": false,
+                "dynamicContent": {
+                  "type": "color"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            }
+          }
+        },
+        "decoration": {
+          "border": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "social_media_style",
+              "attrName": "social_btn.decoration.border",
+              "label": "",
+              "render": true,
+              "component": {
+                "type": "group",
+                "name": "divi/border",
+                "props": {
+                  "grouped": false,
+                  "fieldLabel": null
+                }
+              }
+            }
+          },
+          "boxShadow": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "social_media_style",
+              "attrName": "social_btn.decoration.boxShadow",
+              "label": null,
+              "render": true,
+              "component": {
+                "type": "group",
+                "name": "divi/box-shadow",
+                "props": {
+                  "grouped": false,
+                  "fieldLabel": ""
+                }
+              }
+            }
+          }
+        }
+      },
+      "styleProps": {
+        "border": {
+          "important": true,
+          "selectors": {
+            "desktop": {
+              "value": "#et-boc .dica_divi_carousel .dica-container {{selector}} .social-media-container li a, .dica_divi_carousel .dica-container {{selector}} .social-media-container li a",
+              "hover": "#et-boc .dica_divi_carousel .dica-container {{selector}} .social-media-container li a:hover, .dica_divi_carousel .dica-container {{selector}} .social-media-container li a:hover"
+            }
+          }
+        },
+        "boxShadow": {
+          "selectors": {
+            "desktop": {
+              "value": "#et-boc .dica_divi_carousel .dica-container {{selector}} .social-media-container li a, .dica_divi_carousel .dica-container {{selector}} .social-media-container li a",
+              "hover": "#et-boc .dica_divi_carousel .dica-container {{selector}} .social-media-container li a:hover, .dica_divi_carousel .dica-container {{selector}} .social-media-container li a:hover"
+            }
+          }
+        }
+      }
+    },
+    "child_filters_obj_settings": {
+      "type": "object",
+      "selector": "{{selector}}.dica_divi_carouselitem .dica-image-container img.dica-item-image",
+      "inlineEditor": true,
+      "settings": {
+        "decoration": {
+          "filters": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "image_filter",
+              "attrName": "child_filters_obj_settings.decoration.filters",
+              "label": null,
+              "render": true,
+              "component": {
+                "type": "group",
+                "name": "divi/filters",
+                "props": {
+                  "grouped": false,
+                  "fieldLabel": ""
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "rating_obj_settings": {
+      "type": "object",
+      "selector": "{{selector}}.dica_divi_carouselitem .dica-item .dica-item-content .dica-rating-container",
+      "inlineEditor": true,
+      "settings": {
+        "innerContent": {
+          "groupType": "group-items",
+          "items": {
+            "use_rating": {
+              "groupSlug": "meta",
+              "render": true,
+              "subName": "use_rating",
+              "label": "Use Rating",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "use_rating": "off"
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if_not": {
+                  "use_social_media": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
+              }
+            },
+            "rating_number": {
+              "groupSlug": "meta",
+              "render": true,
+              "subName": "rating_number",
+              "label": "Rating",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "rating_number": "5"
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_rating": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/select",
+                "props": {
+                  "options": {
+                    "1": {
+                      "label": "One"
+                    },
+                    "2": {
+                      "label": "Two"
+                    },
+                    "3": {
+                      "label": "Three"
+                    },
+                    "4": {
+                      "label": "Four"
+                    },
+                    "5": {
+                      "label": "Five"
+                    }
+                  }
+                }
+              }
+            },
+            "rating_alignment": {
+              "groupSlug": "rating_style",
+              "render": true,
+              "subName": "rating_alignment",
+              "label": "Alignment",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}}.dica_divi_carouselitem .dica-item .dica-item-content .dica-rating-container .dica-rating"
+                },
+                "css_type": "text-align"
+              },
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "rating_alignment": "left"
+                  }
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/button-options",
+                "props": {
+                  "showLabel": true,
+                  "options": {
+                    "left": {
+                      "icon": "divi/text-align-left"
+                    },
+                    "center": {
+                      "icon": "divi/text-align-center"
+                    },
+                    "right": {
+                      "icon": "divi/text-align-right"
+                    }
+                  }
+                }
+              },
+              "multipleChoices": false
+            },
+            "rating_position": {
+              "groupSlug": "rating_style",
+              "render": true,
+              "subName": "rating_position",
+              "label": "Position",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "rating_position": "rating-bottom"
+                  }
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/select",
+                "props": {
+                  "options": {
+                    "rating-top": {
+                      "label": "Top"
+                    },
+                    "rating-under-title": {
+                      "label": "Middle"
+                    },
+                    "rating-bottom": {
+                      "label": "Bottom"
+                    }
+                  }
+                }
+              }
+            },
+            "rating_icon_size": {
+              "groupSlug": "rating_style",
+              "render": true,
+              "subName": "rating_icon_size",
+              "label": "Rating icon size",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}} .dica-rating span:before"
+                },
+                "css_type": "font-size"
+              },
+              "features": {
+                "sticky": false,
+                "hover": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "rating_icon_size": "14px"
+                  }
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/range",
+                "props": {
+                  "defaultUnit": "px"
+                }
+              }
+            },
+            "rating_color": {
+              "groupSlug": "rating_style",
+              "render": true,
+              "subName": "rating_color",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}}.dica_divi_carouselitem .dica-rating span.rate:before",
+                  "hover": "{{selector}}.dica_divi_carouselitem:hover .dica-rating span.rate:before"
+                },
+                "css_type": "color"
+              },
+              "label": "Rating Color",
+              "features": {
+                "dynamicContent": {
+                  "type": "color"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            },
+            "blank_color": {
+              "groupSlug": "rating_style",
+              "render": true,
+              "subName": "blank_color",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}}.dica_divi_carouselitem .dica-rating span.blank:before",
+                  "hover": "{{selector}}.dica_divi_carouselitem:hover .dica-rating span.blank:before"
+                },
+                "css_type": "color"
+              },
+              "label": "Blank Color",
+              "features": {
+                "dynamicContent": {
+                  "type": "color"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            }
+          }
+        }
+      }
+    },
+    "button_obj_settings": {
+      "type": "object",
+      "elementType": "button",
+      "selector": "{{baseSelector}} .dica-item-content > div:not(.content):not(.dica-image-container):not(.social-media-container) a",
+      "settings": {
+        "innerContent": {
+          "groupType": "group-items",
+          "items": {
+            "button_text": {
+              "groupSlug": "button_settings",
+              "attrName": "button_obj_settings.innerContent",
+              "subName": "button_text",
+              "label": "Button Text",
+              "description": "Button Text",
+              "render": true,
+              "show_if": {
+                "item_type": "Button"
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              },
+              "features": {
+                "sticky": false,
+                "responsive": false,
+                "dynamicContent": {
+                  "type": "text"
+                },
+                "preset": "content"
+              }
+            },
+            "button_url": {
+              "groupSlug": "button_settings",
+              "attrName": "button_obj_settings.innerContent",
+              "subName": "button_url",
+              "render": true,
+              "label": "Button URL",
+              "description": "Button Link URL",
+              "show_if": {
+                "item_type": "Button"
+              },
+              "features": {
+                "sticky": false,
+                "responsive": false,
+                "dynamicContent": {
+                  "type": "url"
+                },
+                "preset": "content"
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              }
+            },
+            "button_url_new_window": {
+              "groupSlug": "button_settings",
+              "attrName": "button_obj_settings.innerContent",
+              "subName": "button_url_new_window",
+              "render": true,
+              "label": "Button New tab ",
+              "description": "Button Link URL",
+              "show_if": {
+                "item_type": "Button"
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "button_url_new_window": "off"
+                  }
+                }
+              },
+              "features": {
+                "sticky": false,
+                "responsive": false,
+                "preset": "content"
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/select",
+                "props": {
+                  "options": {
+                    "off": {
+                      "label": "In The Same Window"
+                    },
+                    "on": {
+                      "label": "In The New Tab"
+                    }
+                  }
+                }
+              }
+            },
+            "button_alignment": {
+              "groupSlug": "button",
+              "attrName": "button_obj_settings.innerContent",
+              "subName": "button_alignment",
+              "label": "Button Alignment",
+              "description": "Choose Button Alignment",
+              "render": true,
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}} .dica-item .dica-item-content .et_pb_button_wrapper"
+                },
+                "css_type": "text-align"
+              },
+              "features": {
+                "hover": false
+              },
+              "show_if": {
+                "item_type": "Button"
+              },
+              "component": {
+                "type": "select",
+                "name": "divi/button-options",
+                "props": {
+                  "options": {
+                    "left": {
+                      "icon": "divi/text-align-left"
+                    },
+                    "center": {
+                      "icon": "divi/text-align-center"
+                    },
+                    "right": {
+                      "icon": "divi/text-align-right"
+                    }
+                  }
+                }
+              }
+            },
+            "button_rel": {
+              "groupSlug": "buttonAttributes",
+              "attrName": "buttonAttributes.innerContent",
+              "subName": "button_rel",
+              "label": "Button Relationship",
+              "description": "Specify the value of your link's rel attribute.",
+              "render": true,
+              "show_if": {
+                "item_type": "Button"
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/checkboxes",
+                "props": {
+                  "options": [
+                    {
+                      "label": "bookmark",
+                      "value": "bookmark"
+                    },
+                    {
+                      "label": "external",
+                      "value": "external"
+                    },
+                    {
+                      "label": "nofollow",
+                      "value": "nofollow"
+                    },
+                    {
+                      "label": "noreferrer",
+                      "value": "noreferrer"
+                    },
+                    {
+                      "label": "noopener",
+                      "value": "noopener"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "decoration": {
+          "button": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "button",
+              "attrName": "button_obj_settings.decoration.button",
+              "render": true,
+              "component": {
+                "type": "group",
+                "name": "divi/button",
+                "props": {
+                  "grouped": false,
+                  "attrName": "button_obj_settings",
+                  "fields": {
+                    "alignment": {
+                      "render": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "styleProps": {
+        "button": {
+          "selectors": {
+            "desktop": {
+              "value": "{{baseSelector}} .dica-item-content > div:not(.content):not(.dica-image-container):not(.social-media-container) a"
+            }
+          }
+        },
+        "spacing": {
+          "important": true
+        }
+      }
+    },
+    "icon_obj_settings": {
+      "type": "object",
+      "selector": "{{selector}}.dica_divi_carouselitem",
+      "inlineEditor": true,
+      "settings": {
+        "innerContent": {
+          "groupType": "group-items",
+          "items": {
+            "use_icon": {
+              "groupSlug": "image_settings",
+              "render": true,
+              "subName": "use_icon",
+              "label": "Use Icon",
+              "description": "Here you can choose whether icon set below should be used.",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "use_icon": "off"
+                  }
+                }
+              }
+            },
+            "font_icon": {
+              "groupSlug": "image_settings",
+              "render": true,
+              "subName": "font_icon",
+              "label": "Icon",
+              "description": "Choose an icon to display with your blurb.",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "font_icon": {
+                      "unicode": "&#xe00a;",
+                      "type": "divi",
+                      "weight": "400"
+                    }
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_icon": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/icon-picker"
+              }
+            },
+            "icon_color": {
+              "groupSlug": "icon_settings",
+              "render": true,
+              "subName": "icon_color",
+              "label": "Icon Color",
+              "description": "Here you can define a custom color for your icon.",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}}.dica_divi_carouselitem .dica-image-container .et-pb-icon"
+                },
+                "css_type": "color"
+              },
+              "features": {
+                "dynamicContent": {
+                  "type": "color"
+                }
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "icon_color": "#666666"
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_icon": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            },
+            "use_icon_font_size": {
+              "groupSlug": "icon_settings",
+              "render": true,
+              "subName": "use_icon_font_size",
+              "label": "Use Icon Font Size",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_icon": "on"
+                }
+              }
+            },
+            "icon_font_size": {
+              "groupSlug": "icon_settings",
+              "render": true,
+              "subName": "icon_font_size",
+              "label": "Icon Font Size",
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}}.dica_divi_carouselitem .dica-image-container .et-pb-icon"
+                },
+                "css_type": "font-size"
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_icon_font_size": "on",
+                  "use_icon": "on"
+                }
+              },
+              "features": {
+                "sticky": false,
+                "hover": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "icon_font_size": "96px"
+                  }
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/range",
+                "props": {
+                  "defaultUnit": "px",
+                  "min": 1,
+                  "max": 120,
+                  "step": 1
+                }
+              }
+            },
+            "icon_alignment": {
+              "groupSlug": "icon_settings",
+              "render": true,
+              "subName": "icon_alignment",
+              "label": "Icon alignment",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_icon": "on"
+                }
+              },
+              "customCssAttr": {
+                "selectors": {
+                  "selector": ".dica_divi_carousel {{selector}}.dica_divi_carouselitem .dica-image-container"
+                },
+                "css_type": "text-align"
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "icon_alignment": "center"
+                  }
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/button-options",
+                "props": {
+                  "showLabel": true,
+                  "options": {
+                    "left": {
+                      "icon": "divi/text-align-left"
+                    },
+                    "center": {
+                      "icon": "divi/text-align-center"
+                    },
+                    "right": {
+                      "icon": "divi/text-align-right"
+                    }
+                  }
+                }
+              },
+              "multipleChoices": false
+            },
+            "use_circle": {
+              "groupSlug": "icon_settings",
+              "render": true,
+              "subName": "use_circle",
+              "label": "Circle Icon",
+              "description": "Here you can choose whether icon set above should display within a circle.",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
+              }
+            },
+            "circle_color": {
+              "groupSlug": "icon_settings",
+              "render": true,
+              "subName": "circle_color",
+              "label": "Circle Color",
+              "description": "Here you can define a custom color for the icon circle.",
+              "features": {
+                "dynamicContent": {
+                  "type": "color"
+                }
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "circle_color": "#2ea3f2"
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_circle": "on"
+                }
+              },
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}}.dica_divi_carouselitem .dica-image-container .et-pb-icon"
+                },
+                "css_type": "background-color"
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            },
+            "use_circle_border": {
+              "groupSlug": "icon_settings",
+              "render": true,
+              "subName": "use_circle_border",
+              "label": "Show Circle Border",
+              "displayCondition": {
+                "show_if": {
+                  "use_circle": "on"
+                }
+              },
+              "description": "Here you can choose whether if the icon circle border should display.",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
+              }
+            },
+            "circle_border_color": {
+              "groupSlug": "icon_settings",
+              "render": true,
+              "subName": "circle_border_color",
+              "label": "Circle Border Color",
+              "description": "Here you can define a custom color for the icon circle border.",
+              "features": {
+                "dynamicContent": {
+                  "type": "color"
+                }
+              },
+              "customCssAttr": {
+                "selectors": {
+                  "selector": "{{selector}}.dica_divi_carouselitem .dica-image-container .et-pb-icon"
+                },
+                "css_type": "border-color"
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "circle_border_color": "#666666"
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_circle_border": "on",
+                  "use_circle": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            }
+          }
+        }
+      }
+    },
+    "image_obj_settings": {
+      "type": "object",
+      "selector": ".dica_divi_carousel {{selector}}.dica_divi_carouselitem > div:not([class^='et-vb']):first-of-type .dica-image-container",
+      "inlineEditor": true,
+      "settings": {
+        "innerContent": {
+          "groupType": "group-items",
+          "items": {
+            "image": {
+              "groupSlug": "image_settings",
+              "render": true,
+              "subName": "image",
+              "label": "Image",
+              "description": "Upload an image to display at the top of your blurb.",
+              "features": {
+                "dynamicContent": {
+                  "type": "image"
+                },
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/upload",
+                "props": {
+                  "syncImageData": {
+                    "src": "image",
+                    "id": false,
+                    "alt": false,
+                    "titleText": false
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if_not": {
+                  "use_icon": "on"
+                }
+              }
+            },
+            "image_alt": {
+              "groupSlug": "image_settings",
+              "render": true,
+              "subName": "image_alt",
+              "label": "Image alt text",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_icon": "off"
+                }
+              }
+            },
+            "image_position": {
+              "groupSlug": "image_styles",
+              "render": true,
+              "subName": "image_position",
+              "label": "Image position",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive":false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "image_position": "image_top"
+                  }
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/select",
+                "props": {
+                  "options": {
+                    "image_top": {
+                      "label": "Top"
+                    },
+                    "image_bottom": {
+                      "label": "Bottom"
+                    },
+                    "image_left": {
+                      "label": "Left"
+                    },
+                    "image_right": {
+                      "label": "Right"
+                    },
+                    "image_under_title": {
+                      "label": "Inside Content"
+                    }
+                  }
+                }
+              }
+            },
+            "image_size": {
+              "groupSlug": "image_styles",
+              "render": true,
+              "subName": "image_size",
+              "label": "Image Width by %",
+              "features": {
+                "sticky": false,
+                "hover": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "image_size": "50%"
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if_not": {
+                  "image_position": [
+                    "image_top",
+                    "image_bottom",
+                    "image_under_title"
+                  ]
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/range",
+                "props": {
+                  "defaultUnit": "%"
+                }
+              }
+            },
+            "tablet_on_top": {
+              "groupSlug": "image_styles",
+              "render": true,
+              "subName": "tablet_on_top",
+              "label": "Tablet on top",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "tablet_on_top": "off"
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if_not": {
+                  "image_position": [
+                    "image_top",
+                    "image_bottom",
+                    "image_under_title"
+                  ]
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
+              }
+            },
+            "mobile_on_top": {
+              "groupSlug": "image_styles",
+              "render": true,
+              "subName": "mobile_on_top",
+              "label": "Mobile on top",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "mobile_on_top": "off"
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if_not": {
+                  "image_position": [
+                    "image_top",
+                    "image_bottom",
+                    "image_under_title"
+                  ],
+                  "tablet_on_top": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
+              }
+            },
+            "image_lightbox": {
+              "groupSlug": "image_settings",
+              "render": true,
+              "subName": "image_lightbox",
+              "label": "Open as Image lightbox",
+              "description": "You can open your image in a Lightbox. Note: The title and image link target will not be applied to the image.",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "image_lightbox": "off"
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_icon": "off",
+                  "video_lightbox": "off"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
+              }
+            },
+            "show_caption": {
+              "groupSlug": "image_settings",
+              "render": true,
+              "subName": "show_caption",
+              "label": "Show Caption",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "show_caption": "off"
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if": {
+                  "image_lightbox": "on"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
+              }
+            },
+            "video_lightbox": {
+              "groupSlug": "image_settings",
+              "render": true,
+              "subName": "video_lightbox",
+              "label": "Open as Video lightbox",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "video_lightbox": "off"
+                  }
+                }
+              },
+              "displayCondition": {
+                "show_if": {
+                  "use_icon": "off",
+                  "image_lightbox": "off"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
+              }
+            },
+            "video_lightbox_url": {
+              "groupSlug": "image_settings",
+              "render": true,
+              "subName": "video_lightbox_url",
+              "label": "Video Popup URL",
+              "description": "Input URL for your Video Popup.",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false,
+                "dynamicContent": {
+                  "type": "url"
+                }
+              },
+              "displayCondition": {
+                "show_if": {
+                  "video_lightbox": "on",
+                  "use_icon": "off",
+                  "image_lightbox": "off"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              }
+            },
+            "video_lightbox_url_new_window": {
+              "groupSlug": "image_settings",
+              "render": true,
+              "subName": "video_lightbox_url_new_window",
+              "label": "Video Link Target",
+              "description": "Here you can choose whether or not your link opens in a new window",
+              "features": {
+                "sticky": false,
+                "hover": false,
+                "responsive": false
+              },
+              "displayCondition": {
+                "show_if": {
+                  "video_lightbox": "on",
+                  "use_icon": "off",
+                  "image_lightbox": "off"
+                }
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/select",
+                "props": {
+                  "options": {
+                    "off": {
+                      "label": "In Popup"
+                    },
+                    "on": {
+                      "label": "In The New Tab"
+                    }
+                  }
+                }
+              },
+              "defaultAttr": {
+                "desktop": {
+                  "value": {
+                    "video_lightbox_url_new_window": "off"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "decoration": {
+          "spacing": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "dg_custom_spacing",
+              "render": true,
+              "priority": 1,
+              "label": "Image Padding",
+              "features": {
+                "sticky": false
+
+              },
+              "component": {
+                "type": "group",
+                "name": "divi/spacing",
+                "props": {
+                  "grouped": false,
+                  "fieldLabel": "Image ",
+                  "fields": {
+                    "margin": {
+                      "render": false
+                    }
+                  }
+                }
+              },
+              "attrName": "image_obj_settings.decoration.spacing"
+            }
+          }
+        }
+      }
+    },
+    "content_wrapper_obj_settings": {
+      "type": "object",
+      "selector": ".dica_divi_carousel {{selector}}.dica_divi_carouselitem > div:not([class^='et-vb']):first-of-type .dica-item-content",
+      "inlineEditor": true,
+      "settings": {
+        "decoration": {
+          "spacing": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "dg_custom_spacing",
+              "priority": 2,
+              "render": true,
+              "label": "Content",
+              "features": {
+                "sticky": false
+              },
+              "component": {
+                "type": "group",
+                "name": "divi/spacing",
+                "props": {
+                  "grouped": false,
+                  "fieldLabel": "Content ",
+                  "fields": {
+                    "margin": {
+                      "render": false
+                    }
+                  }
+                }
+              },
+              "attrName": "content_wrapper_obj_settings.decoration.spacing"
+            }
+          }
+        }
+      }
+    },
+    "custom_margin_obj_settings": {
+      "type": "object",
+      "selector": ".dica_divi_carousel .dica-container {{selector}}.dica_divi_carouselitem > div:first-of-type, #et-boc .dica_divi_carousel .dica-container {{selector}}.dica_divi_carouselitem > div:first-of-type",
+      "settings": {
+        "decoration": {
+          "spacing": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "dg_custom_spacing",
+              "render": true,
+              "label": "Margin",
+              "features": {
+                "sticky": false
+              },
+              "component": {
+                "type": "group",
+                "name": "divi/spacing",
+                "props": {
+                  "grouped": false,
+                  "fieldLabel": ""
+                }
+              },
+              "attrName": "custom_margin_obj_settings.decoration.spacing"
+            }
+          }
+        }
+      }
+    },
+    "social_tab_obj_settings": {
+      "type": "object",
+      "settings": {
+        "innerContent": {
+          "groupType": "group-item",
+          "item": {
+            "groupSlug": "social_media_style",
+            "tab_slug": "social_tab_obj_settings",
+            "module_slug": "dica/divi-carouselitem",
+            "tabs": {
+              "color": {
+                "label": "Color",
+                "components": []
+              },
+              "bg": {
+                "label": "Background",
+                "components": []
+              }
+            },
+            "render": true,
+            "component": {
+              "type": "field",
+              "name": "dica/custom-tab"
+            }
+          }
+        }
+      }
+    }
+  }
+}

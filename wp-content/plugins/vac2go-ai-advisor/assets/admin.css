@@ -1,0 +1,33 @@
+/* Vac2Go Advisor admin review table styling. */
+.va-advisor-wrap .va-muted { color: #8c8f94; }
+.va-advisor-wrap details summary { cursor: pointer; }
+.va-advisor-wrap .va-raw {
+	margin-top: 6px;
+	padding: 6px 8px;
+	background: #fbeaea;
+	border-left: 3px solid #d63638;
+	font-size: 12px;
+	color: #5c2b2b;
+}
+.va-advisor-wrap .va-badge {
+	display: inline-block;
+	padding: 1px 7px;
+	border-radius: 3px;
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 1.6;
+}
+.va-advisor-wrap .va-badge-filtered { background: #fcf0cd; color: #7a5a00; }
+.va-advisor-wrap .va-badge-incorrect { background: #f7d6d6; color: #a02222; }
+.va-advisor-wrap .va-correction {
+	margin: 6px 0;
+	padding: 6px 8px;
+	background: #eef6ff;
+	border-left: 3px solid #2271b1;
+	font-size: 12px;
+}
+.va-advisor-wrap .va-correct-form { margin-top: 8px; }
+.va-advisor-wrap .va-correction-text { width: 100%; margin-bottom: 6px; }
+.va-advisor-wrap .va-correct-status { font-size: 12px; margin-left: 6px; }
+.va-advisor-wrap td.column-question,
+.va-advisor-wrap td.column-answer { max-width: 320px; }

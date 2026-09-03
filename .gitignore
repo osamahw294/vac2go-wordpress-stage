@@ -1,0 +1,44 @@
+# WordPress core
+wp-admin/
+wp-includes/
+wp-*.php
+xmlrpc.php
+index.php
+.htaccess
+
+# Uploads and caches
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/backup*/
+
+# Config and secrets
+wp-config.php
+*.sql
+*.log
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+
+# Backups and leftover junk
+*.bk
+.htaccess1
+*.wp-config.php
+*.tar_bv_0
+phpinfo.php
+gd-preload-cli.php
+
+# Nexcess hosting mu-plugin (vendor, not our code)
+wp-content/mu-plugins/nexcess-mapps/
+
+# Generated cache files/drop-ins
+wp-content/et-cache/
+wp-content/advanced-cache.php
+
+# Third-party/vendored plugins (not our custom code)
+wp-content/mu-plugins/object-cache-pro/
+
+# Hosting vendor mu-plugins (not our code)
+wp-content/mu-plugins/vendor/
+wp-content/mu-plugins/object-cache.php

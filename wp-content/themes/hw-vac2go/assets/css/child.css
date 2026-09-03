@@ -1,0 +1,132 @@
+/**
+ * HW Kadence Starter — child house styles.
+ * ============================================================================
+ * WHAT THIS FILE IS
+ *   The child theme's CSS. It is the LAST stylesheet to load, so anything here
+ *   overrides Kadence. It is enqueued (with auto cache-busting) by
+ *   inc/enqueue.php.
+ *
+ * HOW TO STYLE THINGS (in order of preference)
+ *   1. Colors / fonts / spacing  ->  edit tokens in theme.json (NOT here).
+ *   2. Layout / global look       ->  Site Editor (Appearance -> Editor).
+ *   3. Specific CSS tweaks        ->  add them here, at the bottom marker.
+ *
+ * TOKENS = the single source of truth. Reference them, don't hardcode hex:
+ *   color:    var(--wp--preset--color--brand-primary)   (see theme.json palette)
+ *   spacing:  var(--wp--preset--spacing--40)            (see theme.json spacing)
+ *   font:     var(--wp--preset--font-size--large)       (see theme.json type)
+ *   Change the client's brand -> change theme.json, and everything below follows.
+ *
+ * RULES: mobile-first (base styles first, then min-width media queries).
+ * No !important storms — target specificity, not brute force. The ONE allowed
+ * !important block is the reduced-motion a11y guard (section 4) — that's the
+ * accepted idiom.
+ *
+ * SECTION MAP
+ *   1. Accessibility (focus styles)
+ *   2. Helper primitives (icons, contact links — from inc/helpers.php)
+ *   3. Block styles (CSS for the variations in inc/block-styles.php)
+ *   4. Reduced-motion guard
+ *   5. ▼ ADD CLIENT HOUSE STYLES BELOW  <-- your per-client edits go here
+ * ============================================================================
+ */
+
+/* ------------------------------------------------------------------ *
+ * 1. Accessibility — visible focus for keyboard users everywhere.
+ *    Kadence provides base focus styles; this guarantees a strong,
+ *    contrast-friendly ring on interactive elements we add.
+ * ------------------------------------------------------------------ */
+:where(a, button, input, select, textarea, .wp-element-button):focus-visible {
+	outline: 3px solid var(--wp--preset--color--brand-primary);
+	outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------ *
+ * 2. Small helper primitives used by inc/helpers.php output.
+ * ------------------------------------------------------------------ */
+.hw-starter-icon {
+	display: inline-block;
+	vertical-align: middle;
+	color: currentColor;
+}
+
+.hw-starter-contact {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
+	text-decoration: none;
+}
+
+.hw-starter-contact:hover,
+.hw-starter-contact:focus {
+	text-decoration: underline;
+}
+
+/* ------------------------------------------------------------------ *
+ * 3. Block styles — CSS for the variations registered in
+ *    inc/block-styles.php.
+ * ------------------------------------------------------------------ */
+
+/* Each rule below is the LOOK for a variation registered in
+ * inc/block-styles.php. The class is `is-style-<name>`. Color comes from
+ * brand-primary / base-white / neutral-100 tokens, so restyling the brand in
+ * theme.json restyles these automatically. */
+
+/* 3a. Button: "Outline Pill" — transparent, brand outline, fully rounded. */
+.wp-block-button.is-style-hw-outline-pill .wp-block-button__link {
+	background-color: transparent;
+	color: var(--wp--preset--color--brand-primary);
+	border: 2px solid currentColor;
+	border-radius: 999px;
+}
+
+.wp-block-button.is-style-hw-outline-pill .wp-block-button__link:hover,
+.wp-block-button.is-style-hw-outline-pill .wp-block-button__link:focus {
+	background-color: var(--wp--preset--color--brand-primary);
+	color: var(--wp--preset--color--base-white);
+}
+
+/* 3b. Group / Column: "Card" — padded surface with soft border + radius. */
+.wp-block-group.is-style-hw-card,
+.wp-block-column.is-style-hw-card {
+	background-color: var(--wp--preset--color--base-white);
+	border: 1px solid var(--wp--preset--color--neutral-100);
+	border-radius: 12px;
+	padding: var(--wp--preset--spacing--40);
+	box-shadow: 0 1px 3px rgba(20, 24, 31, 0.06);
+}
+
+/* 3c. Image: "Rounded" — consistent corner radius. */
+.wp-block-image.is-style-hw-rounded img {
+	border-radius: 12px;
+}
+
+/* ------------------------------------------------------------------ *
+ * 4. Respect reduced-motion preferences for any transitions we add.
+ * ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.001ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.001ms !important;
+	}
+}
+
+/* ================================================================== *
+ *                                                                    *
+ *   ▼▼▼  5. ADD CLIENT HOUSE STYLES BELOW  ▼▼▼                        *
+ *                                                                    *
+ *   Put per-client CSS here. Reference theme.json tokens instead of  *
+ *   hardcoding values, e.g.:                                         *
+ *                                                                    *
+ *     .site-header {                                                 *
+ *         background: var(--wp--preset--color--brand-secondary);    *
+ *         padding-block: var(--wp--preset--spacing--40);            *
+ *     }                                                              *
+ *                                                                    *
+ *   Mobile-first: write the base rule, then add min-width queries    *
+ *   for larger screens. Avoid !important.                            *
+ * ================================================================== */
+

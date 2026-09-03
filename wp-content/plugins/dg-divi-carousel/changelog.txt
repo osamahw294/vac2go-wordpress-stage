@@ -1,0 +1,222 @@
+Version 5.1.0
+- Added: Loop feature
+- Added: Element Option Added
+
+Version 5.0.1
+- Fixed: Plugin conflict issue
+- Fixed: Image rendering issue
+
+Version 5.0.0
+- Compatible with Divi5
+
+Version 3.0.0
+- Added: RTL
+- Added: Multiple Row Option
+- Added: Show Caption on Image Popup
+- Added: Video Popup
+- Added: Keyboard Control
+- Added: Mousewheel Control
+- Added: Auto play only on Viewport
+- Added: Content Excerpt
+- Added: Active Slide Design (Background Color)
+- Added: Inactive Slide Design (Blur Effect, Scaling, Disable Click, Background Color)
+- Added: Large Active Dot
+- Added: Container Style (Left-Right Fade Effect)
+- Added: Image Overlay Gradient Color Option
+- Added: Animated Play Icon for Popup Video
+
+Version 2.0.26
+- Fixed: Child item border settings issue.
+
+Version 2.0.25
+- Fixed: Background pattern and mask issue.
+
+Version 2.0.24
+- Fixed: PHP8 compatibility issues.
+
+Version 2.0.23
+- Fixed: Carousel Item border issue.
+
+Version 2.0.22
+- Fixed: Icon compatibility issues.
+- Fixed: Selector issue for theme builder.
+- Fixed: Webp format issue fixed.
+
+Version 2.0.21 ( 22 Sep, 2021 )
+- Removed - Deprecated function call.
+- Fixed - CarouselItem Icon border issue.
+- Added - Image width and height attribute.
+- Added - Carousel mouse drag enable/disable option.
+- Fixed - webp support issue for VB
+
+Version 2.0.20 ( 21 Aug, 2021 )
+- Fixed - On click issue on carousel item.
+- Fixed - CarouselItem Image extra space.
+
+Version 2.0.19 ( 21 Apr, 2021 )
+- Fixed: Classic Builder loading issues.
+- Fixed: a Tag without href issue.
+- Fixed: Arrow style conflict issues with other plugins.
+- Fixed: Empty data-lightbox value.
+- Fixed: smooth scroll on module link.
+- Added: Subtitle Tag option.
+
+Version 2.0.18
+- Fixed: scroller effect issue.
+
+Version 2.0.17 ( 27 June, 2020 )
+- Fixed - update issues
+
+Version 2.0.16 ( 25 June, 2020 )
+- Fixed – Double slash issue.
+- Fixed – Update license activation.
+
+Version 2.0.15 ( 16 May, 2020 )
+- Fixed – Title link style issue.
+- Fixed – Transition issues.
+- Added – Arrow hover color.
+- Added – Hash Navigation.
+
+Version 2.0.14 ( 02 Mar, 2020 )
+- Fixed – Image width issues on ie.
+- Fixed – zindex issues.
+- Added – zindex options for image and content container.
+
+Version 2.0.13 ( 08 Feb, 2020 )
+- Fixed – Image alignment issues.
+- Fixed – Svg image display issues.
+- Added – Image box-shadow.
+
+Version 2.0.12 ( 30 Jan, 2020 )
+- Fixed – Image width and border issues.
+
+Version 2.0.11 ( 28 Jan, 2020 )
+- Fixed – undefined index in core/functions.php.
+
+Version 2.0.10 ( 17 Jan, 2020 )
+- Fixed – Click issue with overlay plugin.
+- Fixed – Heading style issue.
+- Added – Default letter spacing.
+
+Version 2.0.9 ( 28 Dec, 2019 )
+- Fixed – Transition issues with Builder Plugin.
+- Fixed – module link issues.
+- Fixed – Arrow issues with Builder Plugin
+- Update – Swiper script
+
+Version 2.0.8 ( 14 Nov, 2019 )
+- Fixed – Image light box issue with builder plugin.
+- Fixed – Carousel swipe issue.
+- Fixed – Overlay issue with image on left layout.
+
+Version 2.0.7 ( 10 Nov, 2019 )
+- Fixed – Coverflow rotate issue.
+
+Version 2.0.6 ( 09 Nov, 2019 )
+- Added – Custom icon settings for overlay
+- Added – Email option as social media (meta)
+- Added – Header level.
+- Fixed – W3 validation error.
+- Fixed – Link option issue.
+
+Version 2.0.5 ( 27 Sep, 2019 )
+- Added – WPML configaration
+
+Version 2.0.4 ( 23 Sep, 2019 )
+- Fixed – spacing hover issues.
+- Fixed – Static method error.
+
+Version 2.0.3 ( 23 Sep, 2019 )
+- Fixed – Background image default settings.
+- Fixed – render_title() and render_subtitle() issue.
+
+Version 2.0.2 ( 21 Sep, 2019 )
+- Fixed – Arrow position issues in tablet & mobile.
+
+Version 2.0.1 ( 18 Sep, 2019 )
+- Fixed – equal height issue
+- Fixed – single item margin and padding issues
+
+Version 2.0 ( 17 Sep, 2019 )
+- Added – Social Media icons
+- Added – Rating icons.
+- Added – Custom spacing for each elements.
+- Added – Hover options for padding and margin
+- Added – Image position option
+- Added – Subtitle option
+- Added – Image filter option
+- Added – Title position
+- Added – Custom css class and id option in single item
+
+Version 1.0.41 ( 23 July, 2019 )
+- Fixed – Auto scroll effect transition issues.
+- Fixed – Empty markup on carousel item.
+
+Version 1.0.40 ( 05 July, 2019 )
+- Fixed – Button padding margin on hover.
+
+Version 1.0.39 ( 04 July, 2019 )
+- Fixed – Link click issues.
+- Fixed – Button margin and padding issues.
+
+Version 1.0.38 ( 13 Jun, 2019 )
+- Fixed – Divi-Builder plugin compatibility issue.
+
+Version 1.0.37 ( 26 May, 2019 )
+- Fixed – custom_padding issue.
+
+Version 1.0.36 ( 07 May, 2019 )
+- Fixed – Internet Explorer Issue.
+- Fixed – Transition issue
+- Fixed – Image Overlay Issue
+
+Version 1.0.35 ( 01 May, 2019 )
+- Added – Carousel item link option
+
+Version 1.0.34 ( 05 Apr, 2019 )
+- Fixed – Next/Prev button font-size and line-height
+
+Version 1.0.33 ( 03 Apr, 2019 )
+- Added – Line height option for next/prev buttons
+- Added – Item spacing responsive settings
+- Fixed – Item width ‘px’ issue
+
+Version 1.0.32 ( 28 Mar, 2019 )
+- Added – Specific selector to the next and prev button
+- Added – Module icon
+- Added – Smooth scroller effect
+- Added – Custom width control for each carousel item
+- Fixed – Empty image container
+
+Version 1.0.31 ( 16 Mar, 2019 )
+- Fixed – Observer method
+
+Version 1.0.30 ( 09 Mar, 2019 )
+- Added – Nav icon font select
+- Added – Nav icon font size
+
+Version 1.0.29 ( 08 Mar, 2019 )
+- Fixed – Deprecated functions and properties
+- Added – Title as carousel item label
+
+Version 1.0.28 ( 27 Feb, 2019 )
+- Fixed – Image Height Issue
+
+Version 1.0.27 ( 26 Feb, 2019 )
+- Added – Lazy loading feature
+- Fixed – Empty content container space
+
+Version 1.0.26 ( 20 Feb, 2019 )
+- Fixed – color issues of parent module
+
+Version 1.0.25 ( 18 Feb, 2019 )
+- Fixed – Coverflow effect
+- Fixed – Arrow on mobile device
+- Added – Inner Container Padding
+
+Version 1.0.24 ( 04 Feb, 2019 )
+- Removed – Default link option from parent module
+- Fixed – Arrow with fullwidth container
+
+Version 1.0.23 ( 23 Jan, 2019 )
+-Fixed – Coverflow rotate settings issue with ‘px’ value

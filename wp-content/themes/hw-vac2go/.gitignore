@@ -1,0 +1,33 @@
+# .gitignore — files Git should never track for this theme.
+# Edit this when you add a build step or tool that generates artifacts you
+# don't want committed (e.g. a new build/ output dir or a tool's cache).
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build output
+build/
+dist/
+*.min.css.map
+*.min.js.map
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*~
+.idea/
+.vscode/
+
+# Logs & env
+*.log
+.env
+.env.*
+
+# WordPress / local dev
+wp-cli.local.yml
+
+# Compiled translations are generated from the .pot — keep source, ignore builds
+languages/*.mo

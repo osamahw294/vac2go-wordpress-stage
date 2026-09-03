@@ -1,0 +1,34 @@
+/*
+Theme Name:        HW Vac2Go
+Theme URI:         https://wearehighwater.com/
+Description:       A production-grade Kadence child theme starter by Highwater. A clean, secure, well-documented base for building client sites on the Kadence parent theme. Rename per client before use (see README.md).
+Author:            Highwater
+Author URI:        https://wearehighwater.com/
+Template:          kadence
+Version:           1.0.0
+Requires at least: 6.5
+Tested up to:      6.7
+Requires PHP:      8.1
+License:           GNU General Public License v2 or later
+License URI:       http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:       hw-vac2go
+Tags:              child-theme, kadence, block-patterns, full-site-editing
+
+============================================================================
+HOW TO USE THIS STARTER
+============================================================================
+1. Install and ACTIVATE the free "Kadence" parent theme first (this is a
+   child of Kadence: "Template: kadence" above).
+2. Copy this whole folder and rename it to a UNIQUE, non-generic slug for
+   the client, e.g. "hw-acme". Never use a bare dictionary word — a slug
+   that collides with a wordpress.org theme can be auto-overwritten.
+3. Update the header above: "Theme Name" and "Text Domain" to match the
+   new slug, then update the version.
+4. Set brand colors/fonts/logo via theme.json tokens + the Kadence Global
+   Palette + the Site Editor / Customizer.
+
+IMPORTANT: Do NOT put real CSS in this file. Child styles live in
+assets/css/child.css (enqueued with cache-busting). This file is only the
+child-theme header WordPress reads to register the theme.
+============================================================================
+*/

@@ -1,0 +1,1 @@
+<?php get_header(); if(have_posts()):while(have_posts()):the_post();echo '<main style="max-width:1080px;margin:40px auto;padding:0 20px">';the_title('<h1>','</h1>');the_content();echo '</main>';endwhile;endif; get_footer();

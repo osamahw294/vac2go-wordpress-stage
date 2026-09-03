@@ -1,0 +1,48 @@
+# Copyright (C) 2026 Highwater
+# This file is distributed under the GNU General Public License v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: HW Kadence Starter 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wearehighwater.com/\n"
+"Last-Translator: Highwater <hello@wearehighwater.com>\n"
+"Language-Team: Highwater <hello@wearehighwater.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-08-03T00:00:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: Highwater hand-maintained\n"
+"X-Domain: hw-starter\n"
+"Language: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Note: This is a MINIMAL, hand-maintained POT. Regenerate the full catalog
+#. with WP-CLI after any string change:
+#.     wp i18n make-pot . languages/hw-starter.pot --domain=hw-starter
+#. The entries below are seeded examples, not an exhaustive list.
+
+#: inc/setup.php
+msgid "HW Feature (3:2)"
+msgstr ""
+
+#: inc/block-styles.php
+msgid "Outline Pill"
+msgstr ""
+
+#: inc/block-styles.php
+msgid "Card"
+msgstr ""
+
+#: inc/block-styles.php
+msgid "Rounded"
+msgstr ""
+
+#. translators: Block pattern category label.
+#: inc/patterns.php
+msgctxt "Block pattern category"
+msgid "Highwater"
+msgstr ""
+
+#: inc/patterns.php
+msgid "Reusable Highwater house patterns."
+msgstr ""
