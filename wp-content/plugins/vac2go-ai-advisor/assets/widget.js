@@ -50,7 +50,16 @@
 	// ---- CSRF nonce: fetched fresh at boot (never baked into cached HTML) ----
 	var restNonce = null;
 	function fetchNonce() {
-		return fetch(cfg.restUrl + '/nonce', { credentials: 'same-origin' })
+		// A REST nonce is bound to the current user, so a CACHED nonce response is
+		// worse than useless: a logged-in visitor handed a nonce minted for a logged-out
+		// one gets rest_cookie_invalid_nonce from WP core before our handler ever runs.
+		// The endpoint already sends no-store, so this defeats anything keyed on URL
+		// alone (an edge cache, a service worker, the bfcache).
+		return fetch(cfg.restUrl + '/nonce?_=' + Date.now(), {
+			credentials: 'same-origin',
+			cache: 'no-store',
+			headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' },
+		})
 			.then(function (r) { return r.json(); })
 			.then(function (d) { restNonce = d && d.nonce ? d.nonce : null; return restNonce; })
 			.catch(function () { return null; });

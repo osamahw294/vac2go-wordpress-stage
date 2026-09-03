@@ -1,7 +1,7 @@
 === Vac2Go AI Equipment Advisor ===
 Contributors: HighWater
 Requires PHP: 8.1
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPLv2 or later
 
 Front-end AI equipment advisor for Vac2Go. Recommends a truck category from a plain-
