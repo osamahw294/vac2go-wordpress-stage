@@ -45,6 +45,8 @@
 	var contactAsked = false;
 	var contactDone = sessionStorage.getItem('vaAdvisorContactDone') === '1';
 	var busy = false;
+	var restoring = false; // redrawing an earlier conversation; input is held until done
+	var snapOnReply = false; // pull back to the bottom when the pending answer starts
 	var assistantTurns = 0;
 
 	// ---- CSRF nonce: fetched fresh at boot (never baked into cached HTML) ----
@@ -179,15 +181,47 @@
 		if (!opened) {
 			opened = true;
 			addMessage('assistant', GREETING);
-			historyReady.then(function (d) {
+			restore();
+		}
+	}
+
+	/**
+	 * Redraw an earlier conversation, if this session has one.
+	 *
+	 * The input is held while this runs. Without that, a message sent during the fetch
+	 * would be painted BEFORE the restored turns, leaving the transcript out of order.
+	 * The indicator is delayed slightly so a fast restore, or a session with no history
+	 * at all, does not flash a spinner for one frame.
+	 */
+	function restore() {
+		restoring = true;
+		if (sendBtn) { sendBtn.disabled = true; }
+		if (input) { input.disabled = true; input.placeholder = 'Loading your conversation…'; }
+
+		var indicator = null;
+		var delay = setTimeout(function () { indicator = showTyping(); }, 180);
+
+		historyReady
+			.then(function (d) {
 				var turns = (d && d.turns) || [];
 				for (var i = 0; i < turns.length; i++) {
 					addMessage('user', turns[i].question);
 					addMessage('assistant', turns[i].answer);
 				}
 				if (turns.length) { scrollToBottom(true); }
+			})
+			.catch(function () { /* no history is not an error; leave the greeting */ })
+			.finally(function () {
+				clearTimeout(delay);
+				if (indicator && indicator.parentNode) { indicator.remove(); }
+				restoring = false;
+				if (sendBtn) { sendBtn.disabled = false; }
+				if (input) {
+					input.disabled = false;
+					input.placeholder = 'Describe your job…';
+					input.focus();
+				}
 			});
-		}
 	}
 
 	// Start over: a brand new session id, so the server has nothing to rebuild from and
@@ -208,6 +242,9 @@
 		contactCard.hidden = true;
 		contactCard.innerHTML = '';
 		stickBottom = true;
+		restoring = false;
+		if (sendBtn) { sendBtn.disabled = false; }
+		if (input) { input.disabled = false; input.placeholder = 'Describe your job…'; }
 
 		addMessage('assistant', GREETING);
 		input.focus();
@@ -252,6 +289,16 @@
 		}
 		lastTop = top;
 	}, { passive: true });
+
+	// Called the first time an answer paints. If the reader wandered up while waiting,
+	// bring them back once, so they see it start. Sticky rules resume immediately
+	// after, so scrolling up DURING the answer still detaches as normal.
+	function snapIfPending() {
+		if (snapOnReply) {
+			snapOnReply = false;
+			scrollToBottom(true);
+		}
+	}
 
 	// force: the reader just sent a message, so always take them to it.
 	function scrollToBottom(force) {
@@ -353,6 +400,7 @@
 				wrap = addMessage('assistant', '');
 				bubbleEl = wrap.querySelector('.va-bubble');
 				bubbleEl.innerHTML = '';
+				snapIfPending();
 			}
 		}
 
@@ -482,13 +530,15 @@
 				var reply =
 					(data && data.reply) ||
 					"Sorry, I couldn't get a response. Please reach a Vac2Go rep at " + CONTACT_URL + ".";
+				snapIfPending();
 				addMessage('assistant', reply);
 			});
 	}
 
 	function send(message) {
-		if (busy || !message.trim()) { return; }
+		if (busy || restoring || !message.trim()) { return; }
 		busy = true;
+		snapOnReply = true;
 		if (sendBtn) { sendBtn.disabled = true; }
 		addMessage('user', message);
 		var typing = showTyping();
@@ -527,6 +577,7 @@
 			})
 			.finally(function () {
 				busy = false;
+				snapOnReply = false;
 				if (sendBtn) { sendBtn.disabled = false; }
 				maybeAskContact();
 			});
