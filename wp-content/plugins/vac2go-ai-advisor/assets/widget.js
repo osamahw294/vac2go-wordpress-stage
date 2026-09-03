@@ -176,6 +176,27 @@
 	launcher.addEventListener('click', openPanel);
 	closeBtn.addEventListener('click', closePanel);
 
+	// ---- sticky scroll ----
+	// Follow the newest text only while the reader is already at the bottom. The
+	// moment they scroll up to re-read something, stop yanking them back down; when
+	// they return to the bottom, start following again. Same behaviour as ChatGPT.
+	var stickBottom = true;
+	var STICK_SLACK = 48; // px from the bottom that still counts as "at the bottom"
+
+	function atBottom() {
+		return messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight <= STICK_SLACK;
+	}
+
+	messagesEl.addEventListener('scroll', function () {
+		stickBottom = atBottom();
+	}, { passive: true });
+
+	// force: the reader just sent a message, so always take them to it.
+	function scrollToBottom(force) {
+		if (force) { stickBottom = true; }
+		if (stickBottom) { messagesEl.scrollTop = messagesEl.scrollHeight; }
+	}
+
 	function escapeHtml(s) {
 		return String(s).replace(/[&<>"']/g, function (c) {
 			return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -196,7 +217,7 @@
 		el.className = 'va-msg va-msg-' + role;
 		el.innerHTML = '<div class="va-bubble">' + renderText(text) + '</div>';
 		messagesEl.appendChild(el);
-		messagesEl.scrollTop = messagesEl.scrollHeight;
+		scrollToBottom(role === 'user');
 		if (role === 'assistant') { assistantTurns++; }
 		return el;
 	}
@@ -206,7 +227,7 @@
 		el.className = 'va-msg va-msg-assistant va-typing';
 		el.innerHTML = '<div class="va-bubble"><span></span><span></span><span></span></div>';
 		messagesEl.appendChild(el);
-		messagesEl.scrollTop = messagesEl.scrollHeight;
+		scrollToBottom();
 		return el;
 	}
 
@@ -281,7 +302,7 @@
 					bubbleEl.appendChild(s);
 				}
 			}
-			messagesEl.scrollTop = messagesEl.scrollHeight;
+			scrollToBottom();
 		}
 
 		// Re-render once at the end so URLs become real links. Doing this per frame
@@ -289,7 +310,7 @@
 		function finalize() {
 			if (bubbleEl) {
 				bubbleEl.innerHTML = renderText(full);
-				messagesEl.scrollTop = messagesEl.scrollHeight;
+				scrollToBottom();
 			}
 		}
 
@@ -336,7 +357,7 @@
 				gotAny = true;
 				ensureBubble();
 				bubbleEl.innerHTML = renderText(full);
-				messagesEl.scrollTop = messagesEl.scrollHeight;
+				scrollToBottom();
 			}
 		}
 
@@ -502,7 +523,7 @@
 			'<div class="va-contact-status"></div>' +
 			'</div>';
 		contactCard.hidden = false;
-		messagesEl.scrollTop = messagesEl.scrollHeight;
+		scrollToBottom(true);
 
 		contactCard.querySelector('.va-c-skip').addEventListener('click', function () {
 			finishContact();

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Vac2Go AI Equipment Advisor
  * Description: Front-end AI equipment advisor for Vac2Go. Recommends a truck category from a plain-language job description and answers GapVax HV-57 spec questions, grounded in a fixed knowledge base with server-side guardrails, an output filter pipeline, full Q&A logging, and a human review/correction workflow.
- * Version: 2.1.7
+ * Version: 2.1.9
  * Author: HighWater
  * License: GPL-2.0-or-later
  * Requires PHP: 8.1
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'VA_ADVISOR_VERSION', '2.1.7' );
+define( 'VA_ADVISOR_VERSION', '2.1.9' );
 define( 'VA_ADVISOR_FILE', __FILE__ );
 define( 'VA_ADVISOR_DIR', plugin_dir_path( __FILE__ ) );
 define( 'VA_ADVISOR_URL', plugin_dir_url( __FILE__ ) );
@@ -120,7 +120,7 @@ function va_advisor_print_bootstrap() {
 	#va-boot-launcher{position:fixed;right:20px;bottom:20px;z-index:999999;display:inline-flex;align-items:center;gap:10px;padding:12px 18px;background:#e01f30;color:#fff;border:none;border-radius:4px;box-shadow:0 6px 20px rgba(0,0,0,.22);cursor:pointer;font-family:Poppins,"Open Sans",Helvetica,Arial,sans-serif;font-size:15px;font-weight:600}
 	#va-boot-launcher:hover{background:#b8121f}
 	#va-boot-launcher .va-boot-icon{position:relative;display:inline-flex;align-items:center;flex:none}
-	#va-boot-launcher .va-boot-dot{position:absolute;top:-3px;right:-3px;width:9px;height:9px;background:#57e389;border-radius:50%;animation:va-boot-pulse 2s infinite}
+	#va-boot-launcher .va-boot-dot{position:absolute;top:-4.5px;right:-4.5px;width:9px;height:9px;background:#57e389;border-radius:50%;animation:va-boot-pulse 2s infinite}
 	@keyframes va-boot-pulse{0%{box-shadow:0 0 0 0 rgba(87,227,137,.7)}70%{box-shadow:0 0 0 8px rgba(87,227,137,0)}100%{box-shadow:0 0 0 0 rgba(87,227,137,0)}}
 	/* Mobile: icon only, larger tap target. The label costs thumb space and the icon
 	   plus the live dot already says what it is. */
@@ -128,6 +128,7 @@ function va_advisor_print_bootstrap() {
 	#va-boot-launcher{width:60px;height:60px;padding:0;border-radius:50%;justify-content:center;gap:0;right:16px;bottom:16px}
 	#va-boot-launcher .va-boot-label{display:none}
 	#va-boot-launcher svg{width:26px;height:26px}
+	#va-boot-launcher .va-boot-dot{top:-3px;right:-3px}
 	}
 	@media (prefers-reduced-motion:reduce){#va-boot-launcher .va-boot-dot{animation:none}}
 	</style>
