@@ -1,7 +1,7 @@
 === Vac2Go AI Equipment Advisor ===
 Contributors: HighWater
 Requires PHP: 8.1
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 License: GPLv2 or later
 
 Front-end AI equipment advisor for Vac2Go. Recommends a truck category from a plain-
@@ -44,35 +44,34 @@ endpoint (with the typing indicator) when the endpoint returns 501, when the res
 is not text/event-stream, or when the stream yields no content. The fallback reuses the
 same request_id, so the idempotency window prevents a second model call.
 
-If the host buffers the response despite Content-Type: text/event-stream,
-X-Accel-Buffering: no, X-LiteSpeed-Cache-Control: no-cache and a 2KB comment pad, turn
-the setting off; behaviour then matches the pre-2.1 buffered build exactly.
+Flush padding. Some hosts ignore X-Accel-Buffering and release the response only when
+their own buffer fills, which collapses streaming into a single lump at the end. The
+fix is to pad every SSE event with an inert comment line (clients ignore lines starting
+with ':') so each message crosses that threshold and forces a real flush. Setting:
+Settings -> Streaming -> Flush padding, default 4096 bytes. Set 0 on a host that
+streams correctly by itself.
 
-STATUS ON NEXCESS STAGING (b5205c85ce.nxcli.io), measured 2026-09-03: DISABLED.
-Nexcess's nginx buffers the whole response and ignores X-Accel-Buffering, so streaming
-delivers no benefit there. Do not re-enable without re-testing; do not "fix" it in this
-plugin, the buffering is not in this code.
+NEXCESS STAGING (b5205c85ce.nxcli.io), measured 2026-09-03.
+That host buffers by SIZE at roughly 4KB and ignores X-Accel-Buffering. Evidence, from
+a bare PHP file with no WordPress involved:
 
-Evidence. A bare PHP file (no WordPress, no plugin) sending one SSE tick per second
-with X-Accel-Buffering: no and an explicit flush() per tick:
+    unpadded, one tick per second:
+      script wrote:  10:11:24 :25 :26 :27 :28
+      client got:    10:11:29   <- all five at once, after the script exited
 
-    script wrote:  08:32:20 :21 :22 :23 :24 :25 :26 :27   (one per second)
-    client got:    08:32:28  <- all nine frames at once, after the script exited
+    padded to 8KB per tick:
+      script wrote:  10:20:57 :58 :59 :21:00 :01
+      client got:    10:20:57 :58 :59 :21:00 :01   <- real time
 
-Through the plugin, the 2KB pad printed at request start did not reach the client until
-15.4s, and the first flush carried 3,514 bytes: buffering is size-driven, not time-driven.
-First byte landed at 15.4s of a 19.2s answer.
+Identical over the public URL and over http://127.0.0.1 with a Host header, which rules
+out any CDN or edge layer and places the buffering on the server itself. Also ruled out:
+PHP (output_buffering=0, implicit_flush=On, zlib.output_compression=Off), WordPress,
+this plugin, and LiteSpeed (Server: nginx, X-Cache-Handler: cache-enabler-engine).
 
-Ruled out as causes: PHP (output_buffering=0, implicit_flush=On,
-zlib.output_compression=Off), WordPress, this plugin (it emits a separate SSE frame per
-sentence, verified), and LiteSpeed (not the web server here; Server: nginx,
-X-Cache-Handler: cache-enabler-engine).
-
-To fix properly, ask Nexcess to disable proxy/FastCGI buffering for
-/wp-json/vac2go/v1/chat/stream, then set va_streaming back to 1 and re-run
-tests/streaming.spec.js. A workaround exists (pad every SSE event to ~4KB to force a
-flush, which works because buffering is size-driven) but it wastes roughly 30KB per
-reply to work around someone else's proxy configuration and is deliberately not shipped.
+Padding costs roughly 4KB per sentence of answer, so tens of KB per reply. That is the
+price of streaming on a host whose nginx config we cannot change. The cleaner fix is to
+have the host disable response buffering for /wp-json/vac2go/v1/chat/stream, after
+which va_stream_pad can go to 0.
 
 == Data retention ==
 Every Q&A turn is logged to {prefix}va_advisor_log indefinitely. There is NO automated

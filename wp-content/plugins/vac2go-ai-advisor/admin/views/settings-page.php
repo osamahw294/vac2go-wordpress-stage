@@ -58,6 +58,18 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 			<?php endif; ?>
 		</p>
 
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><label for="va_stream_pad">Flush padding (bytes per message)</label></th>
+				<td>
+					<input name="va_stream_pad" id="va_stream_pad" type="number" min="0" max="65536" step="256" value="<?php echo esc_attr( get_option( 'va_stream_pad', 4096 ) ); ?>" class="small-text">
+					<span class="description">
+						Some hosts ignore <code>X-Accel-Buffering</code> and release the response only once their own buffer fills, which collapses streaming into one lump at the end. Padding each message past that threshold forces a real flush. <strong>4096</strong> is correct for this server (measured: it buffers at roughly 4KB). Raise it if streaming still arrives in bursts; set <strong>0</strong> on a host that streams correctly by itself, to save the bandwidth.
+					</span>
+				</td>
+			</tr>
+		</table>
+
 		<h2>System prompt (knowledge base)</h2>
 		<p class="description">The full knowledge base and guardrails sent to the model on every request. An internal integrity marker is appended automatically at runtime; you do not need to include it here.</p>
 		<textarea name="va_system_prompt" rows="24" class="large-text code"><?php echo esc_textarea( get_option( 'va_system_prompt', VA_Knowledge::default_system_prompt() ) ); ?></textarea>

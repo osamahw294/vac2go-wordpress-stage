@@ -30,6 +30,20 @@ class VA_Stream {
 	/** If no sentence boundary appears within N characters, release anyway. */
 	const MAX_HOLD = 240;
 
+	/**
+	 * Bytes of SSE comment padding written after every event.
+	 *
+	 * Some stacks (Nexcess's nginx among them) ignore X-Accel-Buffering and buffer the
+	 * response by SIZE, flushing only once their buffer fills. Measured on that host:
+	 * the first flush carried 3,514 bytes, i.e. a ~4KB buffer. Padding each event past
+	 * that threshold forces a real-time flush, which is the difference between text
+	 * appearing as it is written and the whole answer landing at once, 19s in.
+	 *
+	 * Costs roughly this many bytes per sentence of answer. Set va_stream_pad to 0 on a
+	 * host that streams properly on its own.
+	 */
+	const PAD_DEFAULT = 4096;
+
 	/** Cumulative raw text released to the browser so far. */
 	private static $emitted_raw = '';
 
@@ -49,6 +63,24 @@ class VA_Stream {
 	 */
 	public static function is_available() {
 		return function_exists( 'curl_init' ) && (bool) get_option( 'va_streaming', 1 );
+	}
+
+	/**
+	 * Padding bytes per event; 0 disables padding entirely.
+	 */
+	private static function pad_bytes() {
+		$pad = get_option( 'va_stream_pad', self::PAD_DEFAULT );
+		$pad = is_numeric( $pad ) ? (int) $pad : self::PAD_DEFAULT;
+		return max( 0, min( 65536, $pad ) );
+	}
+
+	/**
+	 * An SSE comment line. Clients ignore any line starting with ':', so this is inert
+	 * payload whose only job is to push the proxy's buffer over its flush threshold.
+	 */
+	private static function padding() {
+		$pad = self::pad_bytes();
+		return $pad > 0 ? ': ' . str_repeat( '.', $pad ) . "\n\n" : '';
 	}
 
 	/**
@@ -196,14 +228,18 @@ class VA_Stream {
 		while ( ob_get_level() > 0 ) {
 			ob_end_flush();
 		}
-		// A 2KB comment pad defeats proxies that hold small responses.
-		echo ': ' . str_repeat( ' ', 2048 ) . "\n\n";
+		// Pad immediately so the connection is established and any size-driven proxy
+		// buffer is already primed before the first token arrives.
+		echo self::padding();
 		self::flush_out();
 	}
 
 	private static function send( $event, array $data ) {
 		echo 'event: ' . $event . "\n";
 		echo 'data: ' . wp_json_encode( $data ) . "\n\n";
+		// Padding must follow EVERY event: on a size-buffering proxy an unpadded event
+		// simply sits in the buffer until something else fills it.
+		echo self::padding();
 		self::flush_out();
 	}
 
