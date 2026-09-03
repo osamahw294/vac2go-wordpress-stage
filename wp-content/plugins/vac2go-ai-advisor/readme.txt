@@ -48,6 +48,32 @@ If the host buffers the response despite Content-Type: text/event-stream,
 X-Accel-Buffering: no, X-LiteSpeed-Cache-Control: no-cache and a 2KB comment pad, turn
 the setting off; behaviour then matches the pre-2.1 buffered build exactly.
 
+STATUS ON NEXCESS STAGING (b5205c85ce.nxcli.io), measured 2026-09-03: DISABLED.
+Nexcess's nginx buffers the whole response and ignores X-Accel-Buffering, so streaming
+delivers no benefit there. Do not re-enable without re-testing; do not "fix" it in this
+plugin, the buffering is not in this code.
+
+Evidence. A bare PHP file (no WordPress, no plugin) sending one SSE tick per second
+with X-Accel-Buffering: no and an explicit flush() per tick:
+
+    script wrote:  08:32:20 :21 :22 :23 :24 :25 :26 :27   (one per second)
+    client got:    08:32:28  <- all nine frames at once, after the script exited
+
+Through the plugin, the 2KB pad printed at request start did not reach the client until
+15.4s, and the first flush carried 3,514 bytes: buffering is size-driven, not time-driven.
+First byte landed at 15.4s of a 19.2s answer.
+
+Ruled out as causes: PHP (output_buffering=0, implicit_flush=On,
+zlib.output_compression=Off), WordPress, this plugin (it emits a separate SSE frame per
+sentence, verified), and LiteSpeed (not the web server here; Server: nginx,
+X-Cache-Handler: cache-enabler-engine).
+
+To fix properly, ask Nexcess to disable proxy/FastCGI buffering for
+/wp-json/vac2go/v1/chat/stream, then set va_streaming back to 1 and re-run
+tests/streaming.spec.js. A workaround exists (pad every SSE event to ~4KB to force a
+flush, which works because buffering is size-driven) but it wastes roughly 30KB per
+reply to work around someone else's proxy configuration and is deliberately not shipped.
+
 == Data retention ==
 Every Q&A turn is logged to {prefix}va_advisor_log indefinitely. There is NO automated
 retention or purge job in this release. Deletion requests are handled manually: Review
