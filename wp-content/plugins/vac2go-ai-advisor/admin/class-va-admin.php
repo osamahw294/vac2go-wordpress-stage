@@ -77,6 +77,8 @@ class VA_Admin {
 		register_setting( 'va_advisor_settings', 'va_rate_ip_hourly', $int );
 		register_setting( 'va_advisor_settings', 'va_rate_session_turns', $int );
 		register_setting( 'va_advisor_settings', 'va_global_minute', $int );
+		register_setting( 'va_advisor_settings', 'va_global_daily', $int );
+		register_setting( 'va_advisor_settings', 'va_streaming', $int );
 		register_setting( 'va_advisor_settings', 'va_daily_token_ceiling', $int );
 		register_setting( 'va_advisor_settings', 'va_price_in_per_m', array( 'type' => 'number', 'sanitize_callback' => 'floatval' ) );
 		register_setting( 'va_advisor_settings', 'va_price_out_per_m', array( 'type' => 'number', 'sanitize_callback' => 'floatval' ) );

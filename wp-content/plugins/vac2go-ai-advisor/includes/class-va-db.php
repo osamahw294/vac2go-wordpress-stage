@@ -76,6 +76,8 @@ class VA_DB {
 			'va_rate_ip_minute'     => 6,
 			'va_rate_session_turns' => 40,
 			'va_global_minute'      => 60,
+			'va_global_daily'       => 5000,
+			'va_streaming'          => 1,
 			'va_daily_token_ceiling'=> 2000000,
 			'va_price_in_per_m'     => 3.0,
 			'va_price_out_per_m'    => 15.0,

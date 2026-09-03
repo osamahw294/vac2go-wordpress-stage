@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Vac2Go AI Equipment Advisor
  * Description: Front-end AI equipment advisor for Vac2Go. Recommends a truck category from a plain-language job description and answers GapVax HV-57 spec questions, grounded in a fixed knowledge base with server-side guardrails, an output filter pipeline, full Q&A logging, and a human review/correction workflow.
- * Version: 2.0.0
+ * Version: 2.1.0
  * Author: HighWater
  * License: GPL-2.0-or-later
  * Requires PHP: 8.1
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'VA_ADVISOR_VERSION', '2.0.0' );
+define( 'VA_ADVISOR_VERSION', '2.1.0' );
 define( 'VA_ADVISOR_FILE', __FILE__ );
 define( 'VA_ADVISOR_DIR', plugin_dir_path( __FILE__ ) );
 define( 'VA_ADVISOR_URL', plugin_dir_url( __FILE__ ) );
@@ -32,6 +32,7 @@ require_once VA_ADVISOR_DIR . 'includes/class-va-knowledge.php';
 require_once VA_ADVISOR_DIR . 'includes/class-va-filter.php';
 require_once VA_ADVISOR_DIR . 'includes/class-va-ratelimit.php';
 require_once VA_ADVISOR_DIR . 'includes/class-va-rest.php';
+require_once VA_ADVISOR_DIR . 'includes/class-va-stream.php';
 
 if ( is_admin() ) {
 	require_once VA_ADVISOR_DIR . 'admin/class-va-admin.php';
@@ -60,6 +61,11 @@ add_filter(
 register_activation_hook( __FILE__, array( 'VA_DB', 'activate' ) );
 register_deactivation_hook( __FILE__, 'va_advisor_deactivate' );
 
+/**
+ * Nothing is scheduled by this plugin (the daily counters are date-keyed option rows
+ * that expire on their own), so deactivation only clears a legacy cron hook that
+ * earlier builds registered. Harmless when it was never scheduled.
+ */
 function va_advisor_deactivate() {
 	wp_clear_scheduled_hook( 'va_advisor_daily_reset' );
 }
@@ -103,6 +109,7 @@ function va_advisor_print_bootstrap() {
 
 	$cfg = array(
 		'restUrl'     => esc_url_raw( rest_url( 'vac2go/v1' ) ),
+		'streaming'   => VA_Stream::is_available(),
 		'captureMode' => VA_Knowledge::get_capture_mode(),
 		'contactUrl'  => 'https://vac2go.com/contact/',
 		'cssUrl'      => VA_ADVISOR_URL . 'assets/widget.css?ver=' . VA_ADVISOR_VERSION,

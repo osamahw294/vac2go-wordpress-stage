@@ -137,6 +137,55 @@ class VA_RateLimit {
 			self::trip_breaker( 'global_minute_exceeded (' . $count . '/' . $limit . ')', 5 * MINUTE_IN_SECONDS );
 			return false;
 		}
+
+		return self::check_global_daily();
+	}
+
+	/**
+	 * Site-wide per-DAY request threshold (S6.3). The token ceiling bounds spend, but
+	 * a flood of cheap prescreen-only requests never reaches the model and so never
+	 * moves the token counter; this layer stops that separately. Same atomic-option
+	 * counter as the per-minute slot, keyed by UTC date.
+	 */
+	private static function check_global_daily() {
+		global $wpdb;
+
+		$limit = (int) get_option( 'va_global_daily', 5000 );
+		if ( $limit <= 0 ) {
+			return true;
+		}
+
+		$slot = 'va_gd_' . gmdate( 'Ymd' );
+		$wpdb->query(
+			$wpdb->prepare(
+				"INSERT INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, '0', 'no')
+				 ON DUPLICATE KEY UPDATE option_name = option_name",
+				$slot
+			)
+		);
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->options} SET option_value = option_value + 1 WHERE option_name = %s",
+				$slot
+			)
+		);
+		$count = (int) $wpdb->get_var(
+			$wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name = %s", $slot )
+		);
+
+		// Drop day-slot rows older than a week.
+		if ( 1 === wp_rand( 1, 50 ) ) {
+			$wpdb->query(
+				"DELETE FROM {$wpdb->options} WHERE option_name LIKE 'va\\_gd\\_%' AND option_name < 'va_gd_" . gmdate( 'Ymd', time() - WEEK_IN_SECONDS ) . "'"
+			);
+		}
+
+		if ( $count > $limit ) {
+			// Cool down until the next UTC midnight, so the day's flood stays stopped.
+			$midnight = strtotime( 'tomorrow midnight UTC' );
+			self::trip_breaker( 'global_daily_exceeded (' . $count . '/' . $limit . ')', max( 60, $midnight - time() ) );
+			return false;
+		}
 		return true;
 	}
 

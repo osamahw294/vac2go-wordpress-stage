@@ -45,6 +45,19 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 			<strong>Advisor enabled.</strong> Unchecking this instantly disables the chat endpoint; the widget shows the contact link instead.
 		</label>
 
+		<h2>Streaming</h2>
+		<input type="hidden" name="va_streaming" value="0">
+		<label>
+			<input type="checkbox" name="va_streaming" value="1" <?php checked( 1, (int) get_option( 'va_streaming', 1 ) ); ?>>
+			<strong>Stream replies token by token.</strong> The answer appears as it is written instead of arriving all at once.
+		</label>
+		<p class="description">
+			Text is still held back and passed through the deterministic filter stages before any of it is shown, so nothing unfiltered can reach a customer mid-stream. Turn this off if the host buffers the response (the widget then falls back to the buffered endpoint with a typing indicator).
+			<?php if ( ! function_exists( 'curl_init' ) ) : ?>
+				<br><strong>cURL is not available on this server, so streaming cannot run regardless of this setting.</strong>
+			<?php endif; ?>
+		</p>
+
 		<h2>System prompt (knowledge base)</h2>
 		<p class="description">The full knowledge base and guardrails sent to the model on every request. An internal integrity marker is appended automatically at runtime; you do not need to include it here.</p>
 		<textarea name="va_system_prompt" rows="24" class="large-text code"><?php echo esc_textarea( get_option( 'va_system_prompt', VA_Knowledge::default_system_prompt() ) ); ?></textarea>
@@ -81,6 +94,10 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 			<tr>
 				<th scope="row"><label for="va_global_minute">Global requests / minute (circuit breaker)</label></th>
 				<td><input name="va_global_minute" id="va_global_minute" type="number" min="0" value="<?php echo esc_attr( get_option( 'va_global_minute', 60 ) ); ?>" class="small-text"> <span class="description">Exact (atomic DB counter). Tripping enforces a 5-minute cooldown and emails the admin.</span></td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="va_global_daily">Global requests / day (circuit breaker)</label></th>
+				<td><input name="va_global_daily" id="va_global_daily" type="number" min="0" value="<?php echo esc_attr( get_option( 'va_global_daily', 5000 ) ); ?>" class="regular-text"> <span class="description">Counts every request, including prescreen-only ones that never reach the model and so never move the token counter. Tripping holds until UTC midnight. 0 = off.</span></td>
 			</tr>
 			<tr>
 				<th scope="row"><label for="va_daily_token_ceiling">Daily token ceiling (all token types)</label></th>

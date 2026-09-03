@@ -53,6 +53,17 @@ class VA_REST {
 			)
 		);
 
+		// S5: streaming twin of /chat. Shares every gate via VA_REST::prepare_turn().
+		register_rest_route(
+			self::NS,
+			'/chat/stream',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( 'VA_Stream', 'handle' ),
+				'permission_callback' => array( __CLASS__, 'public_permission' ),
+			)
+		);
+
 		register_rest_route(
 			self::NS,
 			'/contact',
@@ -107,7 +118,19 @@ class VA_REST {
 	/**
 	 * POST /chat
 	 */
-	public static function handle_chat( WP_REST_Request $request ) {
+	/**
+	 * Shared pre-flight for BOTH the buffered and the streaming chat paths (S1, S6).
+	 *
+	 * Runs validation, the kill switch, idempotency, bot friction, every rate layer,
+	 * the pre-screen, and the server-side history rebuild. Both handlers must route
+	 * through this so the streaming path can never drift from the buffered one.
+	 *
+	 * Every early exit is returned as a normal WP_REST_Response carrying a 'reply',
+	 * so the streaming handler can re-emit it as a single SSE frame.
+	 *
+	 * @return array{response:WP_REST_Response}|array{ctx:array,messages:array}
+	 */
+	public static function prepare_turn( WP_REST_Request $request ) {
 		$params     = $request->get_json_params();
 		$session_id = isset( $params['session_id'] ) ? sanitize_text_field( $params['session_id'] ) : '';
 		$request_id = isset( $params['request_id'] ) ? sanitize_text_field( $params['request_id'] ) : '';
@@ -117,17 +140,17 @@ class VA_REST {
 
 		// --- Validation (S1c) ---
 		if ( ! preg_match( self::UUID_V4, $session_id ) ) {
-			return self::error_response( 'Invalid session.', 400 );
+			return array( 'response' => self::error_response( 'Invalid session.', 400 ) );
 		}
 		if ( '' !== $request_id && ! preg_match( self::UUID_V4, $request_id ) ) {
-			return self::error_response( 'Invalid request id.', 400 );
+			return array( 'response' => self::error_response( 'Invalid request id.', 400 ) );
 		}
 		$message = VA_Text::normalize( sanitize_textarea_field( $message ) );
 		if ( '' === trim( $message ) ) {
-			return self::error_response( 'Empty message.', 400 );
+			return array( 'response' => self::error_response( 'Empty message.', 400 ) );
 		}
 		if ( mb_strlen( $message ) > self::MAX_MESSAGE_CH || strlen( $message ) > self::MAX_MESSAGE_B ) {
-			return self::error_response( 'Message too long.', 400 );
+			return array( 'response' => self::error_response( 'Message too long.', 400 ) );
 		}
 
 		// Client-supplied history is ignored entirely; note when one was sent.
@@ -136,27 +159,38 @@ class VA_REST {
 		$ip_hash = VA_RateLimit::ip_hash();
 		$flags   = array( 'client_history_ignored' => $client_history_ignored );
 
+		$ctx = array(
+			'session_id' => $session_id,
+			'request_id' => $request_id,
+			'message'    => $message,
+			'ip_hash'    => $ip_hash,
+			'flags'      => $flags,
+			'request'    => $request,
+		);
+
 		// --- Kill switch / configuration ---
 		if ( ! self::is_enabled() ) {
-			return self::graceful_unavailable( $session_id, $request_id, $message, 'disabled', $ip_hash, $request, $flags );
+			return array( 'response' => self::graceful_unavailable( $session_id, $request_id, $message, 'disabled', $ip_hash, $request, $flags ) );
 		}
 		if ( ! self::is_configured() ) {
-			return self::graceful_unavailable( $session_id, $request_id, $message, 'no_key', $ip_hash, $request, $flags );
+			return array( 'response' => self::graceful_unavailable( $session_id, $request_id, $message, 'no_key', $ip_hash, $request, $flags ) );
 		}
 
 		// --- Idempotency (S1b): same request replayed within the window returns the
 		// stored answer without a new model call or a new row. ---
 		$dup = VA_DB::find_recent_request( $session_id, $request_id, self::IDEMPOTENCY_SECS );
 		if ( $dup ) {
-			return self::nocache(
-				new WP_REST_Response(
-					array(
-						'reply'    => $dup['answer'],
-						'filtered' => (bool) $dup['was_filtered'],
-						'replayed' => true,
-					),
-					200
-				)
+			return array(
+				'response' => self::nocache(
+					new WP_REST_Response(
+						array(
+							'reply'    => $dup['answer'],
+							'filtered' => (bool) $dup['was_filtered'],
+							'replayed' => true,
+						),
+						200
+					)
+				),
 			);
 		}
 
@@ -166,51 +200,73 @@ class VA_REST {
 		if ( $is_first_turn ) {
 			if ( '' !== $honeypot || ( $elapsed_ms >= 0 && $elapsed_ms < 2000 ) ) {
 				self::log_turn( $session_id, $request_id, $message, self::soft_wait_message(), null, 0, null, 'bot_friction', null, $ip_hash, $request, $flags );
-				return self::nocache(
-					new WP_REST_Response(
-						array( 'reply' => self::soft_wait_message(), 'filtered' => false ),
-						200
-					)
+				return array(
+					'response' => self::nocache(
+						new WP_REST_Response(
+							array( 'reply' => self::soft_wait_message(), 'filtered' => false ),
+							200
+						)
+					),
 				);
 			}
 		}
 
 		// --- Rate layers (S6) ---
 		if ( 'over' === VA_RateLimit::daily_budget_state() ) {
-			return self::graceful_unavailable( $session_id, $request_id, $message, 'daily_ceiling', $ip_hash, $request, $flags );
+			return array( 'response' => self::graceful_unavailable( $session_id, $request_id, $message, 'daily_ceiling', $ip_hash, $request, $flags ) );
 		}
 		if ( ! VA_RateLimit::check_global() ) {
-			return self::graceful_unavailable( $session_id, $request_id, $message, 'breaker', $ip_hash, $request, $flags );
+			return array( 'response' => self::graceful_unavailable( $session_id, $request_id, $message, 'breaker', $ip_hash, $request, $flags ) );
 		}
 		if ( ! VA_RateLimit::check_session( $session_id ) ) {
-			return self::limited_response( "We've reached the length limit for this conversation. For anything further, please reach a Vac2Go rep at https://vac2go.com/contact/." );
+			return array( 'response' => self::limited_response( "We've reached the length limit for this conversation. For anything further, please reach a Vac2Go rep at https://vac2go.com/contact/." ) );
 		}
 		if ( ! VA_RateLimit::check_ip( $ip_hash ) ) {
-			return self::limited_response( "You've sent a lot of messages in a short time. Please pause a moment, or reach a Vac2Go rep directly at https://vac2go.com/contact/." );
+			return array( 'response' => self::limited_response( "You've sent a lot of messages in a short time. Please pause a moment, or reach a Vac2Go rep directly at https://vac2go.com/contact/." ) );
 		}
 
 		// --- Pre-screen before Fable (S6.5) ---
 		$scripted = self::prescreen( $message );
 		if ( null !== $scripted ) {
 			self::log_turn( $session_id, $request_id, $message, $scripted['reply'], null, 0, 'prescreen', null, null, $ip_hash, $request, $flags );
-			return self::nocache(
-				new WP_REST_Response( array( 'reply' => $scripted['reply'], 'filtered' => false ), 200 )
+			return array(
+				'response' => self::nocache(
+					new WP_REST_Response( array( 'reply' => $scripted['reply'], 'filtered' => false ), 200 )
+				),
 			);
 		}
 
 		// --- Server-side conversation (S1a): rebuilt from the log, never the client. ---
-		$history  = VA_DB::get_history( $session_id, self::HISTORY_TURNS, self::HISTORY_CHARS );
-		$messages = $history['messages'];
+		$history    = VA_DB::get_history( $session_id, self::HISTORY_TURNS, self::HISTORY_CHARS );
+		$messages   = $history['messages'];
 		$messages[] = array( 'role' => 'user', 'content' => $message );
 		if ( $history['truncated'] ) {
 			$flags['history_truncated'] = 1;
+			$ctx['flags']               = $flags;
 		}
 
-		// Temporary S1a verification hook: logs the exact messages array. Enabled only
-		// when the VA_DEBUG_MSGS constant is defined; removed after verification.
-		if ( defined( 'VA_DEBUG_MSGS' ) && VA_DEBUG_MSGS ) {
-			error_log( '[va-debug-messages] ' . wp_json_encode( $messages ) );
+		return array(
+			'ctx'      => $ctx,
+			'messages' => $messages,
+		);
+	}
+
+	/**
+	 * POST /chat (buffered). The streaming twin lives in VA_Stream.
+	 */
+	public static function handle_chat( WP_REST_Request $request ) {
+		$prep = self::prepare_turn( $request );
+		if ( isset( $prep['response'] ) ) {
+			return $prep['response'];
 		}
+
+		$ctx        = $prep['ctx'];
+		$messages   = $prep['messages'];
+		$session_id = $ctx['session_id'];
+		$request_id = $ctx['request_id'];
+		$message    = $ctx['message'];
+		$ip_hash    = $ctx['ip_hash'];
+		$flags      = $ctx['flags'];
 
 		// --- Model call with retry + error taxonomy (S7) ---
 		$api = self::call_anthropic_with_retry( $messages );
@@ -475,7 +531,7 @@ class VA_REST {
 	/**
 	 * Insert a log row; never let a logging failure break the chat.
 	 */
-	private static function log_turn( $session_id, $request_id, $question, $answer, $raw_answer, $was_filtered, $stage, $error_type, $usage, $ip_hash, WP_REST_Request $request, array $flags = array() ) {
+	public static function log_turn( $session_id, $request_id, $question, $answer, $raw_answer, $was_filtered, $stage, $error_type, $usage, $ip_hash, WP_REST_Request $request, array $flags = array() ) {
 		$ua = $request->get_header( 'User-Agent' );
 		$ua = $ua ? substr( sanitize_text_field( $ua ), 0, 255 ) : null;
 

@@ -196,6 +196,103 @@
 		});
 	}
 
+	// ---- streaming (S5) ----
+	// The server holds text back until the deterministic filter stages have passed on
+	// it, so anything that arrives here is already safe to paint. A 'replace' event
+	// means a later stage (or the end-of-answer judge) rejected the whole answer.
+	var STREAM_OK = !!cfg.streaming &&
+		typeof TextDecoder !== 'undefined' &&
+		typeof ReadableStream !== 'undefined';
+
+	function streamTurn(payload, typing) {
+		return fetch(cfg.restUrl + '/chat/stream', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': restNonce || '' },
+			credentials: 'same-origin',
+			body: JSON.stringify(payload),
+		}).then(function (r) {
+			if (r.status === 403) { return { retryNonce: true }; }
+			// 501 = streaming disabled or cURL missing. Anything non-SSE means a proxy
+			// or the host rewrote the response; fall back rather than guess.
+			if (!r.ok || !r.body || typeof r.body.getReader !== 'function') { return { fallback: true }; }
+			if ((r.headers.get('Content-Type') || '').indexOf('text/event-stream') === -1) { return { fallback: true }; }
+			return readStream(r.body.getReader(), typing);
+		});
+	}
+
+	function readStream(reader, typing) {
+		var decoder = new TextDecoder();
+		var buf = '';
+		var wrap = null;
+		var text = '';
+		var gotAny = false;
+
+		function paint() {
+			if (!wrap) {
+				if (typing && typing.parentNode) { typing.remove(); }
+				wrap = addMessage('assistant', '');
+			}
+			wrap.querySelector('.va-bubble').innerHTML = renderText(text);
+			messagesEl.scrollTop = messagesEl.scrollHeight;
+		}
+
+		function frame(ev, dataStr) {
+			var d;
+			try { d = JSON.parse(dataStr); } catch (e) { return; }
+			if (ev === 'delta') {
+				if (d.text) { text += d.text; gotAny = true; paint(); }
+			} else if (ev === 'replace') {
+				text = d.text || '';
+				gotAny = true;
+				paint();
+			}
+		}
+
+		function pump() {
+			return reader.read().then(function (res) {
+				if (res.value) {
+					buf += decoder.decode(res.value, { stream: true });
+					var idx;
+					while ((idx = buf.indexOf('\n\n')) !== -1) {
+						var block = buf.slice(0, idx);
+						buf = buf.slice(idx + 2);
+						var ev = null;
+						var data = '';
+						block.split('\n').forEach(function (line) {
+							if (line.indexOf('event:') === 0) { ev = line.slice(6).trim(); }
+							else if (line.indexOf('data:') === 0) { data += line.slice(5).trim(); }
+						});
+						if (ev) { frame(ev, data); }
+					}
+				}
+				if (res.done) { return { streamed: true, gotAny: gotAny }; }
+				return pump();
+			});
+		}
+
+		return pump();
+	}
+
+	function bufferedTurn(payload, typing) {
+		return postChat(payload)
+			.then(function (r) {
+				// Stale/garbage nonce: refetch once and retry the same request_id
+				// (idempotent server-side, so no double model call or double row).
+				if (r.status === 403) {
+					return fetchNonce().then(function () { return postChat(payload); });
+				}
+				return r;
+			})
+			.then(function (r) { return r.json().catch(function () { return { reply: null }; }); })
+			.then(function (data) {
+				if (typing && typing.parentNode) { typing.remove(); }
+				var reply =
+					(data && data.reply) ||
+					"Sorry, I couldn't get a response. Please reach a Vac2Go rep at " + CONTACT_URL + ".";
+				addMessage('assistant', reply);
+			});
+	}
+
 	function send(message) {
 		if (busy || !message.trim()) { return; }
 		busy = true;
@@ -212,26 +309,24 @@
 		};
 
 		nonceReady
-			.then(function () { return postChat(payload); })
-			.then(function (r) {
-				// Stale/garbage nonce: refetch once and retry the same request_id
-				// (idempotent server-side, so no double model call or double row).
-				if (r.status === 403) {
-					return fetchNonce().then(function () { return postChat(payload); });
-				}
-				return r;
+			.then(function () {
+				return STREAM_OK ? streamTurn(payload, typing) : { fallback: true };
 			})
-			.then(function (r) { return r.json().catch(function () { return { reply: null }; }); })
-			.then(function (data) {
-				typing.remove();
-				var reply =
-					(data && data.reply) ||
-					"Sorry, I couldn't get a response. Please reach a Vac2Go rep at " + CONTACT_URL + ".";
-				addMessage('assistant', reply);
-				maybeAskContact();
+			.then(function (res) {
+				if (res && res.retryNonce) {
+					return fetchNonce().then(function () { return streamTurn(payload, typing); });
+				}
+				return res;
+			})
+			.then(function (res) {
+				if (res && res.streamed && res.gotAny) { return null; }
+				// Streaming unsupported, buffered by the host, or it produced nothing.
+				// Reusing the same request_id means the server replays a stored answer
+				// instead of billing a second model call.
+				return bufferedTurn(payload, typing);
 			})
 			.catch(function () {
-				typing.remove();
+				if (typing && typing.parentNode) { typing.remove(); }
 				addMessage(
 					'assistant',
 					"Sorry, I'm having trouble connecting. Please reach a Vac2Go rep at " + CONTACT_URL + "."
@@ -240,6 +335,7 @@
 			.finally(function () {
 				busy = false;
 				if (sendBtn) { sendBtn.disabled = false; }
+				maybeAskContact();
 			});
 	}
 
