@@ -12,7 +12,10 @@
  * Safe to run repeatedly: it reuses one fixed session id and clears it first, so it
  * never accumulates junk. Remove the rows afterwards with:
  *
- *   wp eval-file .../tests/seed-payloads.php --skip-plugins=false -- --clean
+ *   wp eval-file .../tests/seed-payloads.php clean --skip-plugins=false
+ *
+ * Note the bare word 'clean', with no leading dashes: WP-CLI claims anything starting
+ * with -- as its own flag, so it never reaches this script.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -20,7 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $session = '00000000-0000-4000-8000-00000000dead';
-$clean   = in_array( '--clean', (array) ( $args ?? array() ), true );
+$argv_in = (array) ( $args ?? array() );
+$clean   = in_array( 'clean', $argv_in, true ) || in_array( '--clean', $argv_in, true );
 
 VA_DB::delete_session( $session );
 
@@ -57,4 +61,4 @@ foreach ( $rows as $i => $r ) {
 }
 
 echo "\nSeeded. Run the admin suite, then clean up with:\n";
-echo "  wp eval-file wp-content/plugins/vac2go-ai-advisor/tests/seed-payloads.php --skip-plugins=false -- --clean\n";
+echo "  wp eval-file wp-content/plugins/vac2go-ai-advisor/tests/seed-payloads.php clean --skip-plugins=false\n";
