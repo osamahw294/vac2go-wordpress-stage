@@ -241,31 +241,100 @@
 		});
 	}
 
+	// Rendering is deliberately decoupled from arrival. The model sends text in
+	// bursts, and the server releases a word group at a time, so painting each burst
+	// as it lands looks like paragraphs thumping into place. Instead everything
+	// received goes into a buffer, and an animation-frame loop reveals it at a steady
+	// rate, so the reader always sees a smooth flow no matter how lumpy the network
+	// was. Each revealed group fades in, which hides the discreteness of the steps.
 	function readStream(reader, typing) {
 		var decoder = new TextDecoder();
 		var buf = '';
 		var wrap = null;
-		var text = '';
+		var bubbleEl = null;
+		var full = '';        // everything received so far
+		var shown = 0;        // characters actually painted
 		var gotAny = false;
+		var ended = false;    // upstream finished
+		var raf = null;
+		var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-		function paint() {
+		function ensureBubble() {
 			if (!wrap) {
 				if (typing && typing.parentNode) { typing.remove(); }
 				wrap = addMessage('assistant', '');
+				bubbleEl = wrap.querySelector('.va-bubble');
+				bubbleEl.innerHTML = '';
 			}
-			wrap.querySelector('.va-bubble').innerHTML = renderText(text);
+		}
+
+		function appendChunk(text) {
+			var parts = text.split('\n');
+			for (var i = 0; i < parts.length; i++) {
+				if (i > 0) { bubbleEl.appendChild(document.createElement('br')); }
+				if (parts[i]) {
+					var s = document.createElement('span');
+					if (!reduce) { s.className = 'va-tok'; }
+					s.textContent = parts[i];
+					bubbleEl.appendChild(s);
+				}
+			}
 			messagesEl.scrollTop = messagesEl.scrollHeight;
+		}
+
+		// Re-render once at the end so URLs become real links. Doing this per frame
+		// would restart every fade animation.
+		function finalize() {
+			if (bubbleEl) {
+				bubbleEl.innerHTML = renderText(full);
+				messagesEl.scrollTop = messagesEl.scrollHeight;
+			}
+		}
+
+		function tick() {
+			raf = null;
+			var pending = full.length - shown;
+
+			if (pending > 0) {
+				ensureBubble();
+				// Aim to clear the backlog over roughly half a second at 60fps, so a
+				// big burst speeds up rather than falling behind, while a trickle
+				// still reveals a character or two per frame.
+				var step = Math.max(1, Math.min(20, Math.ceil(pending / 30)));
+				appendChunk(full.slice(shown, shown + step));
+				shown += step;
+			}
+
+			if (!ended || shown < full.length) {
+				raf = requestAnimationFrame(tick);
+			} else {
+				finalize();
+			}
+		}
+
+		function startTicking() {
+			if (raf === null) { raf = requestAnimationFrame(tick); }
 		}
 
 		function frame(ev, dataStr) {
 			var d;
 			try { d = JSON.parse(dataStr); } catch (e) { return; }
+
 			if (ev === 'delta') {
-				if (d.text) { text += d.text; gotAny = true; paint(); }
+				if (d.text) {
+					full += d.text;
+					gotAny = true;
+					startTicking();
+				}
 			} else if (ev === 'replace') {
-				text = d.text || '';
+				// A refusal replaces everything already shown. Show it at once rather
+				// than typing it out: it is a correction, not part of the answer.
+				full = d.text || '';
+				shown = full.length;
 				gotAny = true;
-				paint();
+				ensureBubble();
+				bubbleEl.innerHTML = renderText(full);
+				messagesEl.scrollTop = messagesEl.scrollHeight;
 			}
 		}
 
@@ -286,7 +355,22 @@
 						if (ev) { frame(ev, data); }
 					}
 				}
-				if (res.done) { return { streamed: true, gotAny: gotAny }; }
+				if (res.done) {
+					ended = true;
+					startTicking();
+					// Resolve only once every received character has been painted,
+					// otherwise the input would re-enable mid-animation.
+					return new Promise(function (resolve) {
+						(function waitDrain() {
+							if (shown >= full.length) {
+								finalize();
+								resolve({ streamed: true, gotAny: gotAny });
+							} else {
+								setTimeout(waitDrain, 40);
+							}
+						})();
+					});
+				}
 				return pump();
 			});
 		}
