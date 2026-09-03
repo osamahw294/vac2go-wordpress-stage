@@ -87,8 +87,10 @@
 	root.className = 'va-advisor-root';
 	root.innerHTML =
 		'<button class="va-launcher" aria-label="Open equipment advisor chat" aria-expanded="false">' +
-			'<span class="va-dot"></span>' +
-			'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.4 1.3 4.6 3.5 6-.2 1-.8 2.3-1.8 3.4 1.7-.2 3.4-.8 4.8-1.8 1.1.3 2.3.4 3.5.4 5.5 0 10-3.6 10-8s-4.5-8-10-8z"/></svg>' +
+			'<span class="va-icon">' +
+				'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.4 1.3 4.6 3.5 6-.2 1-.8 2.3-1.8 3.4 1.7-.2 3.4-.8 4.8-1.8 1.1.3 2.3.4 3.5.4 5.5 0 10-3.6 10-8s-4.5-8-10-8z"/></svg>' +
+				'<span class="va-dot"></span>' +
+			'</span>' +
 			'<span class="va-launcher-label">Ask the Equipment Advisor</span>' +
 		'</button>' +
 		'<div class="va-panel" role="dialog" aria-modal="true" aria-label="Vac2Go Equipment Advisor" hidden>' +

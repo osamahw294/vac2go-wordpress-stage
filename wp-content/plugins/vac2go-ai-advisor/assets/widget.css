@@ -39,12 +39,13 @@
 .va-launcher:hover { background: var(--va-accent-dark); transform: translateY(-1px); }
 .va-launcher.va-hidden { display: none; }
 .va-launcher-label { white-space: nowrap; }
+.va-icon { position: relative; display: inline-flex; align-items: center; flex: none; }
 .va-dot {
-	/* Pinned to the launcher's top-right corner, the way a status badge reads. It was
-	   anchored to the root container instead, which dropped it over the icon. */
+	/* Rides the top-right corner of the chat icon itself, like a live badge, so it
+	   stays with the icon at every width instead of drifting to the pill's corner. */
 	position: absolute;
-	top: 8px;
-	right: 8px;
+	top: -3px;
+	right: -3px;
 	width: 9px;
 	height: 9px;
 	background: #57e389;
@@ -218,7 +219,6 @@
 	}
 	.va-launcher-label { display: none; }
 	.va-launcher svg { width: 26px; height: 26px; }
-	.va-dot { top: 11px; right: 11px; }
 }
 
 /* Streaming reveal: each newly painted group fades in, which smooths over the fact
