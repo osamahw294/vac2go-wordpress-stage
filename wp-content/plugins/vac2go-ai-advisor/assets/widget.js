@@ -181,20 +181,37 @@
 	// moment they scroll up to re-read something, stop yanking them back down; when
 	// they return to the bottom, start following again. Same behaviour as ChatGPT.
 	var stickBottom = true;
-	var STICK_SLACK = 48; // px from the bottom that still counts as "at the bottom"
+	var lastTop = 0;
+	var STICK_SLACK = 8; // px from the true bottom that still counts as "at the bottom"
 
 	function atBottom() {
 		return messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight <= STICK_SLACK;
 	}
 
+	// Detach on DIRECTION, not on position. Judging by distance-from-bottom alone meant
+	// a small scroll up left the reader inside the slack, still counted as "at the
+	// bottom", and the next chunk yanked them back, so escaping took a hard flick.
+	// Any upward movement now detaches, however slight; returning to the bottom
+	// re-attaches. Comparing scrollTop covers wheel, trackpad, touch, keyboard and the
+	// scrollbar in one place. scrollToBottom() updates lastTop itself, so its own
+	// scrolling is never mistaken for the reader moving.
 	messagesEl.addEventListener('scroll', function () {
-		stickBottom = atBottom();
+		var top = messagesEl.scrollTop;
+		if (top < lastTop - 1) {
+			stickBottom = false;
+		} else if (atBottom()) {
+			stickBottom = true;
+		}
+		lastTop = top;
 	}, { passive: true });
 
 	// force: the reader just sent a message, so always take them to it.
 	function scrollToBottom(force) {
 		if (force) { stickBottom = true; }
-		if (stickBottom) { messagesEl.scrollTop = messagesEl.scrollHeight; }
+		if (stickBottom) {
+			messagesEl.scrollTop = messagesEl.scrollHeight;
+			lastTop = messagesEl.scrollTop;
+		}
 	}
 
 	function escapeHtml(s) {
