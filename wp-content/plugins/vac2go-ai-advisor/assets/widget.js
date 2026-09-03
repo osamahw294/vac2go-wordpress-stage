@@ -48,15 +48,27 @@
 	var assistantTurns = 0;
 
 	// ---- CSRF nonce: fetched fresh at boot (never baked into cached HTML) ----
+	//
+	// NOTE: every public request below uses credentials:'omit', deliberately.
+	// These endpoints are public and must behave identically for every visitor. Sending
+	// the WordPress auth cookie drags the request into core's cookie-authentication
+	// path, where rest_cookie_check_errors() requires the nonce to match the logged-in
+	// user and rejects it with rest_cookie_invalid_nonce BEFORE our permission callback
+	// runs. That broke the chat for anyone browsing while logged into wp-admin, while
+	// working fine for real (logged-out) customers.
+	//
+	// With no cookie sent, core skips cookie auth, and both the nonce fetch and the
+	// request that uses it run as user 0, so they always agree. The nonce remains CSRF
+	// protection only; it never authenticated anyone. Abuse is bounded by the rate
+	// layers, not by this.
+	//
+	// admin.js is different and MUST keep credentials:'same-origin': /correction is a
+	// genuinely privileged endpoint gated on manage_options.
 	var restNonce = null;
 	function fetchNonce() {
-		// A REST nonce is bound to the current user, so a CACHED nonce response is
-		// worse than useless: a logged-in visitor handed a nonce minted for a logged-out
-		// one gets rest_cookie_invalid_nonce from WP core before our handler ever runs.
-		// The endpoint already sends no-store, so this defeats anything keyed on URL
-		// alone (an edge cache, a service worker, the bfcache).
+		// credentials:'omit' is deliberate and load-bearing, see NOTE below.
 		return fetch(cfg.restUrl + '/nonce?_=' + Date.now(), {
-			credentials: 'same-origin',
+			credentials: 'omit',
 			cache: 'no-store',
 			headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' },
 		})
@@ -200,7 +212,7 @@
 		return fetch(cfg.restUrl + '/chat', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': restNonce || '' },
-			credentials: 'same-origin',
+			credentials: 'omit',
 			body: JSON.stringify(payload),
 		});
 	}
@@ -217,7 +229,7 @@
 		return fetch(cfg.restUrl + '/chat/stream', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': restNonce || '' },
-			credentials: 'same-origin',
+			credentials: 'omit',
 			body: JSON.stringify(payload),
 		}).then(function (r) {
 			if (r.status === 403) { return { retryNonce: true }; }
@@ -437,7 +449,7 @@
 		fetch(cfg.restUrl + '/contact', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': restNonce || '' },
-			credentials: 'same-origin',
+			credentials: 'omit',
 			body: JSON.stringify({ session_id: sessionId, name: name, email: email, phone: phone }),
 		})
 			.then(function () {
