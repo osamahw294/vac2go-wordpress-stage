@@ -20,9 +20,10 @@
 
 /* Launcher */
 .va-launcher {
+	position: relative; /* anchors the live dot to the launcher's own corner */
 	display: inline-flex;
 	align-items: center;
-	gap: 8px;
+	gap: 10px;
 	padding: 12px 18px;
 	background: var(--va-accent);
 	color: #fff;
@@ -39,9 +40,11 @@
 .va-launcher.va-hidden { display: none; }
 .va-launcher-label { white-space: nowrap; }
 .va-dot {
-	/* Sits inline in the launcher's flex row. It was absolutely positioned, which
-	   anchored it to the root container and dropped it on top of the icon. */
-	flex: none;
+	/* Pinned to the launcher's top-right corner, the way a status badge reads. It was
+	   anchored to the root container instead, which dropped it over the icon. */
+	position: absolute;
+	top: 8px;
+	right: 8px;
 	width: 9px;
 	height: 9px;
 	background: #57e389;
@@ -215,7 +218,7 @@
 	}
 	.va-launcher-label { display: none; }
 	.va-launcher svg { width: 26px; height: 26px; }
-	.va-dot { position: absolute; top: 11px; right: 11px; }
+	.va-dot { top: 11px; right: 11px; }
 }
 
 /* Streaming reveal: each newly painted group fades in, which smooths over the fact
