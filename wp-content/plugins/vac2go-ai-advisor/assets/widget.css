@@ -39,9 +39,9 @@
 .va-launcher.va-hidden { display: none; }
 .va-launcher-label { white-space: nowrap; }
 .va-dot {
-	position: absolute;
-	top: 8px;
-	left: 12px;
+	/* Sits inline in the launcher's flex row. It was absolutely positioned, which
+	   anchored it to the root container and dropped it on top of the icon. */
+	flex: none;
 	width: 9px;
 	height: 9px;
 	background: #57e389;
@@ -200,7 +200,22 @@
 		max-height: 100vh;
 		border-radius: 0;
 	}
-	.va-launcher { margin: 0 16px 16px 0; float: right; }
+	/* Icon only, larger tap target. Mirrors the bootstrap launcher exactly so nothing
+	   shifts when the full bundle takes over. */
+	.va-launcher {
+		position: relative;
+		margin: 0 16px 16px 0;
+		float: right;
+		width: 60px;
+		height: 60px;
+		padding: 0;
+		border-radius: 50%;
+		justify-content: center;
+		gap: 0;
+	}
+	.va-launcher-label { display: none; }
+	.va-launcher svg { width: 26px; height: 26px; }
+	.va-dot { position: absolute; top: 11px; right: 11px; }
 }
 
 /* Streaming reveal: each newly painted group fades in, which smooths over the fact
