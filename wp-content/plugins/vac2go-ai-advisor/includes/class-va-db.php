@@ -245,6 +245,27 @@ class VA_DB {
 	}
 
 	/**
+	 * The conversation as the VISITOR saw it, for redrawing the panel after a reload.
+	 *
+	 * Distinct from get_history(), which feeds the model and deliberately drops error
+	 * turns so it never learns from an outage. Here we want everything that was on
+	 * screen, outage messages included, so the restored panel matches what happened.
+	 */
+	public static function get_transcript( $session_id, $limit = 50 ) {
+		global $wpdb;
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT question, answer FROM ' . self::table() .
+				' WHERE session_id = %s ORDER BY turn_index ASC, id ASC LIMIT %d',
+				$session_id,
+				(int) $limit
+			),
+			ARRAY_A
+		);
+		return $rows ? $rows : array();
+	}
+
+	/**
 	 * Attach contact details to every row of a session.
 	 */
 	public static function update_contact( $session_id, $name, $email, $phone ) {

@@ -235,3 +235,21 @@
 @media (prefers-reduced-motion: reduce) {
 	.va-tok { animation: none; }
 }
+
+/* Header "New chat" control. Quiet by default: it sits next to the close button and
+   should not compete with it. */
+.va-new {
+	margin-left: auto;
+	margin-right: 4px;
+	padding: 4px 10px;
+	background: rgba(255, 255, 255, 0.16);
+	color: #fff;
+	border: none;
+	border-radius: 3px;
+	font: inherit;
+	font-size: 12px;
+	line-height: 1.6;
+	cursor: pointer;
+	white-space: nowrap;
+}
+.va-new:hover { background: rgba(255, 255, 255, 0.28); }

@@ -64,6 +64,19 @@ class VA_REST {
 			)
 		);
 
+		// Redraws the panel after a reload. The session id is a v4 UUID held only in the
+		// visitor's sessionStorage, so it acts as the bearer token for their own
+		// conversation, exactly as it does for /chat.
+		register_rest_route(
+			self::NS,
+			'/history',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( __CLASS__, 'handle_history' ),
+				'permission_callback' => array( __CLASS__, 'public_permission' ),
+			)
+		);
+
 		register_rest_route(
 			self::NS,
 			'/contact',
@@ -255,6 +268,20 @@ class VA_REST {
 		return array(
 			'ctx'      => $ctx,
 			'messages' => $messages,
+		);
+	}
+
+	/**
+	 * GET /history?session_id=... : the visitor's own conversation, so a page reload
+	 * redraws the panel instead of showing an empty box the model still remembers.
+	 */
+	public static function handle_history( WP_REST_Request $request ) {
+		$session_id = sanitize_text_field( (string) $request->get_param( 'session_id' ) );
+		if ( ! preg_match( self::UUID_V4, $session_id ) ) {
+			return self::error_response( 'Invalid session.', 400 );
+		}
+		return self::nocache(
+			new WP_REST_Response( array( 'turns' => VA_DB::get_transcript( $session_id, 50 ) ), 200 )
 		);
 	}
 

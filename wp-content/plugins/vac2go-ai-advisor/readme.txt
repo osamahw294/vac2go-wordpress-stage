@@ -1,7 +1,7 @@
 === Vac2Go AI Equipment Advisor ===
 Contributors: HighWater
 Requires PHP: 8.1
-Stable tag: 2.4.0
+Stable tag: 2.5.0
 License: GPLv2 or later
 
 Front-end AI equipment advisor for Vac2Go. Recommends a truck category from a plain-
@@ -18,7 +18,7 @@ Model: claude-fable-5-1 (constant VA_ADVISOR_MODEL in the main plugin file).
 Judge/classifier model: claude-haiku-4-5-20251001 (VA_ADVISOR_JUDGE_MODEL).
 
 Admin: Vac2Go Advisor -> Review Queue / Stats / Settings.
-REST namespace: vac2go/v1 (/nonce, /chat, /chat/stream, /contact, /correction).
+REST namespace: vac2go/v1 (/nonce, /chat, /chat/stream, /history, /contact, /correction).
 
 == Notes ==
 - The output filter runs server-side on every model response regardless of what the

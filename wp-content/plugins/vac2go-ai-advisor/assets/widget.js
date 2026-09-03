@@ -41,7 +41,7 @@
 		return id;
 	}
 
-	var sessionId = getSessionId();
+	var sessionId = getSessionId();  // reassigned by newChat()
 	var contactAsked = false;
 	var contactDone = sessionStorage.getItem('vaAdvisorContactDone') === '1';
 	var busy = false;
@@ -78,6 +78,20 @@
 	}
 	var nonceReady = fetchNonce();
 
+	// Redraw the panel after a reload. The model already remembers the conversation
+	// (history is rebuilt server-side from the log), so without this the visitor sees an
+	// empty box while the advisor answers as though the thread were still going.
+	function loadHistory() {
+		return fetch(cfg.restUrl + '/history?session_id=' + encodeURIComponent(sessionId), {
+			credentials: 'omit',
+			cache: 'no-store',
+			headers: { 'X-WP-Nonce': restNonce || '' },
+		})
+			.then(function (r) { return r.ok ? r.json() : { turns: [] }; })
+			.catch(function () { return { turns: [] }; });
+	}
+	var historyReady = nonceReady.then(loadHistory);
+
 	var GREETING =
 		"Hi, I'm the Vac2Go Equipment Advisor. Tell me about your job and I'll point you to the right truck category.\n\n" +
 		"A few things help: what are you vacuuming, cleaning, or excavating? Roughly how much? And what are the site conditions?";
@@ -96,6 +110,7 @@
 		'<div class="va-panel" role="dialog" aria-modal="true" aria-label="Vac2Go Equipment Advisor" hidden>' +
 			'<div class="va-header">' +
 				'<div class="va-title">Vac2Go Equipment Advisor</div>' +
+				'<button class="va-new" aria-label="Start a new chat" title="Start a new chat">New chat</button>' +
 				'<button class="va-close" aria-label="Close chat">&times;</button>' +
 			'</div>' +
 			'<div class="va-messages" aria-live="polite"></div>' +
@@ -118,6 +133,7 @@
 	var launcher = root.querySelector('.va-launcher');
 	var panel = root.querySelector('.va-panel');
 	var closeBtn = root.querySelector('.va-close');
+	var newBtn = root.querySelector('.va-new');
 	var messagesEl = root.querySelector('.va-messages');
 	var form = root.querySelector('.va-inputbar');
 	var input = root.querySelector('.va-input');
@@ -163,7 +179,38 @@
 		if (!opened) {
 			opened = true;
 			addMessage('assistant', GREETING);
+			historyReady.then(function (d) {
+				var turns = (d && d.turns) || [];
+				for (var i = 0; i < turns.length; i++) {
+					addMessage('user', turns[i].question);
+					addMessage('assistant', turns[i].answer);
+				}
+				if (turns.length) { scrollToBottom(true); }
+			});
 		}
+	}
+
+	// Start over: a brand new session id, so the server has nothing to rebuild from and
+	// the advisor genuinely forgets. The old conversation stays in the review queue.
+	function newChat() {
+		sessionId = uuid();
+		try {
+			sessionStorage.setItem('vaAdvisorSession', sessionId);
+			sessionStorage.removeItem('vaAdvisorContactDone');
+		} catch (e) { /* private mode: the in-memory id still works for this page */ }
+
+		contactAsked = false;
+		contactDone = false;
+		assistantTurns = 0;
+		historyReady = Promise.resolve({ turns: [] });
+
+		messagesEl.innerHTML = '';
+		contactCard.hidden = true;
+		contactCard.innerHTML = '';
+		stickBottom = true;
+
+		addMessage('assistant', GREETING);
+		input.focus();
 	}
 	function closePanel() {
 		panel.hidden = true;
@@ -175,6 +222,7 @@
 
 	launcher.addEventListener('click', openPanel);
 	closeBtn.addEventListener('click', closePanel);
+	newBtn.addEventListener('click', newChat);
 
 	// ---- sticky scroll ----
 	// Follow the newest text only while the reader is already at the bottom. The

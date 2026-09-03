@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Vac2Go AI Equipment Advisor
  * Description: Front-end AI equipment advisor for Vac2Go. Recommends a truck category from a plain-language job description and answers GapVax HV-57 spec questions, grounded in a fixed knowledge base with server-side guardrails, an output filter pipeline, full Q&A logging, and a human review/correction workflow.
- * Version: 2.4.0
+ * Version: 2.5.0
  * Author: HighWater
  * License: GPL-2.0-or-later
  * Requires PHP: 8.1
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'VA_ADVISOR_VERSION', '2.4.0' );
+define( 'VA_ADVISOR_VERSION', '2.5.0' );
 define( 'VA_ADVISOR_FILE', __FILE__ );
 define( 'VA_ADVISOR_DIR', plugin_dir_path( __FILE__ ) );
 define( 'VA_ADVISOR_URL', plugin_dir_url( __FILE__ ) );
