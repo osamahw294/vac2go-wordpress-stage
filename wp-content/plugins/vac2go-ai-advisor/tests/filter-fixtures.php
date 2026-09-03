@@ -12,6 +12,14 @@
 
 // phpcs:disable
 
+// CLI only. These files live inside a web-accessible plugin directory, so refuse to
+// run over HTTP: filter-fixtures prints the blocked-pattern list, which would tell an
+// attacker exactly what phrases the output filter looks for.
+if ( PHP_SAPI !== 'cli' ) {
+	header( 'HTTP/1.1 404 Not Found' );
+	exit;
+}
+
 define( 'ABSPATH', __DIR__ );
 
 $GLOBALS['va_options'] = array(
