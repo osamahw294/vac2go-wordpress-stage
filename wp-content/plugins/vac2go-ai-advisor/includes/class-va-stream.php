@@ -464,9 +464,19 @@ class VA_Stream {
 	}
 
 	/**
-	 * How many bytes of the pending buffer are safe to release: everything up to the
-	 * last sentence boundary, always keeping HOLD_TAIL characters back so a pattern
-	 * that straddles the boundary is still caught before the customer sees it.
+	 * How many bytes of the pending buffer are safe to release.
+	 *
+	 * Everything except the last HOLD_TAIL characters, cut at a word boundary. The
+	 * safety does NOT come from waiting for a sentence: it comes from running the
+	 * filter over the whole cumulative answer on every release, and from never letting
+	 * the final HOLD_TAIL characters out. A banned phrase forming at the buffer's edge
+	 * therefore always completes inside the held-back tail and is caught before any of
+	 * it is emitted.
+	 *
+	 * Releasing at sentence boundaries instead (the first implementation) meant that
+	 * whenever two sentences arrived between calls, both went out in one lump, so the
+	 * customer saw ~180 characters appear at once rather than text flowing. Word
+	 * boundaries give a token-by-token feel at the same safety.
 	 */
 	private static function cut_point( $force ) {
 		$len = strlen( self::$pending );
@@ -480,17 +490,15 @@ class VA_Stream {
 
 		$searchable = substr( self::$pending, 0, $len - self::HOLD_TAIL );
 
-		if ( preg_match_all( '/[.!?\n](?=\s|$)/', $searchable, $m, PREG_OFFSET_CAPTURE ) ) {
-			$last = end( $m[0] );
-			return $last[1] + 1;
+		// Cut at the last whitespace, so a word is never split across two frames.
+		if ( preg_match( '/\s(?=\S*$)/', $searchable, $m, PREG_OFFSET_CAPTURE ) ) {
+			return $m[0][1] + 1;
 		}
 
-		// No boundary in a long run: release at the last space so words stay intact.
+		// A very long run with no whitespace at all (a URL, say): release anyway rather
+		// than stall, still keeping the tail back.
 		if ( $len > self::MAX_HOLD ) {
-			$sp = strrpos( $searchable, ' ' );
-			if ( false !== $sp ) {
-				return $sp + 1;
-			}
+			return $len - self::HOLD_TAIL;
 		}
 
 		return 0;
