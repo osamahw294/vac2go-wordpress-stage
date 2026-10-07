@@ -199,6 +199,7 @@
 
 	function openPanel() {
 		panel.hidden = false;
+		root.classList.add('va-open');
 		launcher.classList.add('va-hidden');
 		launcher.setAttribute('aria-expanded', 'true');
 		panel.addEventListener('keydown', trapKeydown);
@@ -290,6 +291,7 @@
 	}
 	function closePanel() {
 		panel.hidden = true;
+		root.classList.remove('va-open');
 		launcher.classList.remove('va-hidden');
 		launcher.setAttribute('aria-expanded', 'false');
 		panel.removeEventListener('keydown', trapKeydown);

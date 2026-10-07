@@ -18,6 +18,11 @@
 	font-family: var(--va-font);
 }
 
+/* While the chat is open it sits above the site's privacy banner (hw-consent,
+   z-index 2147483000), which otherwise covers the input on mobile, where the panel
+   is full screen. Closed, the root drops back below it, so the banner still shows. */
+.va-advisor-root.va-open { z-index: 2147483001; }
+
 /* Launcher */
 .va-launcher {
 	position: relative; /* anchors the live dot to the launcher's own corner */
