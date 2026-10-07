@@ -85,6 +85,8 @@ class VA_Admin {
 		register_setting( 'va_advisor_settings', 'va_notify_leads', $int );
 		register_setting( 'va_advisor_settings', 'va_corrections_in_prompt', $int );
 		register_setting( 'va_advisor_settings', 'va_daily_token_ceiling', $int );
+		register_setting( 'va_advisor_settings', 'va_hourly_token_alert', $int );
+		register_setting( 'va_advisor_settings', 'va_rep_phone', $string( array( __CLASS__, 'sanitize_phone' ) ) );
 		register_setting( 'va_advisor_settings', 'va_price_in_per_m', array( 'type' => 'number', 'sanitize_callback' => 'floatval' ) );
 		register_setting( 'va_advisor_settings', 'va_price_out_per_m', array( 'type' => 'number', 'sanitize_callback' => 'floatval' ) );
 		register_setting( 'va_advisor_settings', 'va_price_cache_read_per_m', array( 'type' => 'number', 'sanitize_callback' => 'floatval' ) );
@@ -121,6 +123,14 @@ class VA_Admin {
 			}
 		}
 		return implode( "\n", $out );
+	}
+
+	/**
+	 * Keep digits and the usual phone punctuation only; it is printed into a tel: link.
+	 */
+	public static function sanitize_phone( $value ) {
+		$value = trim( preg_replace( '/[^0-9+()\-.\s]/', '', (string) $value ) );
+		return '' !== $value ? mb_substr( $value, 0, 30 ) : '855-822-7246';
 	}
 
 	public static function sanitize_answer_length( $value ) {

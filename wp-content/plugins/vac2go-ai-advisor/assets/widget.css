@@ -136,33 +136,76 @@
 .va-typing .va-bubble span:nth-child(3) { animation-delay: 0.4s; }
 @keyframes va-blink { 0%, 80%, 100% { opacity: 0.3; } 40% { opacity: 1; } }
 
-/* Contact card */
-.va-contact-card { border-top: 1px solid #e2e4e6; background: #faf1f2; padding: 12px 14px; }
-.va-contact-title { font-family: var(--va-font-display); font-weight: 700; font-size: 14px; margin-bottom: 2px; color: var(--va-text); }
-.va-contact-help { font-size: 12px; color: #50575e; margin-bottom: 8px; }
-.va-contact-card label { display: block; font-size: 12px; color: #3c434a; margin-bottom: 6px; }
-.va-contact-card input {
-	width: 100%;
-	padding: 7px 9px;
-	margin-top: 2px;
+/* Contact card: compact, and part of the conversation, sitting right under the answer
+   that prompted it. It scrolls with the messages instead of pinning over them. */
+.va-contact-card {
+	margin: 2px 0 12px;
+	padding: 9px 10px 10px;
+	background: #faf1f2;
+	border: 1px solid #f0d4d7;
+	border-radius: 10px;
+}
+.va-contact-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; }
+.va-contact-title { font-family: var(--va-font-display); font-weight: 600; font-size: 13px; color: var(--va-text); }
+.va-c-skip {
+	background: transparent; border: none; color: #6b7178; cursor: pointer;
+	font-size: 18px; line-height: 1; padding: 0 2px;
+}
+.va-c-skip:hover { color: var(--va-text); }
+.va-contact-fields { display: flex; flex-wrap: wrap; gap: 6px; }
+.va-contact-fields input {
+	flex: 1 1 110px;
+	min-width: 0;
+	padding: 6px 8px;
 	border: 1px solid #c3c9cf;
 	border-radius: 6px;
 	font-size: 13px;
 	font-family: var(--va-font);
 	box-sizing: border-box;
+	background: #fff;
 }
-.va-contact-actions { display: flex; gap: 8px; margin-top: 4px; }
+.va-contact-fields input:focus { outline: none; border-color: var(--va-accent); }
 .va-c-submit {
+	flex: none;
 	background: var(--va-accent); color: #fff; border: none;
-	padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 13px;
+	padding: 6px 14px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 13px;
 	font-family: var(--va-font-display);
 }
 .va-c-submit:hover { background: var(--va-accent-dark); }
-.va-c-skip {
-	background: transparent; color: #50575e; border: 1px solid #c3c9cf;
-	padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 13px;
+.va-contact-status { font-size: 12px; margin-top: 5px; }
+.va-contact-status:empty { display: none; }
+
+/* A message typed while an answer was still coming. It sends when that answer ends. */
+.va-msg-user.va-queued { flex-direction: column; align-items: flex-end; }
+.va-msg-user.va-queued .va-bubble { opacity: 0.6; }
+.va-msg-user.va-queued::after {
+	content: "Queued, sends after this answer";
+	font-size: 11px;
+	color: #6b7178;
+	margin-top: 3px;
 }
-.va-contact-status { font-size: 12px; margin-top: 6px; }
+
+/* Rate-limit lock: what is happening and for how long, right above the input. */
+.va-lock {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 8px 12px;
+	background: #fff7e6;
+	border-top: 1px solid #f3dfb3;
+	font-size: 13px;
+	color: #5c4400;
+}
+.va-advisor-root .va-lock[hidden] { display: none !important; }
+.va-lock-time { font-variant-numeric: tabular-nums; }
+.va-lock-new {
+	flex: none;
+	background: var(--va-accent); color: #fff; border: none;
+	padding: 5px 12px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 12px;
+	font-family: var(--va-font-display);
+}
+.va-lock-new:hover { background: var(--va-accent-dark); }
 
 /* Input bar */
 .va-inputbar { display: flex; gap: 8px; padding: 10px; border-top: 1px solid #e2e4e6; background: #fff; }
@@ -186,14 +229,28 @@
 	font-family: var(--va-font-display);
 }
 .va-send:hover { background: var(--va-accent-dark); }
+.va-input:disabled { background: #f4f5f6; cursor: not-allowed; }
+.va-send:disabled { background: #c9ccd0; cursor: not-allowed; }
 
 .va-disclosure {
 	font-size: 11px;
 	color: #6b7178;
 	text-align: center;
-	padding: 7px 10px 10px;
+	padding: 6px 10px 9px;
 	background: #fff;
 }
+/* Always-visible route to a person, above the fine print. */
+.va-contact-link {
+	display: block;
+	margin-bottom: 3px;
+	color: var(--va-accent);
+	font-family: var(--va-font-display);
+	font-size: 13px;
+	font-weight: 600;
+	text-decoration: none;
+}
+.va-contact-link:hover { text-decoration: underline; }
+.va-disclosure-text { display: block; }
 
 /* Mobile: full-screen under 480px */
 @media (max-width: 480px) {
@@ -239,7 +296,6 @@
 /* Header "New chat" control. Quiet by default: it sits next to the close button and
    should not compete with it. */
 .va-new {
-	margin-left: auto;
 	margin-right: 4px;
 	padding: 4px 10px;
 	background: rgba(255, 255, 255, 0.16);
@@ -253,3 +309,20 @@
 	white-space: nowrap;
 }
 .va-new:hover { background: rgba(255, 255, 255, 0.28); }
+.va-new:disabled { opacity: 0.5; cursor: default; }
+
+/* Header call button: always one tap from a person. Pushes the controls right. */
+.va-call {
+	margin-left: auto;
+	margin-right: 6px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 26px;
+	border-radius: 3px;
+	background: rgba(255, 255, 255, 0.16);
+	color: #fff;
+	text-decoration: none;
+}
+.va-call:hover { background: rgba(255, 255, 255, 0.28); color: #fff; }

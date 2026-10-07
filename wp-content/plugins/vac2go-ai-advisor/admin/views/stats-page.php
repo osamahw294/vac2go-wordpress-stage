@@ -26,6 +26,10 @@ $error_rows = $wpdb->get_results( $wpdb->prepare( "SELECT error_type, COUNT(*) c
 $top_ips    = $wpdb->get_results( $wpdb->prepare( "SELECT LEFT(ip_hash,12) ip, COUNT(*) c FROM {$table} WHERE created_at >= %s AND ip_hash IS NOT NULL GROUP BY ip_hash ORDER BY c DESC LIMIT 10", $midnight ), ARRAY_A );
 // phpcs:enable
 
+$trend         = VA_DB::daily_usage( 7 );
+$tokens_hour   = VA_DB::tokens_last_hour();
+$spike_alert   = (int) get_option( 'va_hourly_token_alert', 400000 );
+
 $breaker_until  = (int) get_option( 'va_breaker_until', 0 );
 $breaker_reason = get_option( 'va_breaker_last_reason', '' );
 ?>
@@ -48,6 +52,25 @@ $breaker_reason = get_option( 'va_breaker_last_reason', '' );
 			<tr><td><strong>Cache read tokens</strong></td><td><?php echo number_format( $tokens['cache_read'] ); ?></td></tr>
 			<tr><td><strong>Total vs ceiling</strong></td><td><?php echo number_format( $total_tokens ); ?> / <?php echo $ceiling > 0 ? number_format( $ceiling ) : 'unlimited'; ?></td></tr>
 			<tr><td><strong>Estimated spend</strong></td><td>$<?php echo esc_html( number_format( $spend, 4 ) ); ?></td></tr>
+			<tr><td><strong>Tokens in the last 60 minutes</strong></td><td><?php echo number_format( $tokens_hour ); ?><?php echo $spike_alert > 0 ? ' <span class="va-muted">(spike alert at ' . esc_html( number_format( $spike_alert ) ) . ')</span>' : ''; ?></td></tr>
+		</tbody>
+	</table>
+
+	<h2>Last 7 days</h2>
+	<table class="widefat striped" style="max-width:640px">
+		<thead><tr><th>Day</th><th>Turns</th><th>Tokens (all types)</th><th>Estimated spend</th></tr></thead>
+		<tbody>
+		<?php if ( $trend ) : foreach ( $trend as $d ) : ?>
+			<?php $all = (int) $d['input'] + (int) $d['output'] + (int) $d['cache_creation'] + (int) $d['cache_read']; ?>
+			<tr>
+				<td><?php echo esc_html( $d['day'] ); ?></td>
+				<td><?php echo (int) $d['turns']; ?></td>
+				<td><?php echo number_format( $all ); ?></td>
+				<td>$<?php echo esc_html( number_format( VA_DB::spend_for( array_map( 'intval', $d ) ), 2 ) ); ?></td>
+			</tr>
+		<?php endforeach; else : ?>
+			<tr><td colspan="4">No traffic in the last 7 days.</td></tr>
+		<?php endif; ?>
 		</tbody>
 	</table>
 

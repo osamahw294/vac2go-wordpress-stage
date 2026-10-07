@@ -4,7 +4,8 @@
  *
  * Layers (each independently stops abuse):
  *  - per-IP per-minute burst and per-hour limits (transients; non-atomic, so a race
- *    can overshoot by a few requests per window; accepted, documented)
+ *    can overshoot by a few requests per window; accepted, documented), escalating
+ *    to a 15-minute lock for an IP that keeps sending while limited
  *  - global per-minute and per-day circuit breaker (single option row updated with an
  *    atomic UPDATE, exact)
  *  - daily token ceiling with USD estimate (from real per-turn usage in the log table)
@@ -41,34 +42,81 @@ class VA_RateLimit {
 		return '0.0.0.0';
 	}
 
+	/** Requests an IP may send while already limited before the longer lock applies. */
+	const STRIKES_BEFORE_LOCK = 5;
+
+	/** How long the escalated lock lasts. */
+	const LOCK_SECONDS = 900; // 15 minutes
+
 	/**
-	 * Per-IP checks: minute burst then hourly. Increments on success. Returns true if
-	 * allowed. Transient counters are not atomic; concurrent requests can overshoot a
-	 * window by a few requests. Accepted for this layer; the global breaker is exact.
+	 * Per-IP checks: the escalated lock, then minute burst, then hourly. Increments on
+	 * success. Returns 0 when allowed, otherwise the seconds until this IP may send
+	 * again, so the visitor can be told how long to wait.
+	 *
+	 * Transient counters are not atomic; concurrent requests can overshoot a window by
+	 * a few requests. Accepted for this layer; the global breaker is exact.
+	 *
+	 * Each counter stores its own reset time. A transient's expiry cannot be read back
+	 * portably (with an object cache it is not in the options table at all), and
+	 * without it there is no honest "try again in N minutes".
 	 */
-	public static function check_ip( $ip_hash ) {
-		$minute_limit = (int) get_option( 'va_rate_ip_minute', 6 );
-		$hour_limit   = (int) get_option( 'va_rate_ip_hourly', 30 );
-
-		if ( $minute_limit > 0 ) {
-			$mkey  = 'va_rl_ipm_' . $ip_hash;
-			$count = (int) get_transient( $mkey );
-			if ( $count >= $minute_limit ) {
-				return false;
-			}
-			set_transient( $mkey, $count + 1, MINUTE_IN_SECONDS );
+	public static function ip_wait( $ip_hash ) {
+		$lock_until = (int) get_transient( 'va_rl_lock_' . $ip_hash );
+		if ( $lock_until > time() ) {
+			return $lock_until - time();
 		}
 
-		if ( $hour_limit > 0 ) {
-			$hkey  = 'va_rl_iph_' . $ip_hash;
-			$count = (int) get_transient( $hkey );
-			if ( $count >= $hour_limit ) {
-				return false;
+		$windows = array(
+			'va_rl_ipm_' => array( (int) get_option( 'va_rate_ip_minute', 6 ), MINUTE_IN_SECONDS ),
+			'va_rl_iph_' => array( (int) get_option( 'va_rate_ip_hourly', 30 ), HOUR_IN_SECONDS ),
+		);
+
+		foreach ( $windows as $prefix => $w ) {
+			list( $limit, $length ) = $w;
+			if ( $limit <= 0 ) {
+				continue;
 			}
-			set_transient( $hkey, $count + 1, HOUR_IN_SECONDS );
+			$key     = $prefix . $ip_hash;
+			$counter = self::read_counter( $key, $length );
+			if ( $counter['n'] >= $limit ) {
+				return self::strike( $ip_hash, max( 1, $counter['reset'] - time() ) );
+			}
+			$counter['n']++;
+			set_transient( $key, $counter, max( 1, $counter['reset'] - time() ) );
 		}
 
-		return true;
+		return 0;
+	}
+
+	/**
+	 * A window counter as array( n, reset ). Older builds stored a bare integer; treat
+	 * those as a window that started now, which can only err toward a longer wait.
+	 */
+	private static function read_counter( $key, $length ) {
+		$raw = get_transient( $key );
+		if ( is_array( $raw ) && isset( $raw['n'], $raw['reset'] ) && (int) $raw['reset'] > time() ) {
+			return array( 'n' => (int) $raw['n'], 'reset' => (int) $raw['reset'] );
+		}
+		return array( 'n' => is_numeric( $raw ) ? (int) $raw : 0, 'reset' => time() + $length );
+	}
+
+	/**
+	 * Count a request sent while already limited. A person waits; a script keeps
+	 * firing. After STRIKES_BEFORE_LOCK of those the IP is locked for LOCK_SECONDS,
+	 * however short its original window was.
+	 *
+	 * @return int Seconds the caller must wait.
+	 */
+	private static function strike( $ip_hash, $wait ) {
+		$key     = 'va_rl_strk_' . $ip_hash;
+		$strikes = (int) get_transient( $key ) + 1;
+		if ( $strikes >= self::STRIKES_BEFORE_LOCK ) {
+			delete_transient( $key );
+			set_transient( 'va_rl_lock_' . $ip_hash, time() + self::LOCK_SECONDS, self::LOCK_SECONDS );
+			return self::LOCK_SECONDS;
+		}
+		set_transient( $key, $strikes, HOUR_IN_SECONDS );
+		return $wait;
 	}
 
 	/**
@@ -220,6 +268,22 @@ class VA_RateLimit {
 			return 'warn';
 		}
 		return 'ok';
+	}
+
+	/**
+	 * Hourly spike alert. The daily ceiling only speaks up at 80%, which on a quiet
+	 * day can be hours after something started burning tokens. This catches a sudden
+	 * surge (a bot, a loop, a viral page) within the hour. Alert only; never blocks.
+	 */
+	public static function check_hourly_spike() {
+		$threshold = (int) get_option( 'va_hourly_token_alert', 400000 );
+		if ( $threshold <= 0 ) {
+			return;
+		}
+		$total = VA_DB::tokens_last_hour();
+		if ( $total >= $threshold ) {
+			self::alert( 'spike', 'Vac2Go Advisor: token usage spike', 'Tokens used in the last 60 minutes: ' . number_format( $total ) . ' (alert threshold ' . number_format( $threshold ) . '). Check Stats and the Review Queue for unusual traffic.' );
+		}
 	}
 
 	/**

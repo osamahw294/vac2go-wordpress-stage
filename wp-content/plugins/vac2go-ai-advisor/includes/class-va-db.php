@@ -84,6 +84,8 @@ class VA_DB {
 			'va_notify_leads'       => 1,
 			'va_corrections_in_prompt' => 1,
 			'va_daily_token_ceiling'=> 2000000,
+			'va_hourly_token_alert' => 400000,
+			'va_rep_phone'          => '855-822-7246',
 			'va_price_in_per_m'     => 3.0,
 			'va_price_out_per_m'    => 15.0,
 			'va_price_cache_read_per_m' => 0.30,
@@ -361,19 +363,39 @@ class VA_DB {
 	}
 
 	/**
-	 * Corrections a human has written, newest first, for feeding back to the model.
+	 * Remove a correction entirely, so it stops being sent to the model. Corrections
+	 * are permanent until someone does this; there is no age or count cutoff.
+	 */
+	public static function clear_correction( $log_id ) {
+		global $wpdb;
+
+		return $wpdb->update(
+			self::table(),
+			array(
+				'marked_incorrect' => 0,
+				'correction_text'  => null,
+				'corrected_by'     => null,
+				'corrected_at'     => null,
+			),
+			array( 'id' => (int) $log_id ),
+			null,
+			array( '%d' )
+		);
+	}
+
+	/**
+	 * Every correction a human has written, newest first, for feeding back to the
+	 * model. All of them: a correction stays in force until it is edited or removed in
+	 * the Review Queue, however many are written after it.
 	 *
 	 * @return array<int,array{question:string,correction_text:string}>
 	 */
-	public static function get_corrections( $limit = 25 ) {
+	public static function get_corrections() {
 		global $wpdb;
 		$rows = $wpdb->get_results(
-			$wpdb->prepare(
-				'SELECT question, correction_text FROM ' . self::table() .
-				" WHERE marked_incorrect = 1 AND correction_text IS NOT NULL AND correction_text <> ''" .
-				' ORDER BY corrected_at DESC, id DESC LIMIT %d',
-				(int) $limit
-			),
+			'SELECT question, correction_text FROM ' . self::table() .
+			" WHERE marked_incorrect = 1 AND correction_text IS NOT NULL AND correction_text <> ''" .
+			' ORDER BY corrected_at DESC, id DESC',
 			ARRAY_A
 		);
 		return $rows ? $rows : array();
@@ -430,16 +452,62 @@ class VA_DB {
 
 	/**
 	 * Estimated spend today in USD, from the configurable per-million prices.
-	 * Cache-creation tokens are billed at 1.25x input price (5m ephemeral).
 	 */
 	public static function estimated_spend_today() {
-		$t        = self::tokens_today();
-		$p_in     = (float) get_option( 'va_price_in_per_m', 3.0 );
-		$p_out    = (float) get_option( 'va_price_out_per_m', 15.0 );
-		$p_cread  = (float) get_option( 'va_price_cache_read_per_m', 0.30 );
+		return self::spend_for( self::tokens_today() );
+	}
+
+	/**
+	 * USD for a token breakdown. Cache-creation tokens are billed at 1.25x input
+	 * price (5m ephemeral).
+	 */
+	public static function spend_for( array $t ) {
+		$p_in    = (float) get_option( 'va_price_in_per_m', 3.0 );
+		$p_out   = (float) get_option( 'va_price_out_per_m', 15.0 );
+		$p_cread = (float) get_option( 'va_price_cache_read_per_m', 0.30 );
 		return ( $t['input'] * $p_in
 			+ $t['cache_creation'] * $p_in * 1.25
 			+ $t['cache_read'] * $p_cread
 			+ $t['output'] * $p_out ) / 1000000;
+	}
+
+	/**
+	 * All tokens, of every type, used in the last 60 minutes (for the spike alert).
+	 */
+	public static function tokens_last_hour() {
+		global $wpdb;
+		$since = gmdate( 'Y-m-d H:i:s', current_time( 'timestamp' ) - HOUR_IN_SECONDS );
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				'SELECT COALESCE(SUM(COALESCE(input_tokens,0) + COALESCE(output_tokens,0) + COALESCE(cache_creation_input_tokens,0) + COALESCE(cache_read_input_tokens,0)),0)
+				 FROM ' . self::table() . ' WHERE created_at >= %s',
+				$since
+			)
+		);
+	}
+
+	/**
+	 * Per-day turns and tokens for the last N days (site-local dates), newest first,
+	 * for the Stats trend table.
+	 *
+	 * @return array<int,array{day:string,turns:int,input:int,output:int,cache_creation:int,cache_read:int}>
+	 */
+	public static function daily_usage( $days = 7 ) {
+		global $wpdb;
+		$since = gmdate( 'Y-m-d 00:00:00', current_time( 'timestamp' ) - ( max( 1, (int) $days ) - 1 ) * DAY_IN_SECONDS );
+		$rows  = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT DATE(created_at) AS day, COUNT(*) AS turns,
+				        COALESCE(SUM(input_tokens),0) AS input,
+				        COALESCE(SUM(output_tokens),0) AS output,
+				        COALESCE(SUM(cache_creation_input_tokens),0) AS cache_creation,
+				        COALESCE(SUM(cache_read_input_tokens),0) AS cache_read
+				 FROM ' . self::table() . ' WHERE created_at >= %s
+				 GROUP BY DATE(created_at) ORDER BY day DESC',
+				$since
+			),
+			ARRAY_A
+		);
+		return $rows ? $rows : array();
 	}
 }

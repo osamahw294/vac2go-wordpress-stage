@@ -1,6 +1,7 @@
 <?php
 /**
- * REST routes: GET /nonce, POST /chat, POST /contact, POST /correction.
+ * REST routes: GET /nonce, POST /chat, POST /chat/stream, GET /history, POST /contact,
+ * POST /correction.
  * Namespace: vac2go/v1
  *
  * Trust model: the browser supplies only session_id, request_id, the new message,
@@ -200,6 +201,7 @@ class VA_REST {
 							'reply'    => $dup['answer'],
 							'filtered' => (bool) $dup['was_filtered'],
 							'replayed' => true,
+							'followup' => VA_Signals::followup_reason( $message, $dup['answer'] ),
 						),
 						200
 					)
@@ -228,21 +230,30 @@ class VA_REST {
 		if ( 'over' === VA_RateLimit::daily_budget_state() ) {
 			return array( 'response' => self::graceful_unavailable( $session_id, $request_id, $message, 'daily_ceiling', $ip_hash, $request, $flags ) );
 		}
-		if ( ! VA_RateLimit::check_global() ) {
-			return array( 'response' => self::graceful_unavailable( $session_id, $request_id, $message, 'breaker', $ip_hash, $request, $flags ) );
-		}
+		VA_RateLimit::check_hourly_spike();
+
+		// Per-visitor limits run BEFORE the global counters, so a visitor who is
+		// already blocked never counts toward the site-wide breaker. Otherwise one
+		// script hammering while limited could trip the breaker for every customer.
+		//
 		// Rate-limited turns are logged like every other turn. The requirement is to
 		// track EVERY question asked; a question that hit a limit is still a question,
-		// and silently dropping it hides exactly the traffic worth looking at.
+		// and silently dropping it hides exactly the traffic worth looking at. No model
+		// call is ever made for them, so they cost no tokens.
 		if ( ! VA_RateLimit::check_session( $session_id ) ) {
-			$reply = "We've reached the length limit for this conversation. For anything further, please reach a Vac2Go rep at https://vac2go.com/contact/.";
+			$reply = "We've reached the length limit for this conversation. Please start a new chat to keep going, or reach a Vac2Go rep at https://vac2go.com/contact/.";
 			self::log_turn( $session_id, $request_id, $message, $reply, null, 0, null, 'limit_session', null, $ip_hash, $request, $flags );
-			return array( 'response' => self::limited_response( $reply ) );
+			return array( 'response' => self::limited_response( $reply, 'session', 0 ) );
 		}
-		if ( ! VA_RateLimit::check_ip( $ip_hash ) ) {
-			$reply = "You've sent a lot of messages in a short time. Please pause a moment, or reach a Vac2Go rep directly at https://vac2go.com/contact/.";
+		$wait = VA_RateLimit::ip_wait( $ip_hash );
+		if ( $wait > 0 ) {
+			$reply = "You've sent a lot of messages in a short time, so I've paused this chat. You can send again " . self::wait_phrase( $wait ) . ', or reach a Vac2Go rep directly at https://vac2go.com/contact/.';
 			self::log_turn( $session_id, $request_id, $message, $reply, null, 0, null, 'limit_ip', null, $ip_hash, $request, $flags );
-			return array( 'response' => self::limited_response( $reply ) );
+			return array( 'response' => self::limited_response( $reply, 'ip', $wait ) );
+		}
+
+		if ( ! VA_RateLimit::check_global() ) {
+			return array( 'response' => self::graceful_unavailable( $session_id, $request_id, $message, 'breaker', $ip_hash, $request, $flags ) );
 		}
 
 		// --- Pre-screen before Fable (S6.5) ---
@@ -345,7 +356,8 @@ class VA_REST {
 			}
 		}
 
-		$reply = $filtered['text'];
+		// After the judge, never before: see VA_Signals::AVAILABILITY_CTA.
+		$reply = $filtered['text'] . VA_Signals::availability_suffix( $message, $filtered['text'], $stage );
 
 		self::log_turn(
 			$session_id,
@@ -369,7 +381,11 @@ class VA_REST {
 
 		return self::nocache(
 			new WP_REST_Response(
-				array( 'reply' => $reply, 'filtered' => (bool) $filtered['filtered'] ),
+				array(
+					'reply'    => $reply,
+					'filtered' => (bool) $filtered['filtered'],
+					'followup' => VA_Signals::followup_reason( $message, $reply ),
+				),
 				200
 			)
 		);
@@ -611,13 +627,36 @@ class VA_REST {
 		);
 	}
 
-	private static function limited_response( $text ) {
-		return self::nocache(
-			new WP_REST_Response(
-				array( 'reply' => $text, 'filtered' => false, 'limited' => true ),
-				200
-			)
+	/**
+	 * @param string $kind        'ip' (wait it out) or 'session' (start a new chat).
+	 * @param int    $retry_after Seconds until the visitor may send again; 0 for 'session'.
+	 */
+	private static function limited_response( $text, $kind, $retry_after ) {
+		$response = new WP_REST_Response(
+			array(
+				'reply'       => $text,
+				'filtered'    => false,
+				'limited'     => true,
+				'limit'       => $kind,
+				'retry_after' => (int) $retry_after,
+			),
+			200
 		);
+		if ( $retry_after > 0 ) {
+			$response->header( 'Retry-After', (string) (int) $retry_after );
+		}
+		return self::nocache( $response );
+	}
+
+	/**
+	 * "in under a minute" / "in about 4 minutes".
+	 */
+	public static function wait_phrase( $seconds ) {
+		if ( $seconds < 60 ) {
+			return 'in under a minute';
+		}
+		$m = (int) ceil( $seconds / 60 );
+		return 'in about ' . $m . ' minute' . ( 1 === $m ? '' : 's' );
 	}
 
 	private static function error_response( $message, $status ) {
@@ -701,12 +740,16 @@ class VA_REST {
 		$params          = $request->get_json_params();
 		$log_id          = isset( $params['log_id'] ) ? absint( $params['log_id'] ) : 0;
 		$correction_text = isset( $params['correction_text'] ) ? sanitize_textarea_field( $params['correction_text'] ) : '';
+		$remove          = ! empty( $params['remove'] );
 
 		if ( ! $log_id ) {
 			return self::error_response( 'Missing log id.', 400 );
 		}
 
-		$ok = VA_DB::save_correction( $log_id, $correction_text, get_current_user_id() );
+		// Corrections are permanent until removed here, so removal has to exist.
+		$ok = $remove
+			? VA_DB::clear_correction( $log_id )
+			: VA_DB::save_correction( $log_id, $correction_text, get_current_user_id() );
 
 		return self::nocache(
 			new WP_REST_Response(

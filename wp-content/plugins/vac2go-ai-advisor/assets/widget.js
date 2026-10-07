@@ -8,6 +8,15 @@
 
 	var cfg = window.vaAdvisor || {};
 	var CONTACT_URL = cfg.contactUrl || 'https://vac2go.com/contact/';
+	var REP_PHONE = cfg.repPhone || '855-822-7246';
+	var MAX_MESSAGE = 2000; // server-side cap per turn (VA_REST::MAX_MESSAGE_CH)
+
+	// tel: link from a human-formatted number. A bare 10-digit number is North American.
+	function telHref(phone) {
+		var digits = String(phone).replace(/[^0-9+]/g, '');
+		if (/^\d{10}$/.test(digits)) { digits = '+1' + digits; }
+		return 'tel:' + digits;
+	}
 	var bootTime = window.vaAdvisorBootTime || Date.now();
 
 	// Stylesheet injected at runtime (LiteSpeed's unused-CSS optimizer would purge
@@ -47,7 +56,17 @@
 	var busy = false;
 	var restoring = false; // redrawing an earlier conversation; input is held until done
 	var snapOnReply = false; // pull back to the bottom when the pending answer starts
-	var assistantTurns = 0;
+	var lastReplyEl = null;  // newest assistant message, so the follow-up card sits right under it
+
+	// Messages typed while an answer is still coming. They show at once, and go out
+	// together as the next turn when the current answer finishes.
+	var queue = [];
+
+	// Rate-limit lock. 'ip': wait until lockUntil. 'session': this conversation is
+	// full, only a new chat continues. Kept in sessionStorage so a reload stays locked.
+	var lockKind = null;
+	var lockUntil = 0;
+	var lockTimer = null;
 
 	// ---- CSRF nonce: fetched fresh at boot (never baked into cached HTML) ----
 	//
@@ -112,17 +131,23 @@
 		'<div class="va-panel" role="dialog" aria-modal="true" aria-label="Vac2Go Equipment Advisor" hidden>' +
 			'<div class="va-header">' +
 				'<div class="va-title">Vac2Go Equipment Advisor</div>' +
+				'<a class="va-call" href="' + escapeHtml(telHref(REP_PHONE)) + '" aria-label="Call a Vac2Go rep at ' + escapeHtml(REP_PHONE) + '" title="Call a Vac2Go rep: ' + escapeHtml(REP_PHONE) + '">' +
+					'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>' +
+				'</a>' +
 				'<button class="va-new" aria-label="Start a new chat" title="Start a new chat">New chat</button>' +
 				'<button class="va-close" aria-label="Close chat">&times;</button>' +
 			'</div>' +
 			'<div class="va-messages" aria-live="polite"></div>' +
-			'<div class="va-contact-card" hidden></div>' +
+			'<div class="va-lock" role="status" hidden></div>' +
 			'<form class="va-inputbar">' +
 				'<input type="text" name="website" class="va-hp" value="" tabindex="-1" autocomplete="off" aria-hidden="true">' +
-				'<textarea class="va-input" rows="1" placeholder="Describe your job…" maxlength="2000" aria-label="Your message"></textarea>' +
+				'<textarea class="va-input" rows="1" placeholder="Describe your job\u2026" maxlength="2000" aria-label="Your message"></textarea>' +
 				'<button type="submit" class="va-send" aria-label="Send message">Send</button>' +
 			'</form>' +
-			'<div class="va-disclosure">This chat is automated and logged for quality review. No pricing or booking here.</div>' +
+			'<div class="va-disclosure">' +
+				'<a class="va-contact-link" href="' + escapeHtml(CONTACT_URL) + '" target="_blank" rel="noopener">Contact a Vac2Go rep</a>' +
+				'<span class="va-disclosure-text">This chat is automated and logged for quality review. No pricing or booking here.</span>' +
+			'</div>' +
 		'</div>';
 	document.body.appendChild(root);
 
@@ -141,7 +166,7 @@
 	var input = root.querySelector('.va-input');
 	var sendBtn = root.querySelector('.va-send');
 	var hpField = root.querySelector('.va-hp');
-	var contactCard = root.querySelector('.va-contact-card');
+	var lockBar = root.querySelector('.va-lock');
 
 	var opened = false;
 
@@ -195,8 +220,7 @@
 	 */
 	function restore() {
 		restoring = true;
-		if (sendBtn) { sendBtn.disabled = true; }
-		if (input) { input.disabled = true; input.placeholder = 'Loading your conversation…'; }
+		syncInput();
 
 		var indicator = null;
 		var delay = setTimeout(function () { indicator = showTyping(); }, 180);
@@ -215,13 +239,26 @@
 				clearTimeout(delay);
 				if (indicator && indicator.parentNode) { indicator.remove(); }
 				restoring = false;
-				if (sendBtn) { sendBtn.disabled = false; }
-				if (input) {
-					input.disabled = false;
-					input.placeholder = 'Describe your job…';
-					input.focus();
-				}
+				syncInput();
+				if (!input.disabled) { input.focus(); }
 			});
+	}
+
+	/**
+	 * The one place that decides whether the visitor can type. Held while an earlier
+	 * conversation is being redrawn, and while a rate limit is in force. NOT held while
+	 * an answer is streaming: anything sent then is queued instead of lost.
+	 */
+	function syncInput() {
+		var locked = isLocked();
+		var off = restoring || locked;
+		input.disabled = off;
+		sendBtn.disabled = off;
+		input.placeholder = restoring ? 'Loading your conversation\u2026'
+			: lockKind === 'session' ? 'Start a new chat to keep going'
+			: locked ? 'Paused for a moment\u2026'
+			: 'Describe your job\u2026';
+		newBtn.disabled = busy;
 	}
 
 	// Start over: a brand new session id, so the server has nothing to rebuild from and
@@ -235,19 +272,21 @@
 
 		contactAsked = false;
 		contactDone = false;
-		assistantTurns = 0;
+		lastReplyEl = null;
+		queue = [];
 		historyReady = Promise.resolve({ turns: [] });
 
+		// A full conversation is cured by a new one. A per-IP pause is not: it is about
+		// the visitor, not the conversation, so it stays until it runs out.
+		if (lockKind === 'session') { clearLock(); }
+
 		messagesEl.innerHTML = '';
-		contactCard.hidden = true;
-		contactCard.innerHTML = '';
 		stickBottom = true;
 		restoring = false;
-		if (sendBtn) { sendBtn.disabled = false; }
-		if (input) { input.disabled = false; input.placeholder = 'Describe your job…'; }
+		syncInput();
 
 		addMessage('assistant', GREETING);
-		input.focus();
+		if (!input.disabled) { input.focus(); }
 	}
 	function closePanel() {
 		panel.hidden = true;
@@ -324,13 +363,26 @@
 		return safe.replace(/\n/g, '<br>');
 	}
 
-	function addMessage(role, text) {
+	// before: insert ahead of this node instead of at the end. A reply takes the typing
+	// indicator's place, which keeps it above any messages queued while it was coming.
+	function addMessage(role, text, before) {
 		var el = document.createElement('div');
 		el.className = 'va-msg va-msg-' + role;
 		el.innerHTML = '<div class="va-bubble">' + renderText(text) + '</div>';
-		messagesEl.appendChild(el);
+		if (before && before.parentNode === messagesEl) {
+			messagesEl.insertBefore(el, before);
+		} else {
+			messagesEl.appendChild(el);
+		}
 		scrollToBottom(role === 'user');
-		if (role === 'assistant') { assistantTurns++; }
+		if (role === 'assistant') { lastReplyEl = el; }
+		return el;
+	}
+
+	// Swap the typing indicator for the reply, in place.
+	function replaceTyping(typing, text) {
+		var el = addMessage('assistant', text, typing);
+		if (typing && typing.parentNode) { typing.remove(); }
 		return el;
 	}
 
@@ -390,14 +442,14 @@
 		var full = '';        // everything received so far
 		var shown = 0;        // characters actually painted
 		var gotAny = false;
+		var doneData = null;  // the server's 'done' event: limit and follow-up signals
 		var ended = false;    // upstream finished
 		var raf = null;
 		var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 		function ensureBubble() {
 			if (!wrap) {
-				if (typing && typing.parentNode) { typing.remove(); }
-				wrap = addMessage('assistant', '');
+				wrap = replaceTyping(typing, '');
 				bubbleEl = wrap.querySelector('.va-bubble');
 				bubbleEl.innerHTML = '';
 				snapIfPending();
@@ -471,6 +523,8 @@
 				ensureBubble();
 				bubbleEl.innerHTML = renderText(full);
 				scrollToBottom();
+			} else if (ev === 'done') {
+				doneData = d;
 			}
 		}
 
@@ -500,7 +554,7 @@
 						(function waitDrain() {
 							if (shown >= full.length) {
 								finalize();
-								resolve({ streamed: true, gotAny: gotAny });
+								resolve({ streamed: true, gotAny: gotAny, done: doneData });
 							} else {
 								setTimeout(waitDrain, 40);
 							}
@@ -526,22 +580,24 @@
 			})
 			.then(function (r) { return r.json().catch(function () { return { reply: null }; }); })
 			.then(function (data) {
-				if (typing && typing.parentNode) { typing.remove(); }
 				var reply =
 					(data && data.reply) ||
 					"Sorry, I couldn't get a response. Please reach a Vac2Go rep at " + CONTACT_URL + ".";
 				snapIfPending();
-				addMessage('assistant', reply);
+				replaceTyping(typing, reply);
+				return data;
 			});
 	}
 
-	function send(message) {
-		if (busy || restoring || !message.trim()) { return; }
+	// painted: the user bubbles are already on screen (a flushed queue).
+	function send(message, painted) {
+		if (busy || restoring || isLocked() || !message.trim()) { return; }
 		busy = true;
 		snapOnReply = true;
-		if (sendBtn) { sendBtn.disabled = true; }
-		addMessage('user', message);
+		syncInput();
+		if (!painted) { addMessage('user', message); }
 		var typing = showTyping();
+		var meta = null;
 
 		var payload = {
 			session_id: sessionId,
@@ -562,34 +618,43 @@
 				return res;
 			})
 			.then(function (res) {
-				if (res && res.streamed && res.gotAny) { return null; }
+				if (res && res.streamed && res.gotAny) { return res.done; }
 				// Streaming unsupported, buffered by the host, or it produced nothing.
 				// Reusing the same request_id means the server replays a stored answer
 				// instead of billing a second model call.
 				return bufferedTurn(payload, typing);
 			})
+			.then(function (m) { meta = m || null; })
 			.catch(function () {
-				if (typing && typing.parentNode) { typing.remove(); }
-				addMessage(
-					'assistant',
+				replaceTyping(
+					typing,
 					"Sorry, I'm having trouble connecting. Please reach a Vac2Go rep at " + CONTACT_URL + "."
 				);
 			})
 			.finally(function () {
 				busy = false;
 				snapOnReply = false;
-				if (sendBtn) { sendBtn.disabled = false; }
-				maybeAskContact();
+				if (meta && meta.limited) {
+					applyLock(meta.limit, meta.retry_after);
+				} else if (meta && meta.followup) {
+					maybeAskContact();
+				}
+				syncInput();
+				flushQueue();
 			});
 	}
 
 	form.addEventListener('submit', function (e) {
 		e.preventDefault();
 		var v = input.value;
-		if (!v.trim()) { return; }
+		if (!v.trim() || restoring || isLocked()) { return; }
 		input.value = '';
 		autoGrow();
-		send(v);
+		if (busy) {
+			enqueue(v);
+		} else {
+			send(v);
+		}
 	});
 
 	input.addEventListener('keydown', function (e) {
@@ -604,10 +669,129 @@
 	}
 	input.addEventListener('input', autoGrow);
 
-	// ---- contact capture (once, after the first real exchange) ----
+	// ---- queue: nothing typed mid-answer is lost ----
+	function enqueue(text) {
+		var el = addMessage('user', text);
+		el.classList.add('va-queued');
+		el.setAttribute('title', 'Sends when the current answer finishes');
+		queue.push({ text: text, el: el });
+	}
+
+	// Everything queued goes out as ONE turn, so the advisor answers it all at once
+	// (people often send a thought in two or three pieces). Capped at the server's
+	// per-message limit; anything past it waits for the turn after.
+	function flushQueue() {
+		if (busy || restoring || isLocked() || !queue.length) { return; }
+		var take = [queue.shift()];
+		var len = take[0].text.length;
+		while (queue.length && len + 2 + queue[0].text.length <= MAX_MESSAGE) {
+			len += 2 + queue[0].text.length;
+			take.push(queue.shift());
+		}
+		take.forEach(function (q) {
+			q.el.classList.remove('va-queued');
+			q.el.removeAttribute('title');
+		});
+		send(take.map(function (q) { return q.text; }).join('\n\n'), true);
+	}
+
+	// ---- rate-limit lock ----
+	// The server already refuses every request from a limited visitor before any
+	// model call, so no tokens are spent either way. This makes that visible: the
+	// input locks, and the visitor sees exactly how long is left, or is offered a
+	// new chat when it is the conversation itself that is full.
+	function isLocked() {
+		if (lockKind === 'session') { return true; }
+		return lockKind === 'ip' && Date.now() < lockUntil;
+	}
+
+	function applyLock(kind, retryAfter) {
+		if (kind === 'session') {
+			lockKind = 'session';
+			lockUntil = 0;
+		} else if (retryAfter > 0) {
+			lockKind = 'ip';
+			lockUntil = Date.now() + retryAfter * 1000;
+		} else {
+			return;
+		}
+		try {
+			sessionStorage.setItem('vaAdvisorLock', JSON.stringify({ kind: lockKind, until: lockUntil, session: sessionId }));
+		} catch (e) { /* private mode: the in-memory lock still holds for this page */ }
+		renderLock();
+	}
+
+	function clearLock() {
+		lockKind = null;
+		lockUntil = 0;
+		if (lockTimer) { clearInterval(lockTimer); lockTimer = null; }
+		try { sessionStorage.removeItem('vaAdvisorLock'); } catch (e) { /* ignore */ }
+		lockBar.hidden = true;
+		lockBar.innerHTML = '';
+		syncInput();
+	}
+
+	function formatWait(ms) {
+		var s = Math.max(0, Math.ceil(ms / 1000));
+		var m = Math.floor(s / 60);
+		var r = s % 60;
+		return m + ':' + (r < 10 ? '0' : '') + r;
+	}
+
+	function renderLock() {
+		if (lockTimer) { clearInterval(lockTimer); lockTimer = null; }
+		lockBar.hidden = false;
+
+		if (lockKind === 'session') {
+			lockBar.innerHTML =
+				'<span>This conversation has reached its limit.</span>' +
+				'<button type="button" class="va-lock-new">Start a new chat</button>';
+			lockBar.querySelector('.va-lock-new').addEventListener('click', newChat);
+			syncInput();
+			return;
+		}
+
+		lockBar.innerHTML = '<span>Paused. You can send again in <strong class="va-lock-time"></strong></span>';
+		var timeEl = lockBar.querySelector('.va-lock-time');
+		var tick = function () {
+			var left = lockUntil - Date.now();
+			if (left <= 0) {
+				clearLock();
+				if (!input.disabled && !panel.hidden) { input.focus(); }
+				flushQueue();
+				return;
+			}
+			timeEl.textContent = formatWait(left);
+		};
+		tick();
+		if (lockKind) { lockTimer = setInterval(tick, 1000); }
+		syncInput();
+	}
+
+	// A reload during a lock keeps it: the server would refuse anyway.
+	(function resumeLock() {
+		var saved = null;
+		try { saved = JSON.parse(sessionStorage.getItem('vaAdvisorLock') || 'null'); } catch (e) { saved = null; }
+		if (!saved) { return; }
+		if (saved.kind === 'ip' && saved.until > Date.now()) {
+			lockKind = 'ip';
+			lockUntil = saved.until;
+			renderLock();
+		} else if (saved.kind === 'session' && saved.session === sessionId) {
+			lockKind = 'session';
+			renderLock();
+		} else {
+			try { sessionStorage.removeItem('vaAdvisorLock'); } catch (e) { /* ignore */ }
+		}
+	})();
+
+	// ---- contact capture ----
+	// Offered once per conversation, and only when the server marks the answer as a
+	// natural moment for a rep: a category recommendation, a specific unit, a question
+	// the advisor could not answer, or pricing, contracts or availability. It sits in
+	// the conversation right under that answer, so it never covers what was just said.
 	function maybeAskContact() {
 		if (contactAsked || contactDone) { return; }
-		if (assistantTurns < 2) { return; } // greeting + at least one real reply
 		contactAsked = true;
 		renderContactCard();
 	}
@@ -617,48 +801,50 @@
 		var fields = '';
 		// Name is its own toggle, so "just give me your email" is a real option.
 		if (cfg.captureName !== false) {
-			fields += '<label>Name<input type="text" class="va-c-name" autocomplete="name"></label>';
+			fields += '<input type="text" class="va-c-name" autocomplete="name" placeholder="Name" aria-label="Name">';
 		}
 		if (mode === 'email_only' || mode === 'email_or_phone' || mode === 'email_and_phone') {
-			fields += '<label>Email<input type="email" class="va-c-email" autocomplete="email"></label>';
+			fields += '<input type="email" class="va-c-email" autocomplete="email" placeholder="Email" aria-label="Email">';
 		}
 		if (mode === 'phone_only' || mode === 'email_or_phone' || mode === 'email_and_phone') {
-			fields += '<label>Phone<input type="tel" class="va-c-phone" autocomplete="tel"></label>';
+			fields += '<input type="tel" class="va-c-phone" autocomplete="tel" placeholder="Phone" aria-label="Phone">';
 		}
-		var withName = cfg.captureName !== false;
-		var helper =
-			mode === 'email_or_phone'
-				? (withName ? 'Leave your name and an email or phone so a rep can follow up.'
-				            : 'Leave an email or phone so a rep can follow up.')
-				: (withName ? 'Leave your details so a Vac2Go rep can follow up if needed.'
-				            : 'Leave your ' + (mode === 'phone_only' ? 'phone number' : 'email') + ' so a Vac2Go rep can follow up if needed.');
 
-		contactCard.innerHTML =
-			'<div class="va-contact-inner">' +
-			'<div class="va-contact-title">Want a rep to follow up?</div>' +
-			'<div class="va-contact-help">' + escapeHtml(helper) + '</div>' +
-			fields +
-			'<div class="va-contact-actions">' +
-			'<button type="button" class="va-c-submit">Send</button>' +
-			'<button type="button" class="va-c-skip">Skip</button>' +
+		var card = document.createElement('div');
+		card.className = 'va-contact-card';
+		card.setAttribute('role', 'group');
+		card.setAttribute('aria-label', 'Ask a rep to follow up');
+		card.innerHTML =
+			'<div class="va-contact-head">' +
+				'<span class="va-contact-title">Want a rep to follow up?</span>' +
+				'<button type="button" class="va-c-skip" aria-label="No thanks" title="No thanks">&times;</button>' +
 			'</div>' +
-			'<div class="va-contact-status"></div>' +
-			'</div>';
-		contactCard.hidden = false;
-		scrollToBottom(true);
+			'<div class="va-contact-fields">' + fields +
+				'<button type="button" class="va-c-submit">Send</button>' +
+			'</div>' +
+			'<div class="va-contact-status" aria-live="polite"></div>';
 
-		contactCard.querySelector('.va-c-skip').addEventListener('click', function () {
-			finishContact();
+		if (lastReplyEl && lastReplyEl.parentNode === messagesEl) {
+			messagesEl.insertBefore(card, lastReplyEl.nextSibling);
+		} else {
+			messagesEl.appendChild(card);
+		}
+		scrollToBottom();
+
+		card.querySelector('.va-c-skip').addEventListener('click', function () {
+			finishContact(card);
 		});
-		contactCard.querySelector('.va-c-submit').addEventListener('click', submitContact);
+		card.querySelector('.va-c-submit').addEventListener('click', function () {
+			submitContact(card);
+		});
 	}
 
-	function submitContact() {
+	function submitContact(card) {
 		var mode = cfg.captureMode || 'email_only';
-		var name = (contactCard.querySelector('.va-c-name') || {}).value || '';
-		var email = (contactCard.querySelector('.va-c-email') || {}).value || '';
-		var phone = (contactCard.querySelector('.va-c-phone') || {}).value || '';
-		var status = contactCard.querySelector('.va-contact-status');
+		var name = (card.querySelector('.va-c-name') || {}).value || '';
+		var email = (card.querySelector('.va-c-email') || {}).value || '';
+		var phone = (card.querySelector('.va-c-phone') || {}).value || '';
+		var status = card.querySelector('.va-contact-status');
 
 		var hasEmail = email.trim() !== '';
 		var hasPhone = phone.trim() !== '';
@@ -667,12 +853,13 @@
 		var needEither = mode === 'email_or_phone';
 
 		if ((needEmail && !hasEmail) || (needPhone && !hasPhone) || (needEither && !hasEmail && !hasPhone)) {
-			status.textContent = 'Please fill in the requested contact details (or Skip).';
+			status.textContent = mode === 'email_or_phone' ? 'Add an email or phone, or close this.'
+				: 'Add your ' + (needEmail && needPhone ? 'email and phone' : needPhone ? 'phone' : 'email') + ', or close this.';
 			status.style.color = '#b32d2e';
 			return;
 		}
 
-		status.textContent = 'Sending…';
+		status.textContent = 'Sending\u2026';
 		status.style.color = '';
 
 		fetch(cfg.restUrl + '/contact', {
@@ -682,19 +869,20 @@
 			body: JSON.stringify({ session_id: sessionId, name: name, email: email, phone: phone }),
 		})
 			.then(function () {
-				finishContact('Thanks, a rep can now follow up if needed.');
+				finishContact(card, 'Thanks, a rep can now follow up if needed.');
 			})
 			.catch(function () {
-				finishContact();
+				finishContact(card);
 			});
 	}
 
-	function finishContact(note) {
+	function finishContact(card, note) {
 		contactDone = true;
-		sessionStorage.setItem('vaAdvisorContactDone', '1');
-		contactCard.hidden = true;
-		contactCard.innerHTML = '';
-		if (note) { addMessage('assistant', note); }
+		try { sessionStorage.setItem('vaAdvisorContactDone', '1'); } catch (e) { /* ignore */ }
+		if (card && card.parentNode) {
+			if (note) { addMessage('assistant', note, card); }
+			card.remove();
+		}
 	}
 
 	// The bootstrap sets vaAdvisorAutoOpen when the visitor clicked its launcher.

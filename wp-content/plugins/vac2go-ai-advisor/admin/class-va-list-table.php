@@ -99,6 +99,9 @@ class VA_List_Table extends WP_List_Table {
 		$status .= '<div class="va-correct-form" style="display:none;">';
 		$status .= '<textarea class="va-correction-text" rows="3" placeholder="How should this have been answered?">' . esc_textarea( $item['correction_text'] ) . '</textarea>';
 		$status .= '<button type="button" class="button button-primary button-small va-save-correction" data-log-id="' . $id . '">Save correction</button> ';
+		if ( (int) $item['marked_incorrect'] === 1 ) {
+			$status .= '<button type="button" class="button button-small va-remove-correction" data-log-id="' . $id . '">Remove correction</button> ';
+		}
 		$status .= '<span class="va-correct-status"></span>';
 		$status .= '</div></div>';
 		return $status;

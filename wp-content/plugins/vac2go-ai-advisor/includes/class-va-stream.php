@@ -109,13 +109,18 @@ class VA_Stream {
 		if ( isset( $prep['response'] ) ) {
 			$data = $prep['response']->get_data();
 			self::send( 'delta', array( 'text' => isset( $data['reply'] ) ? $data['reply'] : '' ) );
-			self::send(
-				'done',
-				array(
-					'filtered' => ! empty( $data['filtered'] ),
-					'early'    => true,
-				)
+			$done = array(
+				'filtered' => ! empty( $data['filtered'] ),
+				'early'    => true,
 			);
+			// Rate-limit details (so the widget can lock and count down) and a
+			// replayed answer's follow-up signal travel through unchanged.
+			foreach ( array( 'limited', 'limit', 'retry_after', 'followup' ) as $k ) {
+				if ( isset( $data[ $k ] ) ) {
+					$done[ $k ] = $data[ $k ];
+				}
+			}
+			self::send( 'done', $done );
 			self::finish();
 		}
 
@@ -178,7 +183,21 @@ class VA_Stream {
 			}
 		}
 
-		self::send( 'done', array( 'filtered' => null !== $stage ) );
+		// After the judge, never before: see VA_Signals::AVAILABILITY_CTA. Sent as one
+		// more delta, so it simply continues the answer already on screen.
+		$suffix = VA_Signals::availability_suffix( $ctx['message'], $final, $stage );
+		if ( '' !== $suffix ) {
+			self::send( 'delta', array( 'text' => $suffix ) );
+			$final .= $suffix;
+		}
+
+		self::send(
+			'done',
+			array(
+				'filtered' => null !== $stage,
+				'followup' => VA_Signals::followup_reason( $ctx['message'], $final ),
+			)
+		);
 
 		VA_REST::log_turn(
 			$ctx['session_id'],

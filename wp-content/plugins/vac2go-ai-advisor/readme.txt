@@ -1,7 +1,7 @@
 === Vac2Go AI Equipment Advisor ===
 Contributors: HighWater
 Requires PHP: 8.1
-Stable tag: 2.5.2
+Stable tag: 2.6.0
 License: GPLv2 or later
 
 Front-end AI equipment advisor for Vac2Go. Recommends a truck category from a plain-
@@ -23,11 +23,52 @@ REST namespace: vac2go/v1 (/nonce, /chat, /chat/stream, /history, /contact, /cor
 == Notes ==
 - The output filter runs server-side on every model response regardless of what the
   model itself decided, so committal/pricing language is blocked even under prompt attack.
-- Approved corrections are NOT auto-folded back into the system prompt in this beta;
-  a human copies good corrections into Settings, System prompt. (v2 feedback loop.)
+- Corrections written in the Review Queue are sent to the model on every turn, all of
+  them, permanently (no count or age cutoff). Each is a question paired with how it
+  should be answered; the model applies it to that question and similar ones. It does
+  not rewrite the knowledge base. Newest wins when the same question was corrected
+  twice. A correction stops applying only when edited or removed ("Remove correction"
+  on its row). The block is prompt-cached; Settings shows its size and warns when big.
 - Widget theme is matched to the live site's extracted brand tokens (red #e01f30,
   dark #383838, Open Sans / Poppins). The stylesheet is injected at runtime from JS so
   LiteSpeed's unused-CSS optimizer cannot purge the JS-rendered widget's selectors.
+
+== When the advisor offers a rep ==
+Always visible: a call button in the header (Settings -> Contact a rep -> Phone
+number; swap in the tracked RingCentral number there) and a "Contact a Vac2Go rep"
+link to the contact form in the footer.
+
+The follow-up card (name/email) appears at most once per conversation, inline under
+the answer that prompted it, and only when the server tags that answer (VA_Signals):
+a category recommendation, a specific unit, a question the advisor could not answer,
+or a pricing / contract / availability question. Tags come from fixed phrases the
+prompt already requires, so they cost nothing and add no latency. The model itself
+never asks for contact details.
+
+Availability questions get a rental-portal line (https://rental.vac2go.com) appended
+by the server AFTER the filter and judge. Left to the model, the judge would read
+"live availability" as an availability promise and replace the whole answer.
+
+Hazardous-material answers end with the client's exact sentence
+(VA_Knowledge::HAZMAT_SENTENCE), set in a runtime footer so it reaches sites whose
+stored system prompt predates it.
+
+== Rate limits, as the visitor sees them ==
+A per-IP limit returns retry_after (seconds); the widget locks the input and shows a
+live countdown, which survives a reload. Sending 5 more times while limited escalates
+to a 15-minute lock. A full conversation (per-session cap) offers "Start a new chat".
+Limited requests never reach the model, so they cost no tokens; they are still logged.
+Per-visitor limits run before the global breaker, so a blocked script cannot trip
+the breaker for everyone else.
+
+Messages sent while an answer is still arriving are shown at once as "queued" and go
+out together as the next turn when the answer finishes, never dropped.
+
+== Token monitoring ==
+Emails (Settings -> Alert email, max one per hour per type): 80% and 100% of the
+daily token ceiling, an hourly spike (tokens in the last 60 minutes over Settings ->
+Hourly spike alert), breaker trips, prompt-leak hits, API key/credit errors.
+Stats shows today's tokens and spend, the last 60 minutes, and a 7-day trend.
 
 == Streaming ==
 POST /vac2go/v1/chat/stream streams the answer over Server-Sent Events using raw cURL
@@ -97,3 +138,12 @@ mobile), nonce recovery from a garbage nonce, idempotent resend, injected-histor
 rejection, XSS rendering as text, CSV export cell safety, accessibility (aria
 attributes, Escape, focus return), em-dash absence, single AI disclosure, and live
 guardrail scenarios. Model-semantic assertions auto-skip until VA_TEST_LIVE=1.
+
+feedback-v1.spec.js mocks the chat endpoints, so it spends no tokens: queueing, the
+rate-limit lock and countdown, the follow-up card's timing and size, and the CTAs.
+
+Without WordPress (CLI only):
+
+    php tests/filter-fixtures.php    # output filter and streaming release
+    php tests/signals-fixtures.php   # follow-up tags, availability CTA, hazmat
+                                     # wording, corrections, rate-limit waits

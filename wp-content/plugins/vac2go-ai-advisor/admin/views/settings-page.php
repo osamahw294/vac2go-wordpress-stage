@@ -101,12 +101,16 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 			<strong>Teach the advisor from corrections.</strong> Answers you mark incorrect in the Review Queue, together with what you wrote they should have said, are sent to the model as authoritative guidance.
 		</label>
 		<p class="description">
-			The 25 most recent corrections are included, up to roughly 6,000 characters, newest first. They are sent as a separate block after the system prompt, so prompt caching is unaffected. Corrections can never override the guardrails, so one cannot be used to authorise a price or an availability commitment.
+			Every correction is applied permanently, however many there are. Each one pairs a customer question with how it should be answered, and the advisor follows it for that question and for similar ones; it does not rewrite the knowledge base. A correction stops applying only when you edit it or click <strong>Remove correction</strong> on its row in the Review Queue. If the same question was corrected twice, the newer correction wins. Corrections are sent after the system prompt and are prompt-cached, so they cost little per turn. They can never override the guardrails, so one cannot be used to authorise a price or an availability commitment.
 			<?php
-			$correction_count = class_exists( 'VA_DB' ) ? count( VA_DB::get_corrections( 25 ) ) : 0;
+			$correction_count = class_exists( 'VA_DB' ) ? count( VA_Knowledge::unique_corrections( VA_DB::get_corrections() ) ) : 0;
+			$correction_chars = VA_Knowledge::corrections_size();
 			?>
-			<br><strong><?php echo (int) $correction_count; ?></strong> correction<?php echo 1 === $correction_count ? '' : 's'; ?> currently in use.
+			<br><strong><?php echo (int) $correction_count; ?></strong> correction<?php echo 1 === $correction_count ? '' : 's'; ?> currently in use (about <?php echo esc_html( number_format( (int) ceil( $correction_chars / 4 ) ) ); ?> tokens).
 		</p>
+		<?php if ( $correction_chars > 40000 ) : ?>
+			<div class="notice notice-warning inline"><p>The corrections block is getting large (about <?php echo esc_html( number_format( (int) ceil( $correction_chars / 4 ) ) ); ?> tokens). Consider folding the recurring ones into the system prompt above and removing them from the Review Queue.</p></div>
+		<?php endif; ?>
 
 		<h2>Lead notifications</h2>
 		<input type="hidden" name="va_notify_leads" value="0">
@@ -115,8 +119,16 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 			<strong>Email me when a visitor leaves their details.</strong> Sent to the alert address below, with the full conversation, so a rep can follow up without watching the queue.
 		</label>
 
+		<h2>Contact a rep</h2>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><label for="va_rep_phone">Phone number</label></th>
+				<td><input name="va_rep_phone" id="va_rep_phone" type="text" value="<?php echo esc_attr( get_option( 'va_rep_phone', '855-822-7246' ) ); ?>" class="regular-text"> <span class="description">Used by the always-visible call button in the chat header. Swap in the tracked RingCentral number here when it exists; no code change needed.</span></td>
+			</tr>
+		</table>
+
 		<h2>Contact capture</h2>
-		<p class="description">What the advisor asks for once a visitor shows real interest. It asks once per conversation and never blocks the chat.</p>
+		<p class="description">What the follow-up card asks for. It appears at most once per conversation, and only after the advisor recommends a category, discusses a specific unit, cannot answer, or is asked about pricing, contracts or availability. It never blocks the chat.</p>
 		<select name="va_capture_mode">
 			<?php foreach ( $modes as $val => $label ) : ?>
 				<option value="<?php echo esc_attr( $val ); ?>" <?php selected( $capture_mode, $val ); ?>><?php echo esc_html( $label ); ?></option>
@@ -157,6 +169,10 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 				<td><input name="va_daily_token_ceiling" id="va_daily_token_ceiling" type="number" min="0" value="<?php echo esc_attr( get_option( 'va_daily_token_ceiling', 2000000 ) ); ?>" class="regular-text"> <span class="description">80% emails the admin; 100% disables the chat until midnight. 0 = unlimited.</span></td>
 			</tr>
 			<tr>
+				<th scope="row"><label for="va_hourly_token_alert">Hourly spike alert (tokens)</label></th>
+				<td><input name="va_hourly_token_alert" id="va_hourly_token_alert" type="number" min="0" value="<?php echo esc_attr( get_option( 'va_hourly_token_alert', 400000 ) ); ?>" class="regular-text"> <span class="description">Emails the admin when the last 60 minutes used more than this many tokens, so a sudden surge is caught before the daily 80% warning. Alert only, never blocks. 0 = off.</span></td>
+			</tr>
+			<tr>
 				<th scope="row">Prices (USD per million tokens)</th>
 				<td>
 					Input <input name="va_price_in_per_m" type="number" step="0.01" min="0" value="<?php echo esc_attr( get_option( 'va_price_in_per_m', 3.0 ) ); ?>" class="small-text">
@@ -167,7 +183,7 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 			</tr>
 			<tr>
 				<th scope="row"><label for="va_admin_email">Alert email</label></th>
-				<td><input name="va_admin_email" id="va_admin_email" type="email" value="<?php echo esc_attr( get_option( 'va_admin_email', get_option( 'admin_email' ) ) ); ?>" class="regular-text"> <span class="description">Breaker trips, canary hits, budget warnings, API auth/credit errors (max one email per hour per type).</span></td>
+				<td><input name="va_admin_email" id="va_admin_email" type="email" value="<?php echo esc_attr( get_option( 'va_admin_email', get_option( 'admin_email' ) ) ); ?>" class="regular-text"> <span class="description">Breaker trips, canary hits, budget warnings, hourly token spikes, API auth/credit errors (max one email per hour per type).</span></td>
 			</tr>
 		</table>
 

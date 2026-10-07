@@ -31,7 +31,7 @@ $export_url = wp_nonce_url(
 	<a href="<?php echo esc_url( $export_url ); ?>" class="page-title-action">Export to CSV</a>
 	<hr class="wp-header-end">
 
-	<p class="description">Every question and answer is logged here, including real recommendations, "I don't know" replies, and refusals alike. Mark any answer incorrect and record how it should have been answered so the KB can be improved.</p>
+	<p class="description">Every question and answer is logged here, including real recommendations, "I don't know" replies, and refusals alike. Mark any answer incorrect and record how it should have been answered: the advisor follows every correction from then on, until you edit or remove it.</p>
 
 	<ul class="subsubsub">
 		<?php
