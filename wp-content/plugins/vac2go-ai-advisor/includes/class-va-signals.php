@@ -39,8 +39,12 @@ class VA_Signals {
 	 */
 	const AVAILABILITY_PATTERN = '/\b(avail\w*|in stock|on hand|in (your |the )?(yard|inventory|fleet) (now|today|right now)|lead[\s-]?time|how soon|when can (i|we|you)|(can|could) (i|we) get (one|it|a|an)|do you (guys )?have (any|one|a|an)|have (any|one) (open|free|ready)|ready to go|book(ing)?|reserve|reservation|schedule a (unit|truck)|this week|next week|tomorrow|asap)\b/i';
 
-	/** An email address or a phone number typed into the chat. */
-	const CONTACT_PATTERN = '/[A-Z0-9._%+-]+@[A-Z0-9-]+(\.[A-Z0-9-]+)+|(\+?1[\s.-]?)?\(?\b\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}\b|\b\d{3}[\s.-]\d{4}\b/i';
+	/**
+	 * An email address, or a phone number with its area code, typed into the chat. A
+	 * bare seven-digit form is deliberately not matched: "400-1500 gallons" looks the
+	 * same, and a customer leaving a number for a callback gives the area code.
+	 */
+	const CONTACT_PATTERN = '/[A-Z0-9._%+-]+@[A-Z0-9-]+(\.[A-Z0-9-]+)+|(\+?1[\s.-]?)?(\(\d{3}\)\s?|\b\d{3}[\s.-])\d{3}[\s.-]\d{4}\b/i';
 
 	/**
 	 * The answer could not be given.

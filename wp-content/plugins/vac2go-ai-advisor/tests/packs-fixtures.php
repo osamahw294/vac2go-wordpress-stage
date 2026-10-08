@@ -62,6 +62,22 @@ check( 'at most 3 packs', 3 === count( $four ), json_encode( $four ) );
 check( 'over the cap, the earliest pack is dropped', array( 'hydro-excavator', 'tanker', 'roll-off' ) === $four, json_encode( $four ) );
 check( 'selection is deterministic', VA_KB::select_packs( $long, 'x' ) === VA_KB::select_packs( $long, 'x' ) );
 
+// Review finding 1: the cap must never drop the category the customer is asking about now.
+$overview = array( 'what do you rent?', 'We cover Industrial Vacuum, Hydro Excavator, Combination, Liquid Vacuum, Liquid Ring, trailers, tankers, roll-off boxes, tractors and water trucks.' );
+$p = VA_KB::select_packs( $overview, 'ok, hydrovac' );
+check( 'after an overview listing every category, "ok, hydrovac" still carries the Hydro Excavator pack', in_array( 'hydro-excavator', $p, true ) && count( $p ) <= 3, json_encode( $p ) );
+$poorfits = array( 'I need a hydrovac for potholing', 'A hydro excavator fits. A combo, a liquid vacuum truck or a tanker would be poor fits.' );
+$p = VA_KB::select_packs( $poorfits, 'What is the water capacity on the Vactor Paradigm hydro excavator?' );
+check( 'a category named early and again now is kept over later passing mentions', in_array( 'hydro-excavator', $p, true ) && count( $p ) <= 3, json_encode( $p ) );
+check( 'when the current message names nothing, the sticky set is unchanged', VA_KB::select_packs( $history, 'thanks' ) === VA_KB::select_packs( $history, 'ok' ) );
+$p = VA_KB::select_packs( array(), 'Compare a combo, a hydrovac, a tanker and a roll-off box.' );
+check( 'a message naming more than 3 categories keeps 3 of them', 3 === count( $p ), json_encode( $p ) );
+
+// Review finding 3: the transcript read must cover the whole session.
+check( 'transcript limit covers the default session cap', VA_KB::transcript_limit( 40 ) >= 40 );
+check( 'transcript limit follows a raised session cap', VA_KB::transcript_limit( 120 ) >= 120 );
+check( 'transcript limit with no session cap is still bounded but generous', VA_KB::transcript_limit( 0 ) >= 200 );
+
 // ---------------------------------------------------------------------------
 section( 'Pack contents' );
 $combo = VA_KB::pack( 'combination' );

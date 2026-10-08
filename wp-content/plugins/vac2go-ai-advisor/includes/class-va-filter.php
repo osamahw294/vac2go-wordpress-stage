@@ -180,9 +180,12 @@ class VA_Filter {
 			'== BRAND SAFETY ==',
 			// Phase 2 prompt sections.
 			'== USING THE KNOWLEDGE ==',
-			'KNOWLEDGE PACK',
+			// The banners as they appear in the prompt, not the bare phrases: the rules
+			// tell the model about "knowledge packs" and "Notes for the advisor", so an
+			// honest "I don't have the knowledge pack for that" must not count as a leak.
+			'KNOWLEDGE PACK:',
 			'== CATEGORIES AND FLEET',
-			'Notes for the advisor',
+			'## Notes for the advisor',
 			'== REVIEWED CORRECTIONS',
 			'== NOTES FROM THE VAC2GO TEAM',
 			'== RESPONSE LENGTH',

@@ -58,6 +58,9 @@ class VA_Knowledge {
 			$blocks[] = self::block( $corrections );
 		}
 
+		// All packs share one block: the 4-breakpoint limit leaves no room for one each.
+		// So when a conversation gains a second pack, the whole pack block is written to
+		// the cache again on that turn; a lower cache hit rate on such turns is expected.
 		$packs_text = VA_KB::packs_text( $packs );
 		if ( '' !== $packs_text ) {
 			$blocks[] = self::block( "\n\n== KNOWLEDGE PACKS FOR THIS CONVERSATION ==\n\n" . $packs_text );

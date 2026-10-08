@@ -29,6 +29,10 @@ function apiKey() {
 	return m ? m[1] : null;
 }
 
+if (!offline && !apiKey()) {
+	console.error('No API key: set ANTHROPIC_API_KEY, or run with --offline to skip the model-graded E1 comparison.');
+	process.exit(1);
+}
 const client = offline ? null : new Anthropic({ apiKey: apiKey() });
 
 async function modelGrade(c, reply) {

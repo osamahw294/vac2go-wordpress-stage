@@ -80,8 +80,14 @@ class VA_KB {
 	 * The advisor's own answers count: when it recommends a category, the next turn
 	 * carries that category's detail.
 	 *
+	 * Over the cap, the categories the CURRENT message names always stay: the customer
+	 * is asking about them right now. The remaining slots go to the most recent of the
+	 * earlier ones, and the kept packs stay in first-mention order, so the prefix only
+	 * changes when the set itself changes. (Without this, an advisor answer that lists
+	 * every category pushed out the very pack the next question was about.)
+	 *
 	 * @param string[] $history Earlier questions and answers, oldest first.
-	 * @return string[] Category ids, at most MAX_PACKS (the earliest dropped first).
+	 * @return string[] Category ids, at most MAX_PACKS.
 	 */
 	public static function select_packs( array $history, $current ) {
 		$order = array();
@@ -92,7 +98,28 @@ class VA_KB {
 				}
 			}
 		}
-		return array_slice( $order, -self::MAX_PACKS );
+		if ( count( $order ) <= self::MAX_PACKS ) {
+			return $order;
+		}
+
+		$now    = array_slice( VA_Fleet::resolve( (string) $current )['categories'], 0, self::MAX_PACKS );
+		$others = array_values( array_diff( $order, $now ) );
+		$room   = self::MAX_PACKS - count( $now );
+		$keep   = array_merge( $now, $room > 0 ? array_slice( $others, -$room ) : array() );
+
+		return array_values( array_filter( $order, function ( $c ) use ( $keep ) {
+			return in_array( $c, $keep, true );
+		} ) );
+	}
+
+	/**
+	 * How many logged turns to read back when choosing packs: the whole session. Follows
+	 * the per-session turn cap so a raised cap never leaves later turns unread; with no
+	 * cap, a generous bound.
+	 */
+	public static function transcript_limit( $session_cap ) {
+		$session_cap = (int) $session_cap;
+		return $session_cap > 0 ? max( 50, $session_cap ) : 500;
 	}
 
 	/** One category's full Q&A plus every unit card in it. Empty for an unknown id. */

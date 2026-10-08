@@ -292,7 +292,8 @@ class VA_REST {
 	 */
 	private static function transcript_texts( $session_id ) {
 		$texts = array();
-		foreach ( VA_DB::get_transcript( $session_id, 50 ) as $t ) {
+		$limit = VA_KB::transcript_limit( get_option( 'va_rate_session_turns', 40 ) );
+		foreach ( VA_DB::get_transcript( $session_id, $limit ) as $t ) {
 			$texts[] = (string) $t['question'];
 			$texts[] = (string) $t['answer'];
 		}

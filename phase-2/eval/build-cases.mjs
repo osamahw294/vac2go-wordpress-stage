@@ -77,7 +77,7 @@ for (const [uid, u] of Object.entries(fleet.units)) {
 
 // ---- E3-E5 ------------------------------------------------------------------
 const E3 = hand.E3.map((c) => ({ ...c, set: 'E3' }));
-const E4 = hand.E4.map((c) => ({ ...c, set: 'E4' }));
+const E4 = hand.E4.map((c) => ({ ...c, set: 'E4', q: c.q ?? c.turns.at(-1) }));
 const E5 = hand.E5.map((c) => ({ ...c, set: 'E5' }));
 
 const cases = [...E1, ...E2, ...E3, ...E4, ...E5];

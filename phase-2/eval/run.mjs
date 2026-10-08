@@ -34,7 +34,23 @@ async function freshNonce() {
 }
 
 async function ask(c) {
-	const session = randomUUID();
+	// Multi-turn case: earlier turns share the session (paced like everything else);
+	// only the last reply is graded.
+	if (c.turns) {
+		const session = randomUUID();
+		const replies = [];
+		let last = null;
+		for (const [k, q] of c.turns.entries()) {
+			if (k > 0) await sleep(GAP_MS);
+			last = await askOnce({ ...c, q }, session);
+			replies.push(last.reply);
+		}
+		return { ...last, replies };
+	}
+	return askOnce(c, randomUUID());
+}
+
+async function askOnce(c, session) {
 	for (let attempt = 1; attempt <= 4; attempt++) {
 		const t0 = Date.now();
 		const r = await fetch(`${API}/chat`, {

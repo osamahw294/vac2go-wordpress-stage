@@ -81,9 +81,14 @@ check( 'an admin-edited list is left alone', "/\\bmy custom\\b/i\n/\\bguaranteed
 unset( $GLOBALS['va_options']['va_banned_patterns'] );
 
 echo "\n== Phase 2 prompt sections count as leaks ==\n";
-foreach ( array( '== USING THE KNOWLEDGE ==', 'KNOWLEDGE PACK: Combination', '== CATEGORIES AND FLEET', 'Notes for the advisor', '== REVIEWED CORRECTIONS', '== NOTES FROM THE VAC2GO TEAM' ) as $m ) {
+foreach ( array( '== USING THE KNOWLEDGE ==', 'KNOWLEDGE PACK: Combination', '== CATEGORIES AND FLEET', '## Notes for the advisor', '== REVIEWED CORRECTIONS', '== NOTES FROM THE VAC2GO TEAM' ) as $m ) {
 	$r = VA_Filter::apply( "Sure, here it is: {$m} ..." );
 	check( "leak marker \"{$m}\" is caught", $r['filtered'] && 'structural' === $r['stage'], json_encode( $r['stage'] ) );
+}
+
+// Review finding 2: honest "I don't have that" replies that mention the phrases must pass.
+foreach ( array( "I don't have the knowledge pack for Liquid Ring in front of me, so a rep can confirm.", 'The notes for the advisor say to confirm with a rep.' ) as $t ) {
+	check( "an honest reply is not treated as a leak: \"{$t}\"", ! blocked( $t ), VA_Filter::apply( $t )['reason'] ?? '' );
 }
 
 echo "\n== The judge is told what is not a commitment (Phase 1 log #79) ==\n";
@@ -98,6 +103,9 @@ check( 'an email address in the message → contact', 'contact' === VA_Signals::
 check( 'a phone number in the message → contact', 'contact' === VA_Signals::followup_reason( 'call me at 555-0100 or (502) 699-4019', 'Thanks.' ) );
 check( 'no contact details → no contact signal', 'contact' !== VA_Signals::followup_reason( 'What is the CFM on the MC1510?', 'Thanks.' ) );
 check( 'a spec figure is not mistaken for a phone number', null === VA_Signals::followup_reason( 'can it lift 1,500 gal and 5,300 cfm?', 'Thanks.' ) );
+// Review finding 4: a size range is not a phone number.
+check( 'a size range (400-1500 gallons) is not a phone number', 'contact' !== VA_Signals::followup_reason( 'I need a tank in the 400-1500 gallon range', 'Thanks.' ) );
+check( 'a full phone number with an area code still counts', 'contact' === VA_Signals::followup_reason( 'reach me on 502-699-4019', 'Thanks.' ) );
 
 echo "\n== Every knowledge-base line passes the filter ==\n";
 $lines = array();

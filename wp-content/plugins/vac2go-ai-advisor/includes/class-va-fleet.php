@@ -71,7 +71,7 @@ class VA_Fleet {
 	public static function normalize( $text ) {
 		$t = mb_strtolower( (string) $text );
 		$t = str_replace( array( "'", '’', '‘' ), '', $t );
-		$t = preg_replace( '/[^a-z0-9]+/u', ' ', $t );
+		$t = (string) preg_replace( '/[^a-z0-9]+/u', ' ', $t ); // null on malformed UTF-8 → no match
 		$t = preg_replace( '/(?<=[a-z])(?=[0-9])|(?<=[0-9])(?=[a-z])/', ' ', $t );
 		return trim( preg_replace( '/\s+/', ' ', $t ) );
 	}
