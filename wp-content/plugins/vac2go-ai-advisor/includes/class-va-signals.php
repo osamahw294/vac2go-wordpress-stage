@@ -39,6 +39,9 @@ class VA_Signals {
 	 */
 	const AVAILABILITY_PATTERN = '/\b(avail\w*|in stock|on hand|in (your |the )?(yard|inventory|fleet) (now|today|right now)|lead[\s-]?time|how soon|when can (i|we|you)|(can|could) (i|we) get (one|it|a|an)|do you (guys )?have (any|one|a|an)|have (any|one) (open|free|ready)|ready to go|book(ing)?|reserve|reservation|schedule a (unit|truck)|this week|next week|tomorrow|asap)\b/i';
 
+	/** An email address or a phone number typed into the chat. */
+	const CONTACT_PATTERN = '/[A-Z0-9._%+-]+@[A-Z0-9-]+(\.[A-Z0-9-]+)+|(\+?1[\s.-]?)?\(?\b\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}\b|\b\d{3}[\s.-]\d{4}\b/i';
+
 	/**
 	 * The answer could not be given.
 	 */
@@ -47,7 +50,7 @@ class VA_Signals {
 	/**
 	 * Why this answer should offer a rep follow-up, or null when it should not.
 	 *
-	 * @return string|null recommendation | unit | unknown | commercial
+	 * @return string|null contact | recommendation | unit | unknown | commercial
 	 */
 	public static function followup_reason( $question, $answer ) {
 		$q = (string) $question;
@@ -55,6 +58,12 @@ class VA_Signals {
 
 		if ( '' === trim( $a ) ) {
 			return null;
+		}
+
+		// A visitor typing their details into the chat wants a rep: show the form,
+		// which is the one place those details actually reach the team.
+		if ( preg_match( self::CONTACT_PATTERN, $q ) ) {
+			return 'contact';
 		}
 
 		// The recommendation caveat is mandatory on every category recommendation.

@@ -17,7 +17,7 @@ define( 'VA_ADVISOR_VERSION', '2.6.1' );
 define( 'VA_ADVISOR_FILE', __FILE__ );
 define( 'VA_ADVISOR_DIR', plugin_dir_path( __FILE__ ) );
 define( 'VA_ADVISOR_URL', plugin_dir_url( __FILE__ ) );
-define( 'VA_ADVISOR_DB_VERSION', '5' );
+define( 'VA_ADVISOR_DB_VERSION', '6' );
 
 // Anthropic models + API endpoint (per build spec; do not change models without sign-off).
 define( 'VA_ADVISOR_MODEL', 'claude-fable-5-1' );

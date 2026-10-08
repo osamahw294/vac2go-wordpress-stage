@@ -115,6 +115,7 @@ class VA_DB {
 			add_option( 'va_banned_patterns', VA_Filter::default_patterns_text() );
 		}
 		self::migrate_prices();
+		VA_Filter::migrate_patterns();
 
 		// One-time canary token for prompt-leak detection. Random, generated once.
 		if ( false === get_option( 'va_canary', false ) ) {

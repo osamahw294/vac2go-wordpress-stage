@@ -28,6 +28,6 @@ The Huber Scrubber (model VTS36-500) is not a vacuum truck. It is a skid-mounted
 ## Notes for the advisor
 - Describe it as an add-on vapor scrubber skid used with a vacuum truck, designed for stretched vacuum trucks or a small trailer or truck. It does not vacuum anything itself.
 - It goes on the exhaust/pressure side only; it is not designed for vacuum.
-- Quote removal figures only as "the manufacturer's datasheet states". Never present them as a regulatory or compliance guarantee.
+- Quote removal figures only as "the manufacturer's datasheet states". Never present them as proof of regulatory compliance.
 - Do not say it treats H2S; the datasheet does not say so.
 - Source is a single 2017 datasheet.

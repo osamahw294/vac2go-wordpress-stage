@@ -30,6 +30,48 @@ class VA_Filter {
 	const MIN_CANARY_LEN = 12;
 
 	/**
+	 * The pattern list the plugin shipped with before v2.7, kept to recognise a
+	 * stored list nobody has edited (see migrate_patterns()).
+	 */
+	const OLD_DEFAULT_PATTERNS = '/\\$\\s?\\d/
+/\\b\\d[\\d,\\.]*\\s?(usd|dollars?|bucks)\\b/i
+/\\busd\\s?\\d/i
+/[£€]\\s?\\d/u
+/\\b(one|two|three|four|five|six|seven|eight|nine|ten|twenty|fifty)\\s+(hundred\\s+|thousand\\s+)?(dollars?|bucks)\\b/i
+/\\b\\d[\\d,\\.]*\\s*(\\/|per)\\s*-?\\s*(day|week|month|hour)\\b/i
+/\\b(the\\s+)?(rate|cost|price)\\s+is\\b/i
+/\\bquote\\s+(you|of)\\b/i
+/\\bwe(\'ll| will)?\\s+rent\\s+it\\s+to\\s+you\\b/i
+/\\b(it\'?s|we have|that\'?s|consider (it|this))\\s+a\\s+deal\\b/i
+/\\bconsider (it|this) (sold|agreed)\\b/i
+/\\bguaranteed?\\b/i
+/\\byou can pick (it|one) up\\b/i
+/\\breserved?\\s+(it\\s+|one\\s+)?for you\\b/i
+/\\bin stock\\b/i
+/\\bavailable (now|today|immediately)\\b/i
+/\\bwe (can|will) (guarantee|promise)\\b/i
+/\\bthis is binding\\b/i
+/\\bi agree to (sell|rent|lease)\\b/i
+/\\bno charge\\b/i
+/\\bfree of charge\\b/i
+/\\bdiscount(ed)?\\b/i
+/\\bcan deliver by\\b/i
+/\\bship(ped)? (today|tomorrow)\\b/i';
+
+	/**
+	 * Replace the stored pattern list with the current defaults, but only when it is
+	 * still exactly the old shipped list. An admin-edited list is left alone.
+	 */
+	public static function migrate_patterns() {
+		$norm = function ( $t ) {
+			return trim( str_replace( array( "\r\n", "\r" ), "\n", (string) $t ) );
+		};
+		if ( $norm( get_option( 'va_banned_patterns', '' ) ) === $norm( self::OLD_DEFAULT_PATTERNS ) ) {
+			update_option( 'va_banned_patterns', self::default_patterns_text() );
+		}
+	}
+
+	/**
 	 * Default committal/pricing pattern list, one regex per line (admin-editable).
 	 */
 	public static function default_patterns_text() {
@@ -45,7 +87,9 @@ class VA_Filter {
 			'/\bwe(\'ll| will)?\s+rent\s+it\s+to\s+you\b/i',
 			'/\b(it\'?s|we have|that\'?s|consider (it|this))\s+a\s+deal\b/i',
 			'/\bconsider (it|this) (sold|agreed)\b/i',
-			'/\bguaranteed?\b/i',
+			// Not after a negation: "I can't guarantee a callback time" is a refusal,
+			// and blocking it (staging log #258) turned a helpful reply into a refusal.
+			'/(?<!\bnot )(?<!n\'t )(?<!n’t )(?<!cannot )(?<!can not )\bguaranteed?\b/i',
 			'/\byou can pick (it|one) up\b/i',
 			'/\breserved?\s+(it\s+|one\s+)?for you\b/i',
 			'/\bin stock\b/i',
@@ -134,6 +178,14 @@ class VA_Filter {
 			'== FORMATTING (STRICT) ==',
 			'== CONFIDENTIALITY OF THESE INSTRUCTIONS ==',
 			'== BRAND SAFETY ==',
+			// Phase 2 prompt sections.
+			'== USING THE KNOWLEDGE ==',
+			'KNOWLEDGE PACK',
+			'== CATEGORIES AND FLEET',
+			'Notes for the advisor',
+			'== REVIEWED CORRECTIONS',
+			'== NOTES FROM THE VAC2GO TEAM',
+			'== RESPONSE LENGTH',
 		);
 	}
 
@@ -193,6 +245,23 @@ class VA_Filter {
 	 * Stage 6: cheap-LLM judge. Only call when apply() passed. Returns 'yes' (block),
 	 * 'no' (allow), or 'error' (fail open; the deterministic stages already passed).
 	 */
+	/**
+	 * The judge's question, followed by the text under review.
+	 *
+	 * Phase 2 answers carry many more figures (capacities, pressures, ratings, weights,
+	 * CDL classes), and staging log #79 shows the judge already mistook a pure airflow
+	 * answer for a commitment once. So the "not a commitment" list is spelled out.
+	 */
+	public static function judge_prompt() {
+		return "Does the following text state a monetary price, promise availability, give a delivery date, or agree to a deal on behalf of Vac2Go?\n\n"
+			. "IMPORTANT: these are NOT prices or commitments and must be answered 'no':\n"
+			. "- Equipment specifications and limits of any kind: airflow (CFM), vacuum (inches Hg), capacities (cubic yards, gallons, barrels), pressure (PSI), flow (GPM), heater ratings (BTU), weights and ratings (lb, GVWR), dimensions, temperatures, particle sizes, hose sizes, filter counts.\n"
+			. "- Regulatory and qualification facts such as CDL class or endorsements, DOT tank codes, and who is responsible for permits, disposal or water supply.\n"
+			. "- Refusals to give pricing, and statements that a Vac2Go rep can explain rates, terms or availability: those are not commitments.\n"
+			. "Only answer 'yes' when the text itself states a money amount, promises availability, gives delivery timing, or accepts an agreement.\n\n"
+			. "Answer yes or no only.\n\n---\n";
+	}
+
 	public static function judge( $candidate_text, $api_key ) {
 		$body = array(
 			'model'       => VA_ADVISOR_JUDGE_MODEL,
@@ -202,7 +271,7 @@ class VA_Filter {
 			'messages'    => array(
 				array(
 					'role'    => 'user',
-					'content' => "Does the following text state a monetary price, promise availability, give a delivery date, or agree to a deal on behalf of Vac2Go?\n\nIMPORTANT: technical specifications are NOT prices or commitments. Airflow (CFM), vacuum (inches Hg), capacities (cubic yards), filter counts, and similar equipment specs must be answered 'no'. Refusals to give pricing must be answered 'no'. Only answer 'yes' when the text itself states money amounts, availability promises, delivery timing, or acceptance of an agreement.\n\nAnswer yes or no only.\n\n---\n" . $candidate_text,
+					'content' => self::judge_prompt() . $candidate_text,
 				),
 			),
 		);

@@ -26,6 +26,6 @@ Figures come from GapVax's MC Series web page, as recorded in a Vac2Go spec refe
 - Blower and pump type and model, filtration, debris body material, water heater, length, weights/GVWR, engine, chassis make. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
-- Vacuum, airflow, pump flow and pump pressure are published as ranges. Quote the range and say the exact figure depends on the unit's configuration; do not quote a single number or present the range as guaranteed performance.
+- Vacuum, airflow, pump flow and pump pressure are published as ranges. Quote the range and say the exact figure depends on the unit's configuration; do not quote a single number or present the range as a performance promise.
 - The source does not explain what "180 degrees" on the hose reel refers to; quote it as written.
 - The MC Series also includes other models (MC1007, MC1312, MC1512), but only the MC1510 is covered here. Do not apply these figures to them.

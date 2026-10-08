@@ -36,6 +36,6 @@ Which model you get depends on the unit {src: Camel Max brochure p.2}
 ## Notes for the advisor
 - The blower range is the same for all three models; the brochure does not say which unit gets which cfm.
 - The eject angle is printed as "an 10°", which may be a misprint. Mention it only if asked, and say a rep can confirm.
-- Water pump figures are a designed capacity, not a guaranteed delivered rating.
+- Water pump figures are the designed capacity; the rating actually delivered may differ.
 - Heights are approximate.
 - The brochure does not say whether a dump-configured 1200 can take Wastewater Recycle.
