@@ -302,6 +302,7 @@ Client answers to Q1, Q2, Q7, Q10 unblock full coverage; everything else proceed
 | 2026-10-08 | v2.6.1 (mobile cookie banner) deployed; all V1 items verified on staging, incl. a real alert email. 30-agent load test parked. |
 | 2026-10-08 | Phase 2 material read in full; 34 unit fact files extracted; plan v1 written. Found the plugin's prices ~3× too low for Fable 5.1. |
 | 2026-10-08 | Verification pass: every fact file re-checked independently against page images (880 rows, 0 wrong numbers, 44 wording or claim fixes, 77 specs added); Round 2 doc re-examined (counts, groups, hidden markup); spreadsheets re-checked; old prompt names traced to suppliers; Phase 1 false refusals root-caused. Plan v2. |
+| 2026-10-08 | WP4 core + packs (block 1 ≈ 4.6k tokens, packs 0.7k–9.7k; cold start ≈ $0.14, under the planned $0.19), WP5 safety (log #258 fix, judge prompt, KB filter sweep), WP6 admin Knowledge page + stats, WP7 eval harness (355 cases). Independent review of the whole branch running before any deploy. |
 | 2026-10-08 | Build started on branch `phase-2` (ledger: `phase-2/LEDGER.md`). WP0 real prices + dollar ceiling; WP1 41-unit fleet + aliases; WP2 category knowledge (173 Q&A, 11 logged edits); WP3 41 unit cards with number trace checks. |
 | 2026-10-08 | Fast verification round: plan internally consistent (all G/C/K/D/Q IDs defined, 13 questions, Appendix A covers all 41 units, all referenced fact files exist); 41 quoted claims re-found verbatim in the source documents (19 Round 2 quotes, 22 brochure/spec-reference quotes), 0 misses. |
 
@@ -315,11 +316,11 @@ Client answers to Q1, Q2, Q7, Q10 unblock full coverage; everything else proceed
 | WP1 Fleet + aliases | ✅ Done (b5c83f08) |
 | WP2 Category knowledge | ✅ Done (fad28203); Industrial Vacuum + Water are drafts until the client sends entries |
 | WP3 Unit cards | ✅ Done (ee2d0765), 41 cards |
-| WP4 Prompt + packs | 🔄 In progress |
-| WP5 Safety updates | ⬜ Not started |
-| WP6 Admin | ⬜ Not started |
-| WP7 Evaluation | ⬜ Not started |
-| WP8 Staging release | ⬜ Not started |
+| WP4 Prompt + packs | ✅ Done (b2fd1961) |
+| WP5 Safety updates | ✅ Done (562a8334) |
+| WP6 Admin | ✅ Done (45e0709c) |
+| WP7 Evaluation | 🔄 Harness built (f2395d6f); first run waits for staging deploy + approval |
+| WP8 Staging release | ⏸ Waiting: branch review, then approval to deploy and run the eval |
 
 ---
 
