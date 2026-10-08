@@ -1,0 +1,15 @@
+{
+	"name": "vac2go-advisor-eval",
+	"private": true,
+	"type": "module",
+	"description": "Phase 2 evaluation of the Vac2Go Equipment Advisor against staging.",
+	"scripts": {
+		"build": "node build-cases.mjs",
+		"test": "node checks.test.mjs",
+		"run": "node run.mjs",
+		"grade": "node grade.mjs"
+	},
+	"dependencies": {
+		"@anthropic-ai/sdk": "^0.132.1"
+	}
+}

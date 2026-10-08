@@ -47,3 +47,6 @@ wp-content/mu-plugins/object-cache.php
 phase-2/phase-2-items/
 phase-2/work/
 phase-2/*.docx
+phase-2/eval/node_modules/
+phase-2/eval/results*.jsonl
+phase-2/eval/graded*.json
