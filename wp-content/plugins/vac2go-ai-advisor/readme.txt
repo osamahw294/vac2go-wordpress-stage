@@ -64,9 +64,19 @@ the breaker for everyone else.
 Messages sent while an answer is still arriving are shown at once as "queued" and go
 out together as the next turn when the answer finishes, never dropped.
 
-== Token monitoring ==
+== Spend and token monitoring ==
+Spend is estimated from the real token usage logged on every turn, priced at
+Settings -> Prices (defaults: Claude Fable 5.1 list prices, $10 / $50 per million
+input / output tokens, $0.25 cache read, cache writes at 1.25x input). Sites still
+on the pre-2.7 defaults ($3 / $15 / $0.30) are moved to these automatically.
+
+The daily ceiling is in US dollars (Settings -> Daily spend ceiling, default $25):
+80% emails the admin, 100% makes the chat unavailable until midnight. A dollar
+ceiling rather than a token ceiling because cache reads, most of the tokens once the
+knowledge base is large, cost a fraction of output tokens.
+
 Emails (Settings -> Alert email, max one per hour per type): 80% and 100% of the
-daily token ceiling, an hourly spike (tokens in the last 60 minutes over Settings ->
+daily spend ceiling, an hourly spike (tokens in the last 60 minutes over Settings ->
 Hourly spike alert), breaker trips, prompt-leak hits, API key/credit errors.
 Stats shows today's tokens and spend, the last 60 minutes, and a 7-day trend.
 

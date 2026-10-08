@@ -84,7 +84,7 @@ class VA_Admin {
 		register_setting( 'va_advisor_settings', 'va_stream_pad', $int );
 		register_setting( 'va_advisor_settings', 'va_notify_leads', $int );
 		register_setting( 'va_advisor_settings', 'va_corrections_in_prompt', $int );
-		register_setting( 'va_advisor_settings', 'va_daily_token_ceiling', $int );
+		register_setting( 'va_advisor_settings', 'va_daily_spend_usd', array( 'type' => 'number', 'sanitize_callback' => array( __CLASS__, 'sanitize_money' ) ) );
 		register_setting( 'va_advisor_settings', 'va_hourly_token_alert', $int );
 		register_setting( 'va_advisor_settings', 'va_rep_phone', $string( array( __CLASS__, 'sanitize_phone' ) ) );
 		register_setting( 'va_advisor_settings', 'va_price_in_per_m', array( 'type' => 'number', 'sanitize_callback' => 'floatval' ) );
@@ -123,6 +123,13 @@ class VA_Admin {
 			}
 		}
 		return implode( "\n", $out );
+	}
+
+	/**
+	 * A non-negative dollar amount, rounded to cents.
+	 */
+	public static function sanitize_money( $value ) {
+		return max( 0, round( (float) $value, 2 ) );
 	}
 
 	/**

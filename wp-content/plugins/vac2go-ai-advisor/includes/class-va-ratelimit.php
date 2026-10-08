@@ -8,7 +8,7 @@
  *    to a 15-minute lock for an IP that keeps sending while limited
  *  - global per-minute and per-day circuit breaker (single option row updated with an
  *    atomic UPDATE, exact)
- *  - daily token ceiling with USD estimate (from real per-turn usage in the log table)
+ *  - daily spend ceiling in USD (from real per-turn usage in the log table)
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -248,23 +248,41 @@ class VA_RateLimit {
 	}
 
 	/**
-	 * Daily token ceiling from real usage. Returns 'ok', 'warn' (>=80%), or 'over'.
-	 * Sends the 80% email once per day, trips availability at 100%.
+	 * Daily spend ceiling in US dollars, from real per-turn usage priced at the
+	 * configured rates. Returns 'ok', 'warn' (>=80%) or 'over'; emails at 80% and 100%
+	 * (once per hour per level), and 'over' makes the chat unavailable until midnight.
+	 *
+	 * Dollars rather than tokens: a token ceiling counts a cache read, which costs
+	 * 0.025x an input token, the same as an output token, which costs 5x. With the
+	 * Phase 2 knowledge base most tokens are cache reads, so a token ceiling would
+	 * trip on a few dozen cheap conversations.
 	 */
 	public static function daily_budget_state() {
-		$ceiling = (int) get_option( 'va_daily_token_ceiling', 2000000 );
+		$ceiling = (float) get_option( 'va_daily_spend_usd', 25 );
+		$spend   = VA_DB::estimated_spend_today();
+		$state   = self::budget_state( $spend, $ceiling );
+
+		$line = 'Estimated spend today: $' . number_format( $spend, 2 ) . ' of a $' . number_format( $ceiling, 2 ) . ' daily ceiling.';
+		if ( 'over' === $state ) {
+			self::alert( 'budget100', 'Vac2Go Advisor: daily spend ceiling reached', $line . ' The chat is unavailable until midnight.' );
+		} elseif ( 'warn' === $state ) {
+			self::alert( 'budget80', 'Vac2Go Advisor: 80% of the daily spend ceiling used', $line );
+		}
+		return $state;
+	}
+
+	/**
+	 * 'ok' | 'warn' (>=80%) | 'over' (>=100%) for a spend against a ceiling; a
+	 * ceiling of 0 or less means unlimited.
+	 */
+	public static function budget_state( $spend, $ceiling ) {
 		if ( $ceiling <= 0 ) {
 			return 'ok';
 		}
-		$t     = VA_DB::tokens_today();
-		$total = $t['input'] + $t['output'] + $t['cache_creation'] + $t['cache_read'];
-
-		if ( $total >= $ceiling ) {
-			self::alert( 'budget100', 'Vac2Go Advisor: daily token ceiling reached', 'Total tokens today: ' . $total . ' / ' . $ceiling . '. Estimated spend: $' . number_format( VA_DB::estimated_spend_today(), 2 ) );
+		if ( $spend >= $ceiling ) {
 			return 'over';
 		}
-		if ( $total >= 0.8 * $ceiling ) {
-			self::alert( 'budget80', 'Vac2Go Advisor: 80% of daily token budget used', 'Total tokens today: ' . $total . ' / ' . $ceiling . '. Estimated spend: $' . number_format( VA_DB::estimated_spend_today(), 2 ) );
+		if ( $spend >= 0.8 * $ceiling ) {
 			return 'warn';
 		}
 		return 'ok';

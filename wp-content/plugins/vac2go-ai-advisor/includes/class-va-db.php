@@ -10,6 +10,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 class VA_DB {
 
 	/**
+	 * Claude Fable 5.1 list prices, USD per million tokens. Cache writes (5-minute
+	 * TTL) bill at 1.25x the input price. Used whenever the admin has not set a price.
+	 */
+	const PRICE_IN_PER_M         = 10.0;
+	const PRICE_OUT_PER_M        = 50.0;
+	const PRICE_CACHE_READ_PER_M = 0.25;
+	const CACHE_WRITE_MULTIPLIER = 1.25;
+
+	/** What the plugin shipped with before v2.7, which understated spend about 3x. */
+	const OLD_DEFAULT_PRICES = array( 3.0, 15.0, 0.30 );
+
+	/**
 	 * Fully-qualified log table name.
 	 */
 	public static function table() {
@@ -83,12 +95,12 @@ class VA_DB {
 			'va_stream_pad'         => 4096,
 			'va_notify_leads'       => 1,
 			'va_corrections_in_prompt' => 1,
-			'va_daily_token_ceiling'=> 2000000,
+			'va_daily_spend_usd'    => 25,
 			'va_hourly_token_alert' => 400000,
 			'va_rep_phone'          => '855-822-7246',
-			'va_price_in_per_m'     => 3.0,
-			'va_price_out_per_m'    => 15.0,
-			'va_price_cache_read_per_m' => 0.30,
+			'va_price_in_per_m'     => self::PRICE_IN_PER_M,
+			'va_price_out_per_m'    => self::PRICE_OUT_PER_M,
+			'va_price_cache_read_per_m' => self::PRICE_CACHE_READ_PER_M,
 			'va_enabled'            => 1,
 			'va_admin_email'        => get_option( 'admin_email' ),
 		);
@@ -103,6 +115,8 @@ class VA_DB {
 		if ( false === get_option( 'va_banned_patterns', false ) ) {
 			add_option( 'va_banned_patterns', VA_Filter::default_patterns_text() );
 		}
+		self::migrate_prices();
+
 		// One-time canary token for prompt-leak detection. Random, generated once.
 		if ( false === get_option( 'va_canary', false ) ) {
 			add_option( 'va_canary', 'VA-CANARY-' . strtoupper( wp_generate_password( 16, false, false ) ) );
@@ -462,13 +476,33 @@ class VA_DB {
 	 * price (5m ephemeral).
 	 */
 	public static function spend_for( array $t ) {
-		$p_in    = (float) get_option( 'va_price_in_per_m', 3.0 );
-		$p_out   = (float) get_option( 'va_price_out_per_m', 15.0 );
-		$p_cread = (float) get_option( 'va_price_cache_read_per_m', 0.30 );
+		$p_in    = (float) get_option( 'va_price_in_per_m', self::PRICE_IN_PER_M );
+		$p_out   = (float) get_option( 'va_price_out_per_m', self::PRICE_OUT_PER_M );
+		$p_cread = (float) get_option( 'va_price_cache_read_per_m', self::PRICE_CACHE_READ_PER_M );
 		return ( $t['input'] * $p_in
-			+ $t['cache_creation'] * $p_in * 1.25
+			+ $t['cache_creation'] * $p_in * self::CACHE_WRITE_MULTIPLIER
 			+ $t['cache_read'] * $p_cread
 			+ $t['output'] * $p_out ) / 1000000;
+	}
+
+	/**
+	 * Replace the stored prices only when they are still exactly the old shipped
+	 * defaults. A site whose admin typed in their own prices keeps them.
+	 */
+	public static function migrate_prices() {
+		$stored = array(
+			(float) get_option( 'va_price_in_per_m', -1 ),
+			(float) get_option( 'va_price_out_per_m', -1 ),
+			(float) get_option( 'va_price_cache_read_per_m', -1 ),
+		);
+		foreach ( self::OLD_DEFAULT_PRICES as $i => $old ) {
+			if ( abs( $stored[ $i ] - $old ) > 0.00001 ) {
+				return;
+			}
+		}
+		update_option( 'va_price_in_per_m', self::PRICE_IN_PER_M );
+		update_option( 'va_price_out_per_m', self::PRICE_OUT_PER_M );
+		update_option( 'va_price_cache_read_per_m', self::PRICE_CACHE_READ_PER_M );
 	}
 
 	/**

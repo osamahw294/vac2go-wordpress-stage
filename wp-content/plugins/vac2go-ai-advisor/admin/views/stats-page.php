@@ -17,7 +17,7 @@ $midnight = gmdate( 'Y-m-d 00:00:00', current_time( 'timestamp' ) );
 $turns_today  = VA_DB::count_today();
 $tokens       = VA_DB::tokens_today();
 $spend        = VA_DB::estimated_spend_today();
-$ceiling      = (int) get_option( 'va_daily_token_ceiling', 0 );
+$ceiling      = (float) get_option( 'va_daily_spend_usd', 25 );
 $total_tokens = $tokens['input'] + $tokens['output'] + $tokens['cache_creation'] + $tokens['cache_read'];
 
 // phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- table name is internal.
@@ -50,8 +50,8 @@ $breaker_reason = get_option( 'va_breaker_last_reason', '' );
 			<tr><td><strong>Output tokens</strong></td><td><?php echo number_format( $tokens['output'] ); ?></td></tr>
 			<tr><td><strong>Cache creation tokens</strong></td><td><?php echo number_format( $tokens['cache_creation'] ); ?></td></tr>
 			<tr><td><strong>Cache read tokens</strong></td><td><?php echo number_format( $tokens['cache_read'] ); ?></td></tr>
-			<tr><td><strong>Total vs ceiling</strong></td><td><?php echo number_format( $total_tokens ); ?> / <?php echo $ceiling > 0 ? number_format( $ceiling ) : 'unlimited'; ?></td></tr>
-			<tr><td><strong>Estimated spend</strong></td><td>$<?php echo esc_html( number_format( $spend, 4 ) ); ?></td></tr>
+			<tr><td><strong>Total tokens</strong></td><td><?php echo number_format( $total_tokens ); ?></td></tr>
+			<tr><td><strong>Estimated spend vs daily ceiling</strong></td><td>$<?php echo esc_html( number_format( $spend, 2 ) ); ?> / <?php echo $ceiling > 0 ? '$' . esc_html( number_format( $ceiling, 2 ) ) : 'unlimited'; ?></td></tr>
 			<tr><td><strong>Tokens in the last 60 minutes</strong></td><td><?php echo number_format( $tokens_hour ); ?><?php echo $spike_alert > 0 ? ' <span class="va-muted">(spike alert at ' . esc_html( number_format( $spike_alert ) ) . ')</span>' : ''; ?></td></tr>
 		</tbody>
 	</table>

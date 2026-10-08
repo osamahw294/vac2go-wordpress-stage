@@ -165,8 +165,8 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 				<td><input name="va_global_daily" id="va_global_daily" type="number" min="0" value="<?php echo esc_attr( get_option( 'va_global_daily', 5000 ) ); ?>" class="regular-text"> <span class="description">Counts every request, including prescreen-only ones that never reach the model and so never move the token counter. Tripping holds until UTC midnight. 0 = off.</span></td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="va_daily_token_ceiling">Daily token ceiling (all token types)</label></th>
-				<td><input name="va_daily_token_ceiling" id="va_daily_token_ceiling" type="number" min="0" value="<?php echo esc_attr( get_option( 'va_daily_token_ceiling', 2000000 ) ); ?>" class="regular-text"> <span class="description">80% emails the admin; 100% disables the chat until midnight. 0 = unlimited.</span></td>
+				<th scope="row"><label for="va_daily_spend_usd">Daily spend ceiling (USD)</label></th>
+				<td>$<input name="va_daily_spend_usd" id="va_daily_spend_usd" type="number" step="0.01" min="0" value="<?php echo esc_attr( get_option( 'va_daily_spend_usd', 25 ) ); ?>" class="small-text"> <span class="description">Estimated from real usage at the prices below. 80% emails the admin; 100% makes the chat unavailable until midnight. 0 = unlimited.</span></td>
 			</tr>
 			<tr>
 				<th scope="row"><label for="va_hourly_token_alert">Hourly spike alert (tokens)</label></th>
@@ -175,10 +175,10 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 			<tr>
 				<th scope="row">Prices (USD per million tokens)</th>
 				<td>
-					Input <input name="va_price_in_per_m" type="number" step="0.01" min="0" value="<?php echo esc_attr( get_option( 'va_price_in_per_m', 3.0 ) ); ?>" class="small-text">
-					Output <input name="va_price_out_per_m" type="number" step="0.01" min="0" value="<?php echo esc_attr( get_option( 'va_price_out_per_m', 15.0 ) ); ?>" class="small-text">
-					Cache read <input name="va_price_cache_read_per_m" type="number" step="0.01" min="0" value="<?php echo esc_attr( get_option( 'va_price_cache_read_per_m', 0.30 ) ); ?>" class="small-text">
-					<p class="description">Used for the estimated-spend figure on the Stats page. Cache creation is billed at 1.25x input.</p>
+					Input <input name="va_price_in_per_m" type="number" step="0.01" min="0" value="<?php echo esc_attr( get_option( 'va_price_in_per_m', VA_DB::PRICE_IN_PER_M ) ); ?>" class="small-text">
+					Output <input name="va_price_out_per_m" type="number" step="0.01" min="0" value="<?php echo esc_attr( get_option( 'va_price_out_per_m', VA_DB::PRICE_OUT_PER_M ) ); ?>" class="small-text">
+					Cache read <input name="va_price_cache_read_per_m" type="number" step="0.01" min="0" value="<?php echo esc_attr( get_option( 'va_price_cache_read_per_m', VA_DB::PRICE_CACHE_READ_PER_M ) ); ?>" class="small-text">
+					<p class="description">Used for the spend figures on the Stats page and for the daily spend ceiling. Defaults are Claude Fable 5.1's list prices ($10 / $50 / $0.25). Cache writes are billed at 1.25x the input price.</p>
 				</td>
 			</tr>
 			<tr>
