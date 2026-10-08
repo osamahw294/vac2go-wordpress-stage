@@ -65,6 +65,14 @@ class VA_List_Table extends WP_List_Table {
 
 	protected function column_answer( $item ) {
 		$html = $this->expandable( $item['answer'], 220 );
+		if ( ! empty( $item['packs'] ) ) {
+			$names = array();
+			foreach ( explode( ',', (string) $item['packs'] ) as $cid ) {
+				$cat     = VA_Fleet::categories()[ trim( $cid ) ] ?? null;
+				$names[] = $cat ? $cat['name'] : trim( $cid );
+			}
+			$html .= '<div class="va-muted">Knowledge packs: ' . esc_html( implode( ', ', $names ) ) . '</div>';
+		}
 		if ( ! empty( $item['raw_model_answer'] ) ) {
 			$html .= '<div class="va-raw"><em>Pre-filter model text:</em> ' . esc_html( $item['raw_model_answer'] ) . '</div>';
 		}

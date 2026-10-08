@@ -488,6 +488,60 @@ class VA_DB {
 	}
 
 	/**
+	 * Share of input-side tokens served from the prompt cache (0..1). With the Phase 2
+	 * knowledge base this is the number that says whether caching is working: most of
+	 * the prompt should be a cache read on every turn after a conversation's first.
+	 */
+	public static function cache_hit_rate( array $t ) {
+		$in_side = $t['input'] + $t['cache_creation'] + $t['cache_read'];
+		return $in_side > 0 ? $t['cache_read'] / $in_side : 0.0;
+	}
+
+	/** Average spend per conversation; 0 when there were none. */
+	public static function per_conversation( $spend, $conversations ) {
+		return $conversations > 0 ? $spend / $conversations : 0.0;
+	}
+
+	/** Conversations (sessions) that reached the model today. */
+	public static function conversations_today() {
+		global $wpdb;
+		$midnight = gmdate( 'Y-m-d 00:00:00', current_time( 'timestamp' ) );
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				'SELECT COUNT(DISTINCT session_id) FROM ' . self::table() . ' WHERE created_at >= %s AND output_tokens > 0',
+				$midnight
+			)
+		);
+	}
+
+	/**
+	 * How often each knowledge pack was sent today: category id => turns.
+	 *
+	 * @return array<string,int>
+	 */
+	public static function packs_today() {
+		global $wpdb;
+		$midnight = gmdate( 'Y-m-d 00:00:00', current_time( 'timestamp' ) );
+		$rows     = $wpdb->get_col(
+			$wpdb->prepare(
+				'SELECT packs FROM ' . self::table() . " WHERE created_at >= %s AND packs IS NOT NULL AND packs <> ''",
+				$midnight
+			)
+		);
+		$count = array();
+		foreach ( (array) $rows as $list ) {
+			foreach ( explode( ',', (string) $list ) as $p ) {
+				$p = trim( $p );
+				if ( '' !== $p ) {
+					$count[ $p ] = ( $count[ $p ] ?? 0 ) + 1;
+				}
+			}
+		}
+		arsort( $count );
+		return $count;
+	}
+
+	/**
 	 * Replace the stored prices only when they are still exactly the old shipped
 	 * defaults. A site whose admin typed in their own prices keeps them.
 	 */

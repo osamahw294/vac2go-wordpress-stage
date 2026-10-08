@@ -30,6 +30,7 @@ class VA_Admin {
 		);
 
 		add_submenu_page( 'va-advisor', 'Review Queue', 'Review Queue', 'manage_options', 'va-advisor', array( __CLASS__, 'render_review_page' ) );
+		add_submenu_page( 'va-advisor', 'Advisor Knowledge', 'Knowledge', 'manage_options', 'va-advisor-knowledge', array( __CLASS__, 'render_knowledge_page' ) );
 		add_submenu_page( 'va-advisor', 'Advisor Stats', 'Stats', 'manage_options', 'va-advisor-stats', array( __CLASS__, 'render_stats_page' ) );
 		add_submenu_page( 'va-advisor', 'Advisor Settings', 'Settings', 'manage_options', 'va-advisor-settings', array( __CLASS__, 'render_settings_page' ) );
 	}
@@ -56,6 +57,10 @@ class VA_Admin {
 
 	public static function render_settings_page() {
 		require VA_ADVISOR_DIR . 'admin/views/settings-page.php';
+	}
+
+	public static function render_knowledge_page() {
+		require VA_ADVISOR_DIR . 'admin/views/knowledge-page.php';
 	}
 
 	public static function render_stats_page() {

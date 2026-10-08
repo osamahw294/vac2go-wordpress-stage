@@ -27,6 +27,9 @@ $top_ips    = $wpdb->get_results( $wpdb->prepare( "SELECT LEFT(ip_hash,12) ip, C
 // phpcs:enable
 
 $trend         = VA_DB::daily_usage( 7 );
+$conversations = VA_DB::conversations_today();
+$hit_rate      = VA_DB::cache_hit_rate( $tokens );
+$packs_today   = VA_DB::packs_today();
 $tokens_hour   = VA_DB::tokens_last_hour();
 $spike_alert   = (int) get_option( 'va_hourly_token_alert', 400000 );
 
@@ -52,7 +55,23 @@ $breaker_reason = get_option( 'va_breaker_last_reason', '' );
 			<tr><td><strong>Cache read tokens</strong></td><td><?php echo number_format( $tokens['cache_read'] ); ?></td></tr>
 			<tr><td><strong>Total tokens</strong></td><td><?php echo number_format( $total_tokens ); ?></td></tr>
 			<tr><td><strong>Estimated spend vs daily ceiling</strong></td><td>$<?php echo esc_html( number_format( $spend, 2 ) ); ?> / <?php echo $ceiling > 0 ? '$' . esc_html( number_format( $ceiling, 2 ) ) : 'unlimited'; ?></td></tr>
+			<tr><td><strong>Conversations that reached the model</strong></td><td><?php echo (int) $conversations; ?></td></tr>
+			<tr><td><strong>Average cost per conversation</strong></td><td>$<?php echo esc_html( number_format( VA_DB::per_conversation( $spend, $conversations ), 3 ) ); ?></td></tr>
+			<tr><td><strong>Prompt served from cache</strong></td><td><?php echo esc_html( number_format( $hit_rate * 100, 1 ) ); ?>% <span class="va-muted">(of input-side tokens; most of the prompt should be a cache read after a conversation's first turn)</span></td></tr>
 			<tr><td><strong>Tokens in the last 60 minutes</strong></td><td><?php echo number_format( $tokens_hour ); ?><?php echo $spike_alert > 0 ? ' <span class="va-muted">(spike alert at ' . esc_html( number_format( $spike_alert ) ) . ')</span>' : ''; ?></td></tr>
+		</tbody>
+	</table>
+
+	<h2>Knowledge packs used today</h2>
+	<table class="widefat striped" style="max-width:640px">
+		<thead><tr><th>Category pack</th><th>Answers that carried it</th></tr></thead>
+		<tbody>
+		<?php if ( $packs_today ) : foreach ( $packs_today as $cid => $n ) : ?>
+			<?php $cat = VA_Fleet::categories()[ $cid ] ?? null; ?>
+			<tr><td><?php echo esc_html( $cat ? $cat['name'] : $cid ); ?></td><td><?php echo (int) $n; ?></td></tr>
+		<?php endforeach; else : ?>
+			<tr><td colspan="2">No packs used today.</td></tr>
+		<?php endif; ?>
 		</tbody>
 	</table>
 

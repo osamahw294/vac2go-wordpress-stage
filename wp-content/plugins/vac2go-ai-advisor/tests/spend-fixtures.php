@@ -76,5 +76,11 @@ check( 'at 80% of the dollar ceiling warns', 'warn' === VA_RateLimit::budget_sta
 check( 'at 100% of the dollar ceiling is over', 'over' === VA_RateLimit::budget_state( 20.0, 20.0 ) );
 check( 'a ceiling of 0 means unlimited', 'ok' === VA_RateLimit::budget_state( 9999.0, 0.0 ) );
 
+echo "\n== Stats helpers ==\n";
+check( 'cache hit rate = cache reads / all input-side tokens', near( VA_DB::cache_hit_rate( array( 'input' => 100, 'output' => 999, 'cache_creation' => 100, 'cache_read' => 800 ) ), 0.8 ) );
+check( 'cache hit rate with no traffic is 0', near( VA_DB::cache_hit_rate( $zero ), 0.0 ) );
+check( 'average cost per conversation', near( VA_DB::per_conversation( 3.0, 12 ), 0.25 ) );
+check( 'average cost with no conversations is 0', near( VA_DB::per_conversation( 3.0, 0 ), 0.0 ) );
+
 echo "\n{$pass} passed, {$fail} failed\n";
 exit( $fail ? 1 : 0 );
