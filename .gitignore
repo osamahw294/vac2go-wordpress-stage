@@ -42,3 +42,8 @@ wp-content/mu-plugins/object-cache-pro/
 # Hosting vendor mu-plugins (not our code)
 wp-content/mu-plugins/vendor/
 wp-content/mu-plugins/object-cache.php
+
+# Phase 2: client source files and derived working files stay out of git
+phase-2/phase-2-items/
+phase-2/work/
+phase-2/*.docx
