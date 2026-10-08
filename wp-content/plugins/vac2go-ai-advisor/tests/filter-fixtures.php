@@ -38,6 +38,8 @@ define( 'VA_ADVISOR_API_URL', 'https://api.anthropic.com/v1/messages' );
 define( 'VA_ADVISOR_API_TIMEOUT', 45 );
 
 require_once __DIR__ . '/../includes/class-va-text.php';
+require_once __DIR__ . '/../includes/class-va-fleet.php';
+require_once __DIR__ . '/../includes/class-va-kb.php';
 require_once __DIR__ . '/../includes/class-va-knowledge.php';
 require_once __DIR__ . '/../includes/class-va-filter.php';
 require_once __DIR__ . '/../includes/class-va-stream.php';

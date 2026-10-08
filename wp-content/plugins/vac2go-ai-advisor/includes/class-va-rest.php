@@ -273,13 +273,30 @@ class VA_REST {
 		$messages[] = array( 'role' => 'user', 'content' => $message );
 		if ( $history['truncated'] ) {
 			$flags['history_truncated'] = 1;
-			$ctx['flags']               = $flags;
 		}
+
+		// --- Knowledge packs: from the whole conversation, not just the window the
+		// model sees, so a pack loaded early stays loaded and the prefix stays cached.
+		$ctx['packs']   = VA_KB::select_packs( self::transcript_texts( $session_id ), $message );
+		$flags['packs'] = implode( ',', $ctx['packs'] );
+		$ctx['flags']   = $flags;
 
 		return array(
 			'ctx'      => $ctx,
 			'messages' => $messages,
 		);
+	}
+
+	/**
+	 * Every earlier question and answer in a session, oldest first, for pack selection.
+	 */
+	private static function transcript_texts( $session_id ) {
+		$texts = array();
+		foreach ( VA_DB::get_transcript( $session_id, 50 ) as $t ) {
+			$texts[] = (string) $t['question'];
+			$texts[] = (string) $t['answer'];
+		}
+		return $texts;
 	}
 
 	/**
@@ -314,7 +331,7 @@ class VA_REST {
 		$flags      = $ctx['flags'];
 
 		// --- Model call with retry + error taxonomy (S7) ---
-		$api = self::call_anthropic_with_retry( $messages );
+		$api = self::call_anthropic_with_retry( $messages, $ctx['packs'] );
 
 		if ( is_wp_error( $api ) ) {
 			$etype    = $api->get_error_code();
@@ -485,20 +502,20 @@ class VA_REST {
 	 *
 	 * @return array{text:string, usage:array}|WP_Error error code = error_type.
 	 */
-	private static function call_anthropic_with_retry( array $messages ) {
-		$attempt = self::call_anthropic( $messages );
+	private static function call_anthropic_with_retry( array $messages, array $packs = array() ) {
+		$attempt = self::call_anthropic( $messages, $packs );
 		if ( is_wp_error( $attempt ) && in_array( $attempt->get_error_code(), array( 'timeout', 'upstream_5xx', 'upstream_429' ), true ) ) {
 			sleep( 2 );
-			$attempt = self::call_anthropic( $messages );
+			$attempt = self::call_anthropic( $messages, $packs );
 		}
 		return $attempt;
 	}
 
-	private static function call_anthropic( array $messages ) {
+	private static function call_anthropic( array $messages, array $packs = array() ) {
 		$body = array(
 			'model'      => VA_ADVISOR_MODEL,
 			'max_tokens' => VA_Knowledge::max_tokens(),
-			'system'     => VA_Knowledge::get_system_blocks(), // static block w/ cache_control
+			'system'     => VA_Knowledge::get_system_blocks( $packs ), // cached blocks: rules+core, corrections, packs
 			'messages'   => $messages,
 		);
 
@@ -605,6 +622,7 @@ class VA_REST {
 				'cache_read_input_tokens'     => $usage['cache_read_input_tokens'] ?? null,
 				'client_history_ignored'      => (int) ( $flags['client_history_ignored'] ?? 0 ),
 				'history_truncated'           => (int) ( $flags['history_truncated'] ?? 0 ),
+				'packs'            => isset( $flags['packs'] ) && '' !== $flags['packs'] ? substr( (string) $flags['packs'], 0, 255 ) : null,
 				'ip_hash'          => $ip_hash,
 				'user_agent'       => $ua,
 			)

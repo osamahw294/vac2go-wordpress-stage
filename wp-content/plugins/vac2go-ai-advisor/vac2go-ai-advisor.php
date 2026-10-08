@@ -17,7 +17,7 @@ define( 'VA_ADVISOR_VERSION', '2.6.1' );
 define( 'VA_ADVISOR_FILE', __FILE__ );
 define( 'VA_ADVISOR_DIR', plugin_dir_path( __FILE__ ) );
 define( 'VA_ADVISOR_URL', plugin_dir_url( __FILE__ ) );
-define( 'VA_ADVISOR_DB_VERSION', '4' );
+define( 'VA_ADVISOR_DB_VERSION', '5' );
 
 // Anthropic models + API endpoint (per build spec; do not change models without sign-off).
 define( 'VA_ADVISOR_MODEL', 'claude-fable-5-1' );
@@ -28,6 +28,8 @@ define( 'VA_ADVISOR_API_TIMEOUT', 45 );
 
 require_once VA_ADVISOR_DIR . 'includes/class-va-text.php';
 require_once VA_ADVISOR_DIR . 'includes/class-va-db.php';
+require_once VA_ADVISOR_DIR . 'includes/class-va-fleet.php';
+require_once VA_ADVISOR_DIR . 'includes/class-va-kb.php';
 require_once VA_ADVISOR_DIR . 'includes/class-va-knowledge.php';
 require_once VA_ADVISOR_DIR . 'includes/class-va-filter.php';
 require_once VA_ADVISOR_DIR . 'includes/class-va-signals.php';

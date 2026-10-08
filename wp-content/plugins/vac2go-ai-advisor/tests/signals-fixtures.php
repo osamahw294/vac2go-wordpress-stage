@@ -55,6 +55,8 @@ define( 'VA_ADVISOR_API_URL', 'https://api.anthropic.com/v1/messages' );
 define( 'VA_ADVISOR_API_TIMEOUT', 45 );
 
 require_once __DIR__ . '/../includes/class-va-text.php';
+require_once __DIR__ . '/../includes/class-va-fleet.php';
+require_once __DIR__ . '/../includes/class-va-kb.php';
 require_once __DIR__ . '/../includes/class-va-knowledge.php';
 require_once __DIR__ . '/../includes/class-va-filter.php';
 require_once __DIR__ . '/../includes/class-va-signals.php';
@@ -157,7 +159,7 @@ $r = VA_Filter::apply( $hazmat_answer );
 check( 'hazmat answer passes the deterministic filter', ! $r['filtered'], $r['stage'] . ' ' . $r['reason'] );
 check( 'hazmat recommendation still offers follow-up', 'recommendation' === VA_Signals::followup_reason( 'vacuum hot catalyst from a vessel', $hazmat_answer ) );
 
-$default = VA_Knowledge::default_system_prompt();
+$default = VA_Knowledge::rules();
 check( 'default prompt no longer asks for name/email', false === stripos( $default, 'naturally once real interest' ) );
 check( 'default prompt no longer says "go through Vac2Go directly"', false === stripos( $default, 'go through Vac2Go directly' ) );
 

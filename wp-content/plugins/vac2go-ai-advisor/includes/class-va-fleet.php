@@ -42,6 +42,11 @@ class VA_Fleet {
 		return self::data()['categories'];
 	}
 
+	/** Names that are not on vac2go.com, each with its closest categories. */
+	public static function off_list() {
+		return self::data()['off_list'];
+	}
+
 	public static function unit( $id ) {
 		$units = self::units();
 		return isset( $units[ $id ] ) ? $units[ $id ] : null;

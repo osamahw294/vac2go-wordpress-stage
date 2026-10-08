@@ -68,7 +68,7 @@ class VA_Admin {
 		};
 		$int = array( 'type' => 'integer', 'sanitize_callback' => 'absint' );
 
-		register_setting( 'va_advisor_settings', 'va_system_prompt', $string( array( __CLASS__, 'sanitize_multiline' ) ) );
+		register_setting( 'va_advisor_settings', 'va_admin_notes', $string( array( __CLASS__, 'sanitize_multiline' ) ) );
 		register_setting( 'va_advisor_settings', 'va_banned_patterns', $string( array( __CLASS__, 'sanitize_patterns' ) ) );
 		register_setting( 'va_advisor_settings', 'va_profanity_list', $string( array( __CLASS__, 'sanitize_wordlist' ) ) );
 		register_setting( 'va_advisor_settings', 'va_capture_mode', $string( array( __CLASS__, 'sanitize_capture_mode' ) ) );

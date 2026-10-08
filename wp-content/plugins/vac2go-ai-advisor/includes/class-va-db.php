@@ -58,6 +58,7 @@ class VA_DB {
 			cache_read_input_tokens INT UNSIGNED NULL,
 			client_history_ignored TINYINT(1) NOT NULL DEFAULT 0,
 			history_truncated TINYINT(1) NOT NULL DEFAULT 0,
+			packs VARCHAR(255) NULL,
 			contact_name VARCHAR(190) NULL,
 			contact_email VARCHAR(190) NULL,
 			contact_phone VARCHAR(60) NULL,
@@ -81,7 +82,6 @@ class VA_DB {
 
 		// Seed default options if absent.
 		$defaults = array(
-			'va_system_prompt'      => null, // set below (needs VA_Knowledge)
 			'va_banned_patterns'    => null,
 			'va_capture_mode'       => 'email_only',
 			'va_capture_name'       => 1,
@@ -109,9 +109,8 @@ class VA_DB {
 				add_option( $key, $val );
 			}
 		}
-		if ( false === get_option( 'va_system_prompt', false ) ) {
-			add_option( 'va_system_prompt', VA_Knowledge::default_system_prompt() );
-		}
+		// The Phase 1 'va_system_prompt' option is no longer read (see
+		// VA_Knowledge::get_system_prompt()); nothing is seeded for it.
 		if ( false === get_option( 'va_banned_patterns', false ) ) {
 			add_option( 'va_banned_patterns', VA_Filter::default_patterns_text() );
 		}
@@ -146,6 +145,7 @@ class VA_DB {
 			'cache_read_input_tokens'     => null,
 			'client_history_ignored'      => 0,
 			'history_truncated'           => 0,
+			'packs'            => null,
 			'ip_hash'          => null,
 			'user_agent'       => null,
 			'created_at'       => current_time( 'mysql' ),
@@ -175,6 +175,7 @@ class VA_DB {
 				'cache_read_input_tokens'     => $row['cache_read_input_tokens'],
 				'client_history_ignored'      => (int) $row['client_history_ignored'],
 				'history_truncated'           => (int) $row['history_truncated'],
+				'packs'            => $row['packs'],
 				'contact_name'     => $contact['contact_name'],
 				'contact_email'    => $contact['contact_email'],
 				'contact_phone'    => $contact['contact_phone'],

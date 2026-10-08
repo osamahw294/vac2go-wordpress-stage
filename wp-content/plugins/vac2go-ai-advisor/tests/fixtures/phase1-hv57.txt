@@ -1,0 +1,10 @@
+== HV-57 (the one fully-detailed unit) ==
+GapVax Air Mover, wet/dry capability, Industrial Vacuum category.
+- Standard CFM: 5,200 to 5,250 CFM (publish as this range, never a single number)
+- Upgraded pump: 6,000 to 6,600 CFM (range)
+- Vacuum: 27 to 28" Hg (range)
+- Debris capacity: about 15 to 17 cu yd (range, usable vs. body)
+- Filtration: wet/dry single-mode, 7 cyclone separators, baghouse, 40 to 46 filter bags (part #GV20002) (range)
+- Body: 1/4" EXTEN-steel, 45 degree dump, full-opening tailgate. High Dump option available.
+Whenever a spec has a range above, ALWAYS give the range and add: "the exact figure depends on the specific unit's configuration, and a Vac2Go rep can confirm it for the truck you'd actually get."
+Chassis, dimensions, and weight come from Vac2Go's fleet records, not the brochure, and are NOT in this knowledge base. Treat any question needing those as "I don't know," deflect to a rep.

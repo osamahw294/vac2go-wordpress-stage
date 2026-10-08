@@ -82,9 +82,15 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 			Length comes from the rules above, not from the token cap. The cap (<strong><?php echo (int) VA_Knowledge::max_tokens(); ?></strong> tokens) is only a runaway guard, and has to be generous because the model's own reasoning is drawn from the same budget before it writes anything.
 		</p>
 
-		<h2>System prompt (knowledge base)</h2>
-		<p class="description">The full knowledge base and guardrails sent to the model on every request. An internal integrity marker is appended automatically at runtime; you do not need to include it here.</p>
-		<textarea name="va_system_prompt" rows="24" class="large-text code"><?php echo esc_textarea( get_option( 'va_system_prompt', VA_Knowledge::default_system_prompt() ) ); ?></textarea>
+		<h2>Notes for the advisor</h2>
+		<p class="description">Extra guidance from the Vac2Go team, added after the advisor's rules on every request (for example: "If asked about winter work, mention the hot-water option"). Leave empty if not needed. The knowledge itself (categories, fleet, unit cards) lives in the plugin's <code>kb/</code> files and is not edited here; to fix a specific answer, use a correction in the Review Queue.</p>
+		<textarea name="va_admin_notes" rows="5" class="large-text"><?php echo esc_textarea( (string) get_option( 'va_admin_notes', '' ) ); ?></textarea>
+
+		<details style="margin-top:12px">
+			<summary><strong>Show what the advisor receives on every request</strong> (rules and core knowledge; read-only)</summary>
+			<p class="description">Knowledge packs (a category's full Q&amp;A and unit cards) are added per conversation, and reviewed corrections are added after this. About <?php echo (int) ceil( strlen( VA_Knowledge::get_system_prompt() ) / 4 ); ?> tokens.</p>
+			<textarea readonly rows="24" class="large-text code"><?php echo esc_textarea( VA_KB::strip_sources( VA_Knowledge::rules() . "\n\n" . VA_KB::core() ) ); ?></textarea>
+		</details>
 
 		<h2>Committal / pricing patterns</h2>
 		<p class="description">One PCRE regex per line. Any model response matching a line is replaced with the safe fallback and flagged. Invalid regex lines are dropped on save.</p>

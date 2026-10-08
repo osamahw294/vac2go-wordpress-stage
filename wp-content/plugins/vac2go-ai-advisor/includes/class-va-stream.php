@@ -127,7 +127,7 @@ class VA_Stream {
 		$ctx      = $prep['ctx'];
 		$messages = $prep['messages'];
 
-		$result = self::stream_model( $messages );
+		$result = self::stream_model( $messages, isset( $ctx['packs'] ) ? $ctx['packs'] : array() );
 
 		if ( is_wp_error( $result ) ) {
 			$etype    = $result->get_error_code();
@@ -280,11 +280,11 @@ class VA_Stream {
 	/**
 	 * @return array{raw:string}|WP_Error
 	 */
-	private static function stream_model( array $messages ) {
+	private static function stream_model( array $messages, array $packs = array() ) {
 		$body = array(
 			'model'      => VA_ADVISOR_MODEL,
 			'max_tokens' => VA_Knowledge::max_tokens(),
-			'system'     => VA_Knowledge::get_system_blocks(),
+			'system'     => VA_Knowledge::get_system_blocks( $packs ),
 			'messages'   => $messages,
 			'stream'     => true,
 		);
