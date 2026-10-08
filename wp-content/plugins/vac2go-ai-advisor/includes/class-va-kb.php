@@ -165,14 +165,24 @@ class VA_KB {
 	public static function core() {
 		$out = array( '== CATEGORIES AND FLEET (always available) ==' );
 		foreach ( VA_Fleet::categories() as $cid => $c ) {
-			$units = array();
+			// A unit is a unit of its own category only. Listed under a second category
+			// ('also_in') it is related equipment: the Huber Scrubber works alongside
+			// liquid ring units but is not one, and was being recommended as one.
+			$units   = array();
+			$related = array();
 			foreach ( VA_Fleet::units_in( $cid ) as $uid ) {
-				$units[] = VA_Fleet::unit( $uid )['name'];
+				$u = VA_Fleet::unit( $uid );
+				if ( $u['category'] === $cid ) {
+					$units[] = $u['name'];
+				} else {
+					$related[] = $u['name'] . ' (' . VA_Fleet::categories()[ $u['category'] ]['name'] . ' category)';
+				}
 			}
 			$out[] = "### {$c['name']}\n"
 				. 'Customer words: ' . implode( ', ', $c['aliases'] ) . ".\n"
 				. self::category_summary( $cid ) . "\n"
-				. 'Vac2Go units: ' . implode( ', ', $units ) . '.';
+				. 'Vac2Go units: ' . implode( ', ', $units ) . '.'
+				. ( $related ? "\nRelated equipment, not a unit of this category: " . implode( ', ', $related ) . '.' : '' );
 		}
 		$off = array();
 		foreach ( VA_Fleet::off_list() as $o ) {

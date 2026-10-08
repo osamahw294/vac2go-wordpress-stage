@@ -53,6 +53,7 @@
 	var sessionId = getSessionId();  // reassigned by newChat()
 	var contactAsked = false;
 	var contactDone = sessionStorage.getItem('vaAdvisorContactDone') === '1';
+	var contactSent = sessionStorage.getItem('vaAdvisorContactSent') === '1'; // details actually submitted
 	var busy = false;
 	var restoring = false; // redrawing an earlier conversation; input is held until done
 	var snapOnReply = false; // pull back to the bottom when the pending answer starts
@@ -269,10 +270,12 @@
 		try {
 			sessionStorage.setItem('vaAdvisorSession', sessionId);
 			sessionStorage.removeItem('vaAdvisorContactDone');
+			sessionStorage.removeItem('vaAdvisorContactSent');
 		} catch (e) { /* private mode: the in-memory id still works for this page */ }
 
 		contactAsked = false;
 		contactDone = false;
+		contactSent = false;
 		lastReplyEl = null;
 		queue = [];
 		historyReady = Promise.resolve({ turns: [] });
@@ -639,7 +642,7 @@
 				if (meta && meta.limited) {
 					applyLock(meta.limit, meta.retry_after);
 				} else if (meta && meta.followup) {
-					maybeAskContact();
+					maybeAskContact(meta.followup, message);
 				}
 				syncInput();
 				flushQueue();
@@ -792,13 +795,24 @@
 	// natural moment for a rep: a category recommendation, a specific unit, a question
 	// the advisor could not answer, or pricing, contracts or availability. It sits in
 	// the conversation right under that answer, so it never covers what was just said.
-	function maybeAskContact() {
+	// reason: the server's follow-up tag. 'contact' means the visitor typed their own
+	// details into the chat: they want a rep now, so the form comes back even if it was
+	// shown or skipped earlier (but not once details were actually sent), pre-filled
+	// with what they typed so a single click sends it.
+	function maybeAskContact(reason, typed) {
+		if ('contact' === reason) {
+			if (contactSent) { return; }
+			Array.prototype.forEach.call(messagesEl.querySelectorAll('.va-contact-card'), function (el) { el.remove(); });
+			contactAsked = true;
+			renderContactCard(typed);
+			return;
+		}
 		if (contactAsked || contactDone) { return; }
 		contactAsked = true;
 		renderContactCard();
 	}
 
-	function renderContactCard() {
+	function renderContactCard(typed) {
 		var mode = cfg.captureMode || 'email_only';
 		var fields = '';
 		// Name is its own toggle, so "just give me your email" is a real option.
@@ -832,6 +846,13 @@
 			messagesEl.appendChild(card);
 		}
 		scrollToBottom();
+
+		// Pre-fill from details typed into the chat (an email; a phone with area code).
+		var text = String(typed || '');
+		var email = text.match(/[A-Z0-9._%+-]+@[A-Z0-9-]+(\.[A-Z0-9-]+)+/i);
+		var phone = text.match(/(\+?1[\s.-]?)?(\(\d{3}\)\s?|\b\d{3}[\s.-])\d{3}[\s.-]\d{4}\b/);
+		if (email && card.querySelector('.va-c-email')) { card.querySelector('.va-c-email').value = email[0]; }
+		if (phone && card.querySelector('.va-c-phone')) { card.querySelector('.va-c-phone').value = phone[0].trim(); }
 
 		card.querySelector('.va-c-skip').addEventListener('click', function () {
 			finishContact(card);
@@ -871,6 +892,8 @@
 			body: JSON.stringify({ session_id: sessionId, name: name, email: email, phone: phone }),
 		})
 			.then(function () {
+				contactSent = true;
+				try { sessionStorage.setItem('vaAdvisorContactSent', '1'); } catch (e) { /* ignore */ }
 				finishContact(card, 'Thanks, a rep can now follow up if needed.');
 			})
 			.catch(function () {

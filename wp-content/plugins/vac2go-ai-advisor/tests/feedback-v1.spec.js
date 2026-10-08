@@ -71,6 +71,24 @@ test.describe('V1 feedback', () => {
 		expect(await card.evaluate((el) => el.previousElementSibling.classList.contains('va-msg-assistant'))).toBe(true);
 	});
 
+	test('typed contact details bring the form back, pre-filled, even after it was dismissed', async ({ page }) => {
+		await mockChat(page, (m, n) =>
+			n === 1
+				? { text: 'Industrial Vacuum. This is a high-level recommendation. Confirm specifics with a Vac2Go rep.', done: { followup: 'recommendation' } }
+				: { text: 'Thanks. Use the form below to reach a rep.', done: { followup: 'contact' } }
+		);
+		await openWidget(page);
+		await sendMessage(page, 'fly ash from a hopper');
+		await page.locator('.va-contact-card .va-c-skip').click();
+		await expect(page.locator('.va-contact-card')).toHaveCount(0);
+		await idle(page);
+
+		await sendMessage(page, 'John Smith, john@example.com, 502-555-0123, please have a rep call me');
+		const card = page.locator('.va-contact-card');
+		await expect(card).toHaveCount(1);
+		await expect(card.locator('.va-c-email')).toHaveValue('john@example.com');
+	});
+
 	test('a per-IP limit locks the input with a countdown, then lifts', async ({ page }) => {
 		await mockChat(page, () => ({
 			text: "You've sent a lot of messages in a short time, so I've paused this chat.",

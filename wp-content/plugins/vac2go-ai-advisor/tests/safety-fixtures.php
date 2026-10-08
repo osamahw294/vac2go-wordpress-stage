@@ -36,6 +36,7 @@ require_once __DIR__ . '/../includes/class-va-kb.php';
 require_once __DIR__ . '/../includes/class-va-knowledge.php';
 require_once __DIR__ . '/../includes/class-va-filter.php';
 require_once __DIR__ . '/../includes/class-va-signals.php';
+require_once __DIR__ . '/../includes/class-va-rest.php';
 
 $pass = 0;
 $fail = 0;
@@ -106,6 +107,14 @@ check( 'a spec figure is not mistaken for a phone number', null === VA_Signals::
 // Review finding 4: a size range is not a phone number.
 check( 'a size range (400-1500 gallons) is not a phone number', 'contact' !== VA_Signals::followup_reason( 'I need a tank in the 400-1500 gallon range', 'Thanks.' ) );
 check( 'a full phone number with an area code still counts', 'contact' === VA_Signals::followup_reason( 'reach me on 502-699-4019', 'Thanks.' ) );
+
+echo "\n== The off-topic pre-screen (staging test 2026-10-08) ==\n";
+check( 'pre-screen runs on the first message of a conversation', VA_REST::prescreen_applies( true ) );
+check( 'pre-screen never runs mid-conversation ("dust" was declined as off-topic)', ! VA_REST::prescreen_applies( false ) );
+foreach ( array( 'dust', 'Compare the Camel 900, 1200 and 1600.', 'fly ash in a hopper', 'Tell me about the Huber Knight', 'need a hydrovac' ) as $t ) {
+	check( "clearly on topic: \"{$t}\"", VA_REST::clearly_relevant( $t ) );
+}
+check( 'an unrelated request is not waved through', ! VA_REST::clearly_relevant( 'write me a poem about the sea' ) );
 
 echo "\n== Every knowledge-base line passes the filter ==\n";
 $lines = array();

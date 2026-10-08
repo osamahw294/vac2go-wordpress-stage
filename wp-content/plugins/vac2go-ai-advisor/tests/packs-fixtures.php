@@ -104,6 +104,22 @@ foreach ( VA_Fleet::categories() as $cid => $c ) {
 }
 check( 'core carries customer words for categories (synonyms)', false !== stripos( $core, 'hydrovac' ) && false !== stripos( $core, 'sewer combo' ) );
 check( 'core has no source tags', false === strpos( $core, '{src' ) );
+// Staging test 2026-10-08: the Liquid Ring recommendation listed the Huber Scrubber as a
+// unit, and a potholing trailer answer listed the Two Box Roll-Off Trailers.
+$units_line = function ( $name ) use ( $core ) {
+	return preg_match( '/### ' . preg_quote( $name, '/' ) . '\n.*?\nVac2Go units: ([^\n]*)/s', $core, $m ) ? $m[1] : '';
+};
+check( 'Liquid Ring units do not include the Scrubber (a support skid)', false === strpos( $units_line( 'Liquid Ring' ), 'Huber Scrubber' ) );
+check( 'Trailer units do not include the Two Box Roll-Off Trailers', false === strpos( $units_line( 'Trailer' ), 'Two Box Roll-Off Trailers' ) );
+check( 'the Scrubber is still mentioned with Liquid Ring as related equipment', 1 === preg_match( '/### Liquid Ring\n.*?Related equipment[^\n]*Huber Scrubber/s', $core ) );
+check( 'each unit is a unit of exactly one category in the core', ( function () use ( $core ) {
+	preg_match_all( '/^Vac2Go units: (.*)$/m', $core, $m );
+	$all = array();
+	foreach ( $m[1] as $line ) {
+		$all = array_merge( $all, explode( ', ', rtrim( $line, '.' ) ) );
+	}
+	return 41 === count( $all ) && 41 === count( array_unique( $all ) );
+} )() );
 check( 'core is under ~12k tokens', strlen( $core ) / 4 < 12000, (string) ( strlen( $core ) / 4 ) );
 
 // ---------------------------------------------------------------------------
@@ -117,6 +133,9 @@ check( 'allows KB figures with a hedge (D3)', false !== stripos( $rules, 'figure
 check( 'never invent or extrapolate figures', false !== stripos( $rules, 'never invent' ) );
 check( 'unit cards win over general category figures', false !== stripos( $rules, "use the unit card's figure" ) );
 check( 'off-list names are handled', false !== stripos( $rules, 'not on our current list' ) );
+check( 'no "route them" wording for the model to echo', false === stripos( $rules, 'route them' ) );
+check( 'no 6-bullet cap that splits unit lists', false === stripos( $rules, 'never more than 6 bullets' ) );
+check( 'typed contact details are pointed at the follow-up form', false !== stripos( $rules, 'Want a rep to follow up?' ) );
 check( 'admin notes are appended when set', ( function () {
 	$GLOBALS['va_options']['va_admin_notes'] = 'Mention the spring promotion never.';
 	$ok = false !== strpos( VA_Knowledge::get_system_prompt(), 'Mention the spring promotion never.' );

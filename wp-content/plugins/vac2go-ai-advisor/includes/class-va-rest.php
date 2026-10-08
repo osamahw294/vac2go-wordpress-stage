@@ -257,7 +257,7 @@ class VA_REST {
 		}
 
 		// --- Pre-screen before Fable (S6.5) ---
-		$scripted = self::prescreen( $message );
+		$scripted = self::prescreen_applies( $is_first_turn ) ? self::prescreen( $message ) : null;
 		if ( null !== $scripted ) {
 			self::log_turn( $session_id, $request_id, $message, $scripted['reply'], null, 0, 'prescreen', null, null, $ip_hash, $request, $flags );
 			return array(
@@ -417,17 +417,23 @@ class VA_REST {
 	 *
 	 * @return array{reply:string}|null Null means proceed to the model.
 	 */
-	private static function prescreen( $message ) {
-		$m = mb_strtolower( trim( $message ) );
+	/**
+	 * The pre-screen judges a message on its own, with no conversation, so it only
+	 * runs on a conversation's first message. Mid-conversation a one-word reply such as
+	 * "dust" is an answer to the advisor's question; on staging it was declined as off
+	 * topic. A greeting or "thanks" mid-conversation likewise belongs to the model.
+	 */
+	public static function prescreen_applies( $is_first_turn ) {
+		return (bool) $is_first_turn;
+	}
 
-		// Greetings / test messages: short scripted reply.
-		if ( preg_match( '/^(hi|hii+|hello|hey|yo|sup|test|testing|ping|ok|okay|thanks|thank you|good (morning|afternoon|evening))[.!?\s]*$/i', $m ) ) {
-			return array(
-				'reply' => "Hi! Tell me about your job (what you're vacuuming, cleaning, or excavating, roughly how much, and the site conditions) and I'll point you to the right truck category.",
-			);
-		}
-
-		// Domain keyword allowlist: clearly relevant, go to the model.
+	/**
+	 * On-topic without asking the classifier: an industry keyword, or any fleet unit,
+	 * category or older unit name ("Compare the Camel 900, 1200 and 1600" has none of
+	 * the keywords and was declined on staging).
+	 */
+	public static function clearly_relevant( $message ) {
+		$m        = mb_strtolower( trim( (string) $message ) );
 		$keywords = array(
 			'truck', 'vac', 'pump', 'sludge', 'excavat', 'hydro', 'sewer', 'jet', 'tank',
 			'debris', 'cfm', 'hg', 'filter', 'bag', 'rent', 'hv-57', 'hv57', 'hv 57',
@@ -439,11 +445,30 @@ class VA_REST {
 			'grain', 'cement', 'lime', 'coal', 'gravel', 'mud', 'soil', 'trench',
 			'utility', 'pipe', 'drain', 'culvert', 'manhole', 'cdl', 'price', 'cost',
 			'quote', 'avail', 'deliver', 'insur', 'lease', 'oper',
+			'dust', 'powder', 'silo', 'hopper', 'fuel', 'catalyst', 'brine', 'vapor',
 		);
 		foreach ( $keywords as $kw ) {
 			if ( false !== mb_strpos( $m, $kw ) ) {
-				return null; // relevant: proceed to the model
+				return true;
 			}
+		}
+		$r = VA_Fleet::resolve( $message );
+		return array() !== $r['units'] || array() !== $r['categories'] || array() !== $r['off_list'];
+	}
+
+	private static function prescreen( $message ) {
+		$m = mb_strtolower( trim( $message ) );
+
+		// Greetings / test messages: short scripted reply.
+		if ( preg_match( '/^(hi|hii+|hello|hey|yo|sup|test|testing|ping|ok|okay|thanks|thank you|good (morning|afternoon|evening))[.!?\s]*$/i', $m ) ) {
+			return array(
+				'reply' => "Hi! Tell me about your job (what you're vacuuming, cleaning, or excavating, roughly how much, and the site conditions) and I'll point you to the right truck category.",
+			);
+		}
+
+		// Clearly relevant: go straight to the model.
+		if ( self::clearly_relevant( $message ) ) {
+			return null;
 		}
 
 		// Ambiguous: cheap classifier decides.
