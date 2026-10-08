@@ -33,6 +33,34 @@ REST namespace: vac2go/v1 (/nonce, /chat, /chat/stream, /history, /contact, /cor
   dark #383838, Open Sans / Poppins). The stylesheet is injected at runtime from JS so
   LiteSpeed's unused-CSS optimizer cannot purge the JS-rendered widget's selectors.
 
+== Knowledge base (Phase 2) ==
+Everything the advisor knows lives in kb/, reviewed and versioned like code:
+- kb/fleet.json: the 41 units on vac2go.com, their category, and every name that
+  resolves to them (including older supplier names: CTOS, Bergey's, Dragon, ITI,
+  Benlee, "Keith Huber"). Names not on the website resolve to a category only.
+- kb/categories/<category>.md: the client's Round 2 questions and answers, word for
+  word apart from the edits logged in kb/categories/EDITS.md. Built by
+  phase-2/tools/build_categories.py. Industrial Vacuum and Water are drafts until the
+  client sends their entries.
+- kb/units/<unit>.md: one card per unit from the manufacturer literature. Every
+  figure carries a {src: document p.N} tag, removed before the model sees it.
+  Format: kb/units/CARD-FORMAT.md.
+
+What the model receives each turn, every block prompt-cached: the rules and a core
+(all ten category summaries and the fleet list, about 4.6k tokens), then reviewed
+corrections, then "knowledge packs" (a category's full Q&A plus its unit cards) for
+the categories the conversation is about: at most 3, chosen from the whole
+conversation, always including what the current message names.
+
+Admin -> Knowledge shows every category and card with sources and sizes. To change
+an answer, use a correction in the Review Queue; to change the knowledge, edit kb/.
+Settings -> Notes for the advisor adds short guidance to the rules. (The Phase 1
+"System prompt" textarea is no longer used.)
+
+Tests (CLI, no WordPress): tests/{fleet,cards,categories,packs,safety,spend}-fixtures.php
+alongside the earlier suites. The card test traces every number on every card back
+to the brochure fact files when phase-2/work/ is present.
+
 == When the advisor offers a rep ==
 Always visible: a call button in the header (Settings -> Contact a rep -> Phone
 number; swap in the tracked RingCentral number there) and a "Contact a Vac2Go rep"
