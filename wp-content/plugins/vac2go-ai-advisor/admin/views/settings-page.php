@@ -175,8 +175,8 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 				<td>$<input name="va_daily_spend_usd" id="va_daily_spend_usd" type="number" step="0.01" min="0" value="<?php echo esc_attr( get_option( 'va_daily_spend_usd', 25 ) ); ?>" class="small-text"> <span class="description">Estimated from real usage at the prices below. 80% emails the admin; 100% makes the chat unavailable until midnight. 0 = unlimited.</span></td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="va_hourly_token_alert">Hourly spike alert (tokens)</label></th>
-				<td><input name="va_hourly_token_alert" id="va_hourly_token_alert" type="number" min="0" value="<?php echo esc_attr( get_option( 'va_hourly_token_alert', 400000 ) ); ?>" class="regular-text"> <span class="description">Emails the admin when the last 60 minutes used more than this many tokens, so a sudden surge is caught before the daily 80% warning. Alert only, never blocks. 0 = off.</span></td>
+				<th scope="row"><label for="va_hourly_spend_alert_usd">Hourly spike alert (USD)</label></th>
+				<td><input name="va_hourly_spend_alert_usd" id="va_hourly_spend_alert_usd" type="number" min="0" step="0.5" value="<?php echo esc_attr( get_option( 'va_hourly_spend_alert_usd', 5 ) ); ?>" class="small-text"> <span class="description">Emails the admin when the estimated spend in the last 60 minutes reaches this many dollars, so a sudden surge is caught before the daily 80% warning. Alert only, never blocks. 0 = off.</span></td>
 			</tr>
 			<tr>
 				<th scope="row">Prices (USD per million tokens)</th>
@@ -189,7 +189,7 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 			</tr>
 			<tr>
 				<th scope="row"><label for="va_admin_email">Alert email</label></th>
-				<td><input name="va_admin_email" id="va_admin_email" type="email" value="<?php echo esc_attr( get_option( 'va_admin_email', get_option( 'admin_email' ) ) ); ?>" class="regular-text"> <span class="description">Breaker trips, canary hits, budget warnings, hourly token spikes, API auth/credit errors (max one email per hour per type).</span></td>
+				<td><input name="va_admin_email" id="va_admin_email" type="email" value="<?php echo esc_attr( get_option( 'va_admin_email', get_option( 'admin_email' ) ) ); ?>" class="regular-text"> <span class="description">Breaker trips, canary hits, budget warnings, hourly spend spikes, API auth/credit errors (max one email per hour per type).</span></td>
 			</tr>
 		</table>
 

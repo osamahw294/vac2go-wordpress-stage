@@ -31,7 +31,8 @@ $conversations = VA_DB::conversations_today();
 $hit_rate      = VA_DB::cache_hit_rate( $tokens );
 $packs_today   = VA_DB::packs_today();
 $tokens_hour   = VA_DB::tokens_last_hour();
-$spike_alert   = (int) get_option( 'va_hourly_token_alert', 400000 );
+$spend_hour    = VA_DB::spend_for( VA_DB::usage_last_hour() );
+$spike_alert   = (float) get_option( 'va_hourly_spend_alert_usd', 5 );
 
 $breaker_until  = (int) get_option( 'va_breaker_until', 0 );
 $breaker_reason = get_option( 'va_breaker_last_reason', '' );
@@ -58,7 +59,7 @@ $breaker_reason = get_option( 'va_breaker_last_reason', '' );
 			<tr><td><strong>Conversations that reached the model</strong></td><td><?php echo (int) $conversations; ?></td></tr>
 			<tr><td><strong>Average cost per conversation</strong></td><td>$<?php echo esc_html( number_format( VA_DB::per_conversation( $spend, $conversations ), 3 ) ); ?></td></tr>
 			<tr><td><strong>Prompt served from cache</strong></td><td><?php echo esc_html( number_format( $hit_rate * 100, 1 ) ); ?>% <span class="va-muted">(of input-side tokens; most of the prompt should be a cache read after a conversation's first turn)</span></td></tr>
-			<tr><td><strong>Tokens in the last 60 minutes</strong></td><td><?php echo number_format( $tokens_hour ); ?><?php echo $spike_alert > 0 ? ' <span class="va-muted">(spike alert at ' . esc_html( number_format( $spike_alert ) ) . ')</span>' : ''; ?></td></tr>
+			<tr><td><strong>Tokens in the last 60 minutes</strong></td><td><?php echo number_format( $tokens_hour ) . ' ($' . esc_html( number_format( $spend_hour, 2 ) ) . ')'; ?><?php echo $spike_alert > 0 ? ' <span class="va-muted">(spike alert at $' . esc_html( number_format( $spike_alert, 2 ) ) . ')</span>' : ''; ?></td></tr>
 		</tbody>
 	</table>
 

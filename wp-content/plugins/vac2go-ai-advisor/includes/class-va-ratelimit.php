@@ -294,14 +294,22 @@ class VA_RateLimit {
 	 * surge (a bot, a loop, a viral page) within the hour. Alert only; never blocks.
 	 */
 	public static function check_hourly_spike() {
-		$threshold = (int) get_option( 'va_hourly_token_alert', 400000 );
-		if ( $threshold <= 0 ) {
-			return;
+		$threshold = (float) get_option( 'va_hourly_spend_alert_usd', 5 );
+		$usage     = VA_DB::usage_last_hour();
+		$spend     = VA_DB::spend_for( $usage );
+		if ( self::spike_due( $spend, $threshold ) ) {
+			$tokens = array_sum( $usage );
+			self::alert( 'spike', 'Vac2Go Advisor: usage spike', 'Estimated spend in the last 60 minutes: $' . number_format( $spend, 2 ) . ' (alert at $' . number_format( $threshold, 2 ) . '; ' . number_format( $tokens ) . ' tokens). Check Stats and the Review Queue for unusual traffic.' );
 		}
-		$total = VA_DB::tokens_last_hour();
-		if ( $total >= $threshold ) {
-			self::alert( 'spike', 'Vac2Go Advisor: token usage spike', 'Tokens used in the last 60 minutes: ' . number_format( $total ) . ' (alert threshold ' . number_format( $threshold ) . '). Check Stats and the Review Queue for unusual traffic.' );
-		}
+	}
+
+	/**
+	 * Whether an hour's spend calls for the spike alert. Dollars, like the daily
+	 * ceiling: counted in tokens, the ~12,000 cached tokens every Phase 2 turn reads
+	 * tripped a 400,000-token alert on about 30 ordinary questions. 0 = off.
+	 */
+	public static function spike_due( $spend, $threshold ) {
+		return $threshold > 0 && $spend >= $threshold;
 	}
 
 	/**

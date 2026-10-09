@@ -82,5 +82,13 @@ check( 'cache hit rate with no traffic is 0', near( VA_DB::cache_hit_rate( $zero
 check( 'average cost per conversation', near( VA_DB::per_conversation( 3.0, 12 ), 0.25 ) );
 check( 'average cost with no conversations is 0', near( VA_DB::per_conversation( 3.0, 0 ), 0.0 ) );
 
+// Hourly spike alert, in dollars. Counted in tokens it tripped on normal traffic: every
+// Phase 2 turn reads ~12,000 cached tokens, so 400,000 tokens was about 30 questions.
+$cached_turn = array( 'input' => 25, 'cache_creation' => 0, 'cache_read' => 12000, 'output' => 200 );
+$hour_of_30  = array_map( function ( $n ) { return $n * 30; }, $cached_turn );
+check( '30 ordinary questions in an hour do not trip the default spike alert', ! VA_RateLimit::spike_due( VA_DB::spend_for( $hour_of_30 ), 5.0 ) );
+check( 'spend over the hourly alert trips it', VA_RateLimit::spike_due( 5.5, 5.0 ) );
+check( 'an hourly alert of 0 is off', ! VA_RateLimit::spike_due( 9999.0, 0.0 ) );
+
 echo "\n{$pass} passed, {$fail} failed\n";
 exit( $fail ? 1 : 0 );

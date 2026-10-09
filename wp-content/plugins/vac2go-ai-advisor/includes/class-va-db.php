@@ -96,7 +96,7 @@ class VA_DB {
 			'va_notify_leads'       => 1,
 			'va_corrections_in_prompt' => 1,
 			'va_daily_spend_usd'    => 25,
-			'va_hourly_token_alert' => 400000,
+			'va_hourly_spend_alert_usd' => 5,
 			'va_rep_phone'          => '855-822-7246',
 			'va_price_in_per_m'     => self::PRICE_IN_PER_M,
 			'va_price_out_per_m'    => self::PRICE_OUT_PER_M,
@@ -565,15 +565,33 @@ class VA_DB {
 	 * All tokens, of every type, used in the last 60 minutes (for the spike alert).
 	 */
 	public static function tokens_last_hour() {
+		return array_sum( self::usage_last_hour() );
+	}
+
+	/**
+	 * Tokens of each type used in the last 60 minutes, priced by spend_for() for the
+	 * spike alert.
+	 *
+	 * @return array{input:int, output:int, cache_creation:int, cache_read:int}
+	 */
+	public static function usage_last_hour() {
 		global $wpdb;
 		$since = gmdate( 'Y-m-d H:i:s', current_time( 'timestamp' ) - HOUR_IN_SECONDS );
-		return (int) $wpdb->get_var(
+		$row   = $wpdb->get_row(
 			$wpdb->prepare(
-				'SELECT COALESCE(SUM(COALESCE(input_tokens,0) + COALESCE(output_tokens,0) + COALESCE(cache_creation_input_tokens,0) + COALESCE(cache_read_input_tokens,0)),0)
+				'SELECT COALESCE(SUM(input_tokens),0) AS input, COALESCE(SUM(output_tokens),0) AS output,
+				        COALESCE(SUM(cache_creation_input_tokens),0) AS cache_creation,
+				        COALESCE(SUM(cache_read_input_tokens),0) AS cache_read
 				 FROM ' . self::table() . ' WHERE created_at >= %s',
 				$since
-			)
+			),
+			ARRAY_A
 		);
+		$out = array();
+		foreach ( array( 'input', 'output', 'cache_creation', 'cache_read' ) as $k ) {
+			$out[ $k ] = (int) ( $row[ $k ] ?? 0 );
+		}
+		return $out;
 	}
 
 	/**
