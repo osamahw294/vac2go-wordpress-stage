@@ -59,4 +59,5 @@ Branch: phase-2 (from stage @ f0284ec0). One line per finished step; every devia
 - Ruling: AM30 HD and SC 1009 kept although the catalog doesn't list them — they are on vac2go.com and are canonical units in the client's own synonym ring — cost if wrong: remove two units.
 - Ruling: single-word aliases "Knight", "High Dump", "Guzzler", "Camel", "Dragon" added because the client's synonym ring lists them (overrides the earlier single-word exclusion) — cost if wrong: an incidental word loads a pack.
 - Ruling: banned-phrase list's numeric-date pattern and unit+chassis co-occurrence rule not added (would block "3/4 in" lines and the cards' own chassis facts; rules already cover chassis) — recorded in CLIENT-QUESTIONS.md — cost if wrong: two patterns.
+- v2.8.1 Q6 live fix: "What is the phone number for your Arizona office?" was declined by the first-message pre-screen. Branch/contact words (office, branch, location, phone, call, contact, address, vac2go) and every place in kb/locations.md now count as on topic. safety 98/98.
 - Not received: Q1 (link inaccessible), Q3 tractor spec and Q4 HV-57 brochures (said attached, absent). Q2, Q8, Q11 pending client.

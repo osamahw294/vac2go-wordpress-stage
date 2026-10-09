@@ -446,9 +446,17 @@ class VA_REST {
 			'utility', 'pipe', 'drain', 'culvert', 'manhole', 'cdl', 'price', 'cost',
 			'quote', 'avail', 'deliver', 'insur', 'lease', 'oper',
 			'dust', 'powder', 'silo', 'hopper', 'fuel', 'catalyst', 'brine', 'vapor',
+			// Branch and contact questions (client answer to Q6).
+			'office', 'branch', 'location', 'phone', 'call', 'contact', 'vac2go', 'address',
 		);
 		foreach ( $keywords as $kw ) {
 			if ( false !== mb_strpos( $m, $kw ) ) {
+				return true;
+			}
+		}
+		// A state or city from the locations list ("anything in Utah?").
+		foreach ( VA_KB::location_names() as $place ) {
+			if ( false !== mb_strpos( $m, mb_strtolower( $place ) ) ) {
 				return true;
 			}
 		}

@@ -154,6 +154,28 @@ class VA_KB {
 		return implode( "\n", $out );
 	}
 
+	/**
+	 * Place names from kb/locations.md ("Alabama", "Fort Myers", "Orlando", ...), so
+	 * a question naming one is recognised as on topic.
+	 *
+	 * @return string[]
+	 */
+	public static function location_names() {
+		$path = self::dir() . '/locations.md';
+		if ( ! is_readable( $path ) ) {
+			return array();
+		}
+		$names = array();
+		foreach ( explode( "\n", (string) file_get_contents( $path ) ) as $line ) {
+			if ( preg_match( '/^- (.+?) \(\d{3}\)/u', $line, $m ) ) {
+				foreach ( preg_split( '/\s+[–-]\s+/u', $m[1] ) as $part ) {
+					$names[] = trim( $part );
+				}
+			}
+		}
+		return array_values( array_unique( $names ) );
+	}
+
 	// ---------------------------------------------------------------- core --
 
 	/**

@@ -137,7 +137,9 @@ check( 'a full phone number with an area code still counts', 'contact' === VA_Si
 echo "\n== The off-topic pre-screen (staging test 2026-10-08) ==\n";
 check( 'pre-screen runs on the first message of a conversation', VA_REST::prescreen_applies( true ) );
 check( 'pre-screen never runs mid-conversation ("dust" was declined as off-topic)', ! VA_REST::prescreen_applies( false ) );
-foreach ( array( 'dust', 'Compare the Camel 900, 1200 and 1600.', 'fly ash in a hopper', 'Tell me about the Huber Knight', 'need a hydrovac' ) as $t ) {
+foreach ( array( 'dust', 'Compare the Camel 900, 1200 and 1600.', 'fly ash in a hopper', 'Tell me about the Huber Knight', 'need a hydrovac',
+	// Client answer to Q6: branch questions are on topic (declined on staging 2026-10-09).
+	'What is the phone number for your Arizona office?', 'Do you have a branch in Utah?', 'Where are your locations?', 'Who do I call in Texas?' ) as $t ) {
 	check( "clearly on topic: \"{$t}\"", VA_REST::clearly_relevant( $t ) );
 }
 check( 'an unrelated request is not waved through', ! VA_REST::clearly_relevant( 'write me a poem about the sea' ) );
