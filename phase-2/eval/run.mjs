@@ -21,7 +21,7 @@ const arg = (name, def) => {
 const sets = arg('sets', 'E1,E2,E3,E4,E5').split(',');
 const limit = Number(arg('limit', '100000'));
 const out = join(here, arg('out', 'results.jsonl'));
-const GAP_MS = 12500; // 4.8 requests a minute, under the 6-a-minute per-IP limit
+const GAP_MS = Number(process.env.VA_GAP_MS || 12500); // 4.8 requests a minute, under the 6-a-minute per-IP limit
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const done = new Set(existsSync(out) ? readFileSync(out, 'utf8').trim().split('\n').filter(Boolean).map((l) => JSON.parse(l).id) : []);
