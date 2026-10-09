@@ -94,8 +94,10 @@ foreach ( VA_Fleet::units() as $id => $u ) {
 	}
 	// The source text this card may quote from.
 	if ( 'gapvax-hv-57' === $id ) {
-		// The HV-57 card comes from the Phase 1 knowledge base, frozen here.
-		$source = (string) file_get_contents( __DIR__ . '/fixtures/phase1-hv57.txt' );
+		// The HV-57 card comes from the Phase 1 knowledge base, frozen here, plus the
+		// brochures the client sent with their feedback.
+		$source = (string) file_get_contents( __DIR__ . '/fixtures/phase1-hv57.txt' )
+			. (string) @file_get_contents( $facts_dir . '/' . $u['fact_file'] );
 	} else {
 		$files = array();
 		if ( ! empty( $u['fact_file'] ) ) {

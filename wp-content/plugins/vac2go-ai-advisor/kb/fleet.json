@@ -133,9 +133,10 @@
 				"hv57",
 				"gapvax air mover"
 			],
-			"fact_file": null,
+			"fact_file": "gapvax-hv-57.md",
 			"sources": [
-				"Phase 1 knowledge (brochure held by the Vac2Go team, not in the Phase 2 batches)"
+				"Phase 1 knowledge",
+				"GapVax-HV57-Brochure.pdf, GapVax-HV57.pdf, GapVax HV57.pdf (client feedback, 2026-10-09)"
 			]
 		},
 		"guzzler-classic": {
