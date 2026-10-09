@@ -217,9 +217,13 @@ class VA_KB {
 		if ( $off ) {
 			$out[] = "### Brands Vac2Go does not carry\n" . implode( '; ', $off ) . '.';
 		}
-		$locations = self::dir() . '/locations.md';
-		if ( is_readable( $locations ) ) {
-			$out[] = trim( (string) file_get_contents( $locations ) );
+		// Round 1 Groups B and C route jobs and industries across the whole fleet (client
+		// answer to Q12), so they travel with every turn rather than in one category's pack.
+		foreach ( array( 'job-matching.md', 'locations.md' ) as $file ) {
+			$path = self::dir() . '/' . $file;
+			if ( is_readable( $path ) ) {
+				$out[] = trim( (string) file_get_contents( $path ) );
+			}
 		}
 		return implode( "\n\n", $out ) . "\n";
 	}

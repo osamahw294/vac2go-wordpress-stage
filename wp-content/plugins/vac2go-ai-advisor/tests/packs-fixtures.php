@@ -184,5 +184,9 @@ check( 'every block is cache-marked', array() === array_filter( $b2, function ( 
 } ) );
 check( 'never more than 4 cache breakpoints', count( $b2 ) <= 4 );
 
+// Round 1 Groups B and C (job matching, industries) are always available (client answer to Q12).
+check( 'core carries the job-matching answers', false !== strpos( $core, 'I need to clean out a sludge pit' ) );
+check( 'core carries the industries', false !== strpos( $core, 'Refineries' ) );
+
 echo "\n{$pass} passed, {$fail} failed\n";
 exit( $fail ? 1 : 0 );

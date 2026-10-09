@@ -108,7 +108,7 @@ check( 'an admin-edited list is left alone', "/\\bmy custom\\b/i\n/\\bguaranteed
 unset( $GLOBALS['va_options']['va_banned_patterns'] );
 
 echo "\n== Phase 2 prompt sections count as leaks ==\n";
-foreach ( array( '== USING THE KNOWLEDGE ==', 'KNOWLEDGE PACK: Combination', '== CATEGORIES AND FLEET', '## Notes for the advisor', '== REVIEWED CORRECTIONS', '== NOTES FROM THE VAC2GO TEAM' ) as $m ) {
+foreach ( array( '== USING THE KNOWLEDGE ==', '== WHICH TRUCK FOR WHICH JOB', 'KNOWLEDGE PACK: Combination', '== CATEGORIES AND FLEET', '## Notes for the advisor', '== REVIEWED CORRECTIONS', '== NOTES FROM THE VAC2GO TEAM' ) as $m ) {
 	$r = VA_Filter::apply( "Sure, here it is: {$m} ..." );
 	check( "leak marker \"{$m}\" is caught", $r['filtered'] && 'structural' === $r['stage'], json_encode( $r['stage'] ) );
 }

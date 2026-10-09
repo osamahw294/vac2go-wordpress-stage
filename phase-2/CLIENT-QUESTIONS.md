@@ -69,7 +69,7 @@ Tick or correct each line.
 
 | Q | Client answer | Status |
 |---|---|---|
-| Q1 | Round 1 (Industrial Vacuum) is behind a project-tool link | **Blocked**: the link can't be opened by us. Need an export of the document. Industrial Vacuum still runs on the draft. |
+| Q1 | Round 1 Industrial Vacuum entries | **Applied** ("AI Equipment Advisor rev1.docx", received 2026-10-09): Groups A, D, E, F are the Industrial Vacuum knowledge, replacing the draft. 14 small edits logged in kb/EDITS-ROUND1.md (spelling, notes addressed to Vac2Go such as the Peterbilt example, one unsupported market claim). |
 | Q2 | Water Q&A still coming from Vac2Go | Waiting. Water runs on the draft. |
 | Q3 | Tractor spec reference | **Applied** (received 2026-10-09): confirms the card (connects to tankers and double trailers, wet line kit available); no figures, as each tractor is spec'd per order. |
 | Q4 | HV-57 brochures | **Applied** (received 2026-10-09): all card figures confirmed; added 500 HP transfer case, floatball, manway, High Dump heights and the options list. The brochures show 28" Hg and 17 cu yd only; the Phase 1 ranges (27 to 28" Hg, 15 to 17 cu yd) are kept. |
@@ -80,5 +80,5 @@ Tick or correct each line.
 | Q9 | Policy lines allowed | **Done**: the clean-return charges and "trailer on site doesn't change the rate" lines restored to the client's wording. ("Significantly lower rental costs" stays reworded; it wasn't part of the question.) |
 | Q10 | Only KB figures; differences as a range; always "depends on the configuration"; compare only on confirmed figures | **Done**: rules updated exactly to this. |
 | Q11 | Daily cap on hold | Waiting. $25/day default stays on staging. |
-| Q12 | Groups B and C are in the Q1 document | **Blocked** with Q1. |
+| Q12 | Groups B and C | **Applied**: job matching (B) and industries (C) cover the whole fleet, so the advisor has them on every turn. |
 | Q13 | Two Box Roll-Off Trailers → Roll-Off; Scrubber → Liquid Vacuum | **Done**: each now in that one category only. |

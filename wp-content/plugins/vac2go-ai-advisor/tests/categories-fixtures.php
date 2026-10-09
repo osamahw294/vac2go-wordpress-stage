@@ -6,8 +6,8 @@
  *
  * kb/categories/ holds one file per advisor category. Eight are built from the
  * client's Round 2 entries by phase-2/tools/build_categories.py (word for word apart
- * from the logged edits in EDITS.md); Industrial Vacuum and Water are drafts until the
- * client sends their entries. Where the Round 2 source text is present (it is a working
+ * from the logged edits in EDITS.md); Industrial Vacuum is built from Round 1 by
+ * phase-2/tools/build_round1.py; Water is a draft until the client sends its entries. Where the Round 2 source text is present (it is a working
  * file, not in git), every number in every summary is traced back to it.
  */
 
@@ -65,9 +65,11 @@ foreach ( VA_Fleet::categories() as $id => $c ) {
 	check( "{$id}: title is the category name", 0 === strpos( $text, '# ' . $c['name'] . "\n" ) );
 	check( "{$id}: has a Summary", false !== strpos( $text, "## Summary\n" ) );
 	check( "{$id}: no em dashes", false === strpos( $text, '—' ) );
-	$questions += substr_count( $text, '**Q: ' );
+	if ( 'industrial-vacuum' !== $id ) {
+		$questions += substr_count( $text, '**Q: ' );
+	}
 
-	if ( in_array( $id, array( 'industrial-vacuum', 'water' ), true ) ) {
+	if ( 'water' === $id ) {
 		check( "{$id}: marked as a draft", 0 === strpos( substr( $text, strlen( '# ' . $c['name'] . "\n\n" ) ), 'Draft.' ) );
 	}
 
@@ -78,6 +80,26 @@ foreach ( VA_Fleet::categories() as $id => $c ) {
 	}
 }
 check( 'all 173 Round 2 questions are present', 173 === $questions, "found {$questions}" );
+
+// Round 1 (Industrial Vacuum, received 2026-10-09). Groups A, D, E, F are the category's
+// own knowledge; Groups B (job matching) and C (industries) cover the whole fleet, so they
+// are sent on every turn as kb/job-matching.md (client answer to Q12).
+$iv = (string) @file_get_contents( "{$dir}/industrial-vacuum.md" );
+check( 'industrial vacuum is no longer a draft', false === strpos( $iv, 'Draft.' ) );
+check( 'industrial vacuum carries the 30 Round 1 questions of Groups A, D, E, F', 30 === substr_count( $iv, '**Q: ' ), 'found ' . substr_count( $iv, '**Q: ' ) );
+foreach ( array( 'Group A', 'Group D', 'Group E', 'Group F' ) as $g ) {
+	check( "industrial vacuum has {$g}", false !== strpos( $iv, "### {$g}:" ) );
+}
+$jm = (string) @file_get_contents( __DIR__ . '/../kb/job-matching.md' );
+check( 'job-matching.md exists', '' !== $jm );
+check( 'job matching carries the 20 questions of Groups B and C', 20 === substr_count( $jm, '**Q: ' ), 'found ' . substr_count( $jm, '**Q: ' ) );
+check( 'job matching carries the 12 industries', 12 === substr_count( $jm, '**Industry: ' ), 'found ' . substr_count( $jm, '**Industry: ' ) );
+check( 'job matching has no em dashes', false === strpos( $jm, '—' ) );
+foreach ( array( 'Peterbilt', 'should identify', 'Recommendation', 'CONBUSTABLE', 'most common industrial vacuum truck configurations' ) as $bad ) {
+	check( "Round 1 text shows no \"{$bad}\" to customers", false === stripos( $iv . $jm, $bad ) );
+}
+$r1edits = (string) @file_get_contents( __DIR__ . '/../kb/EDITS-ROUND1.md' );
+check( 'EDITS-ROUND1.md logs every Round 1 edit', substr_count( $r1edits, '- **Was:**' ) >= 8, 'found ' . substr_count( $r1edits, '- **Was:**' ) );
 
 $edits = (string) @file_get_contents( "{$dir}/EDITS.md" );
 check( 'EDITS.md logs 9 edits', 9 === substr_count( $edits, '- **Was:**' ) );

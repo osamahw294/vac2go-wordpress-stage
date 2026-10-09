@@ -243,6 +243,7 @@ class VA_Filter {
 			'== BRAND SAFETY ==',
 			// Phase 2 prompt sections.
 			'== USING THE KNOWLEDGE ==',
+			'== WHICH TRUCK FOR WHICH JOB',
 			// The banners as they appear in the prompt, not the bare phrases: the rules
 			// tell the model about "knowledge packs" and "Notes for the advisor", so an
 			// honest "I don't have the knowledge pack for that" must not count as a leak.
