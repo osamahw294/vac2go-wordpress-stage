@@ -14,10 +14,14 @@ export const numbers = (s) => [...stripSrc(String(s)).replace(/vac2go/gi, '').ma
 export function kbNumbers() {
 	const set = new Set();
 	const add = (t) => numbers(t).forEach((n) => set.add(n));
-	for (const dir of ['categories', 'units']) {
+	for (const dir of ['', 'categories', 'units']) {
 		for (const f of readdirSync(join(plugin, 'kb', dir))) if (f.endsWith('.md')) add(readFileSync(join(plugin, 'kb', dir, f), 'utf8'));
 	}
 	add(readFileSync(join(plugin, 'kb/fleet.json'), 'utf8'));
+	// Phone numbers the rules and settings give the advisor (the main 855 number).
+	for (const f of ['includes/class-va-knowledge.php', 'vac2go-ai-advisor.php']) {
+		for (const m of readFileSync(join(plugin, f), 'utf8').matchAll(/\b\d{3}-\d{3}-\d{4}\b/g)) add(m[0]);
+	}
 	return set;
 }
 

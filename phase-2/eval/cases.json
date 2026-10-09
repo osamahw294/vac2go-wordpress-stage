@@ -1,5 +1,215 @@
 [
 	{
+		"id": "E1-industrial-vacuum-01",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: What is an industrial vacuum truck?",
+		"reference": "An industrial vacuum truck is a heavy-duty vacuum system designed to safely remove, recover, and transport a wide range of wet, dry, and slurry materials. These trucks generate powerful vacuum airflow that moves material through large-diameter hoses into an onboard debris tank, making them ideal for industrial cleaning, maintenance, spill response, and material recovery."
+	},
+	{
+		"id": "E1-industrial-vacuum-02",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: What kinds of jobs are industrial vacuum trucks used for?",
+		"reference": "Industrial vacuum trucks are commonly used for:\n- Plant and refinery shutdowns\n- Tank cleaning\n- Silo and bin cleanout\n- Pit, sump, and trench cleaning\n- Spill cleanup\n- Vacuum loading of dry bulk materials\n- Catalyst removal\n- Conveyor and process equipment cleanup\n- Ash and dust removal\n- Stormwater and catch basin cleaning\n- Industrial facility maintenance\n- Micro trenching\n- Roof ballast removal\n- Sand blasting media"
+	},
+	{
+		"id": "E1-industrial-vacuum-03",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: What industries most commonly use them?",
+		"reference": "Industrial vacuum trucks serve a wide variety of industries, including:\n- Oil & Gas\n- Petrochemical and Refineries\n- Chemical Manufacturing\n- Power Generation\n- Steel Mills\n- Cement and Aggregate\n- Pulp & Paper\n- Food Processing\n- Mining\n- Municipal Utilities\n- Environmental Services\n- Industrial Contractors\n- Civil\n- Railroad\n- Commercial Contractors"
+	},
+	{
+		"id": "E1-industrial-vacuum-04",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: Can industrial vacuum trucks handle both wet and dry material?",
+		"reference": "Yes. One of the biggest advantages of an industrial vacuum truck is its ability to handle wet materials, dry materials, sludge, slurry, powders, granules, and many other industrial waste streams with the same machine (depending on the material and configuration)."
+	},
+	{
+		"id": "E1-industrial-vacuum-05",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: How is an industrial vacuum truck different from a hydro excavator?",
+		"reference": "A hydro excavator combines high-pressure water with a vacuum system to safely expose underground utilities through excavation. An industrial vacuum truck is designed primarily to vacuum, recover, and transport material rather than excavate with water. While an industrial vacuum can remove material from an excavation, it is generally the better choice when excavation is not required, and maximum vacuum performance is needed."
+	},
+	{
+		"id": "E1-industrial-vacuum-06",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: How is it different from a combination/sewer cleaning unit?",
+		"reference": "Combination sewer cleaners are purpose-built for cleaning sewer and storm drain systems using high-pressure water jetting and vacuum recovery. Industrial vacuum trucks are designed for broader industrial applications and excel at removing heavy debris, dry bulk materials, sludge, process waste, and other materials found in industrial facilities, not just sewer infrastructure."
+	},
+	{
+		"id": "E1-industrial-vacuum-07",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: How is it different from a liquid vacuum truck?",
+		"reference": "A liquid vacuum truck is primarily designed to collect and transport liquids and pumpable waste. Industrial vacuum trucks are built to handle a much wider range of materials, including dry solids, powders, heavy sludge, bulk debris, and mixed wet/dry waste that many liquid vacuum units cannot efficiently recover."
+	},
+	{
+		"id": "E1-industrial-vacuum-08",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: When would I need an industrial vacuum truck instead of a hydro excavator?",
+		"reference": "Choose an industrial vacuum truck when your goal is to remove, recover, or transfer material rather than excavate. It’s the preferred solution for plant cleanouts, tank cleaning, spill recovery, material transfer, shutdown maintenance, and removing accumulated solids, sludge, or dry bulk materials."
+	},
+	{
+		"id": "E1-industrial-vacuum-09",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: What materials can an industrial vacuum handle that other trucks can’t?",
+		"reference": "Industrial vacuum trucks are capable of handling materials such as:\n- Dry powders\n- Fly ash\n- Cement dust\n- Sand\n- Gravel\n- Catalyst (could be flammable or combustible)\n- Grain\n- Plastic pellets\n- Coal fines (could be combustible)\n- Sludge\n- Slurry\n- Filter media\n- Scale\n- Process waste\n- Wet and dry industrial debris\nTheir high airflow and vacuum capability make them especially effective for materials that are difficult to shovel, convey, or load manually."
+	},
+	{
+		"id": "E1-industrial-vacuum-10",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: What jobs is an industrial vacuum truck not the right application for?",
+		"reference": "Industrial vacuum trucks may not be the best option for:\n- Precision utility locating or daylighting (hydro excavation is better)\n- High-pressure sewer line jetting (combination sewer cleaners are designed for this)\n- Transporting large volumes of clean liquids where only pumping is required (liquid vacuum trucks are often more efficient)\n- Heavy excavation requiring digging equipment\n- Materials that are hazardous or incompatible with the specific vacuum system without the proper configuration or safety controls\n- Radioactive material\n- Removal of Asbestos"
+	},
+	{
+		"id": "E1-industrial-vacuum-11",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: What are the most common reasons customers rent an industrial vacuum?",
+		"reference": "Customers typically rent industrial vacuum trucks when they need:\n- Additional equipment during planned shutdowns or turnarounds\n- Emergency spill response capability\n- Temporary capacity when their own equipment is down\n- Specialized vacuum equipment for a specific project\n- Support for seasonal maintenance work\n- Fast deployment without the capital expense of purchasing equipment\n- Reliable equipment backed by maintenance and technical support"
+	},
+	{
+		"id": "E1-industrial-vacuum-12",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: What is the maximum particle size an industrial vacuum can handle?",
+		"reference": "The maximum particle size depends on the truck model, hose diameter, and the material being recovered. Industrial vacuum trucks are designed to handle a wide range of materials, from fine powders and dust to gravel, aggregate, and other coarse solids. If your material contains oversized debris, our team can help determine whether it is suitable for vacuum recovery."
+	},
+	{
+		"id": "E1-industrial-vacuum-13",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: What weight of material can the unit pick up?",
+		"reference": "Industrial vacuum trucks are designed to recover heavy materials such as sand, gravel, sludge, wet soil, catalyst, and industrial debris. Actual lifting capability depends on the material’s density, moisture content, hose length, vertical lift, and distance from the truck."
+	},
+	{
+		"id": "E1-industrial-vacuum-14",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: Can it handle abrasive materials?",
+		"reference": "Yes. Industrial vacuum trucks are commonly used to recover abrasive materials such as sand, grit, fly ash, cement dust, blast media, mill scale, and aggregate. Because abrasive materials increase equipment wear, the truck may require specialized liners, wear components, or operating procedures depending on the application."
+	},
+	{
+		"id": "E1-industrial-vacuum-15",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: Can it handle hot materials? What are the temperature limits?",
+		"reference": "It depends. Industrial vacuum trucks can often handle warm materials, but maximum allowable temperatures vary by truck configuration, hose materials, filters, seals, and debris tank components.\nMaterial should always be allowed to cool or evaluated before vacuuming. If your application involves elevated temperatures, please contact Vac2Go so we can verify compatibility before rental."
+	},
+	{
+		"id": "E1-industrial-vacuum-16",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: Can it handle hazardous or regulated materials?",
+		"reference": "Possibly, but only with the proper equipment and safety procedures.\nWhether a material can be recovered depends on factors such as:\n- The type of hazardous material\n- Regulatory requirements\n- The truck configuration\n- Disposal requirements\n- Customer safety procedures"
+	},
+	{
+		"id": "E1-industrial-vacuum-17",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: Can it handle flammable or combustible materials?",
+		"reference": "Some flammable or combustible materials require specialized equipment and operating procedures. Material characteristics, dust explosibility, ignition risk, and site safety requirements must all be evaluated before vacuuming.\nAlways discuss these applications with Vac2Go before renting equipment"
+	},
+	{
+		"id": "E1-industrial-vacuum-18",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: Can it handle acidic materials?",
+		"reference": "It depends on the type of acid, concentration, temperature, and compatibility with the truck’s tank, hoses, valves, and seals.\nSome corrosive materials require specialized equipment or may not be suitable for standard industrial vacuum trucks. Our team can help determine the safest solution."
+	},
+	{
+		"id": "E1-industrial-vacuum-19",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: Can it handle slurry at high temperature (100°C / 212°F and above)?",
+		"reference": "Generally, very high-temperature slurry requires special evaluation.\nTemperature affects hoses, seals, filters, tank coatings, and other components. If your material approaches or exceeds 100°C (212°F), contact Vac2Go before rental so we can verify equipment compatibility."
+	},
+	{
+		"id": "E1-industrial-vacuum-20",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: Can it handle dusty fines like Black Beauty® or coal dust?",
+		"reference": "Yes, industrial vacuum trucks are commonly used to recover fine industrial materials such as:\n- Coal dust\n- Fly ash\n- Black Beauty® blasting media\n- Cement dust\n- Lime\n- Carbon black (application dependent)\n- Powdered products\nHowever, some fine dusts may present combustible dust hazards and require additional safety precautions. Tell us about your material so we can recommend the appropriate equipment."
+	},
+	{
+		"id": "E1-industrial-vacuum-21",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: What materials should never be vacuumed with an industrial vacuum truck?",
+		"reference": "Certain materials should not be vacuumed with a standard industrial vacuum truck unless the equipment is specifically designed and approved for the application. These may include:\n- Explosive or unstable materials\n- Radioactive materials\n- Materials that exceed the truck’s temperature limits\n- Materials that are chemically incompatible with the truck’s construction\n- Certain highly corrosive chemicals\n- Materials that could ignite or react inside the vacuum system\n- Materials prohibited by local, state, or federal regulations\nAdvisor note: Do not give hard limits for particle size, temperature or lifting weight unless a unit card gives that unit's figure; these depend on the blower, hose size, lift height, vacuum level and material. Say it depends on the configuration."
+	},
+	{
+		"id": "E1-industrial-vacuum-22",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: How do I know if I need an industrial vacuum instead of a smaller unit?",
+		"reference": "An industrial vacuum truck is typically the right choice when you need to:\n- Move large volumes of dry material.\n- Vacuum heavy or dense materials.\n- Reach long hose distances.\n- Vacuum from elevated structures such as silos, baghouses, or hoppers.\n- Work continuously for extended periods.\n- Minimize downtime on large industrial cleanout projects.\nSmaller trailer or portable vacuums are often better for maintenance work, confined spaces, or jobs involving relatively small amounts of material."
+	},
+	{
+		"id": "E1-industrial-vacuum-23",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: What’s the sizing logic when a job is on the borderline between categories?",
+		"reference": "Vac2Go generally looks at several factors:\n- Total material volume.\n- Material weight and density.\n- Hose length required.\n- Vertical lift.\n- Distance from the truck to the work area.\n- How quickly the job needs to be completed.\n- Whether material needs to be transported after collection.\nIf several of these factors are demanding, the larger industrial vacuum truck is usually the better choice because it finishes the work faster and more efficiently."
+	},
+	{
+		"id": "E1-industrial-vacuum-24",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: When would Vac2Go recommend a hydro excavator instead of an industrial vacuum?",
+		"reference": "A hydro excavator is recommended when the primary objective is safely exposing buried utilities.\nTypical hydro excavation jobs include:\n- Daylighting utilities.\n- Pole and sign installation.\n- Potholing.\n- Utility verification.\n- Excavating around gas, electric, fiber optic, or water lines.\n- Precision digging with minimal ground disturbance.\n- Demolition Operations\n- Bridge Guard Railing Construction\n- Interstate Construction\nIf the job is primarily excavation, choose a hydro excavator.\nIf the job is primarily material removal or industrial cleaning, choose an industrial vacuum."
+	},
+	{
+		"id": "E1-industrial-vacuum-25",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: When would Vac2Go recommend a combination unit instead?",
+		"reference": "A combination sewer truck is usually recommended when the work requires both:\n- High-pressure water jetting, and\n- Vacuum recovery.\n- Storm Drain Inspections\nExamples include:\n- Sewer line cleaning.\n- Storm drain cleaning.\n- Catch basin cleaning.\n- Culvert cleaning.\n- Lift station cleaning.\n- Pipeline maintenance.\nIf you’re cleaning infrastructure with water and immediately vacuuming the debris, a combination unit is typically the best solution."
+	},
+	{
+		"id": "E1-industrial-vacuum-26",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: When would Vac2Go recommend a liquid vacuum or liquid ring unit instead?",
+		"reference": "A liquid vacuum or liquid ring unit is generally recommended when handling:\n- Large volumes of liquids or sludge.\n- Wet industrial waste.\n- Tank cleanouts.\n- Oil and water mixtures.\n- Materials that require continuous wet vacuum service.\n- Flammable or Combustible Materials\nLiquid ring systems perform well in wet environments and are often selected when moisture would reduce the efficiency of a dry industrial vacuum"
+	},
+	{
+		"id": "E1-industrial-vacuum-27",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: What is the GapVax HV-57?",
+		"reference": "The GapVax HV-57 is a heavy-duty industrial vacuum truck designed to vacuum and transport both dry and semi wet industrial materials. It uses a high-capacity positive displacement blower and a multi-stage filtration system, making it well suited for demanding industrial cleanout applications such as cement plants, steel mills, power plants, foundries, grain facilities, and manufacturing operations."
+	},
+	{
+		"id": "E1-industrial-vacuum-28",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: What chassis is the HV-57 typically mounted on in Vac2Go’s fleet?",
+		"reference": "The HV-57 body can be mounted on several Class 8 truck chassis depending on fleet specifications and model year. A Vac2Go rep can confirm the chassis on a specific unit."
+	},
+	{
+		"id": "E1-industrial-vacuum-29",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: What are the unit’s overall dimensions and weight?",
+		"reference": "These come from Vac2Go's fleet records for the specific unit, not the manufacturer's brochure. A Vac2Go rep can confirm them."
+	},
+	{
+		"id": "E1-industrial-vacuum-30",
+		"set": "E1",
+		"category": "industrial-vacuum",
+		"q": "Question about Industrial Vacuum equipment: Is the HV-57 a particularly large or small unit within the Industrial Vacuum category?",
+		"reference": "The HV-57 is considered a large industrial vacuum truck. It offers approximately 15 cubic yards of usable debris capacity (with some configurations offering larger body volumes), a powerful blower producing around 5,250 CFM and 27 inches of mercury vacuum, with the options to do vacuum work off the boom or the back door, making it suitable for high-production industrial vacuum work. It is significantly larger and more productive than portable vacuum systems or small industrial vacuums and is intended for jobs where material volume, hose distance, and productivity are important.\nAdvisor note: For the HV-57's figures use its unit card, which gives them as ranges (airflow 5,200 to 5,250 CFM, vacuum 27 to 28\" Hg, debris capacity about 15 to 17 cu yd).\n## How it compares (from Vac2Go's Round 2 answers)\n- **vs. hydro excavator:** a hydro excavator actively loosens and excavates the ground; a standard dry industrial vacuum can only recover material that is already loose, uncompacted, pre-broken, or can be picked up directly.\n- **vs. combination unit:** combination units are strictly wet-work machines; for dry material recovery a dedicated industrial vacuum loader / air mover must be used. An industrial vacuum can become overwhelmed or leak fine mist with massive volumes of liquid-dominant stormwater runoff. For a catch basin packed with compressed, bone-dry sand or massive gravel beds, an industrial vacuum (air mover) or a heavy-duty liquid vacuum truck with a positive-displacement blower is more efficient than a combo.\n- **vs. liquid vacuum:** liquid vacuums handle corrosive, acidic, hazardous and 100% liquid materials that would leak out of or ruin the dry filtration baghouses of an industrial air mover.\n- **vs. liquid ring:** industrial vacuums use dry filtration baghouses that get blinded and ruined by heavy moisture, and can generate static sparks; liquid rings handle high-moisture, high-vapor streams and volatile gases safely. Choose an industrial vacuum for dry powders or damp debris.\n- **with roll-off boxes:** an industrial vacuum truck must leave the site to dump once its tank fills; staging roll-off boxes (including vacuum-rated boxes it can load directly) keeps it working on site."
+	},
+	{
 		"id": "E1-hydro-excavator-01",
 		"set": "E1",
 		"category": "hydro-excavator",
@@ -1219,7 +1429,7 @@
 			"5200",
 			"5250"
 		],
-		"source_line": "Standard airflow: 5,200 to 5,250 CFM"
+		"source_line": "Standard airflow: 5,200 to 5,250 CFM, positive displacement blower"
 	},
 	{
 		"id": "E2-gapvax-hv-57-2",

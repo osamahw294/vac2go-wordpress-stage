@@ -70,6 +70,27 @@ $poorfits = array( 'I need a hydrovac for potholing', 'A hydro excavator fits. A
 $p = VA_KB::select_packs( $poorfits, 'What is the water capacity on the Vactor Paradigm hydro excavator?' );
 check( 'a category named early and again now is kept over later passing mentions', in_array( 'hydro-excavator', $p, true ) && count( $p ) <= 3, json_encode( $p ) );
 check( 'when the current message names nothing, the sticky set is unchanged', VA_KB::select_packs( $history, 'thanks' ) === VA_KB::select_packs( $history, 'ok' ) );
+// Load test 2026-10-09: an answer listing poor fits pushed out the category the
+// conversation was about, and "How much vacuum and airflow does it have?" got "I don't
+// have the figures". Over the cap, what the customer asked about and each answer's lead
+// category outrank categories an answer only mentioned in passing.
+$silo = array(
+	'Cleaning out a grain silo, dry product, a lot of it.',
+	"For a large dry grain silo cleanout, an industrial vacuum truck is the right fit. Vac2Go's units in that category:\n\nGapVax HV-57\nGuzzler Classic\n\nThis is a high-level recommendation. Confirm specifics with a Vac2Go rep.",
+	'Is there anything it would not be a good fit for?',
+	'An industrial vacuum is not the right call for precision daylighting or utility locating (hydro excavator), high-pressure sewer line jetting (combination unit), or hauling large volumes of clean liquid where only pumping is needed (liquid vacuum).',
+);
+$p = VA_KB::select_packs( $silo, 'How much vacuum and airflow does it have?' );
+check( 'the subject of the conversation outlasts categories an answer named in passing', in_array( 'industrial-vacuum', $p, true ) && count( $p ) <= 3, json_encode( $p ) );
+$gas = array(
+	'We need to expose buried gas and fiber lines before we bore under a road.',
+	'For exposing live gas and fiber lines ahead of a road bore, a Hydro Excavator is the right category.',
+	'How does that compare with a hydro excavator for this job?',
+	'The category I recommended is the hydro excavator. An industrial vacuum only recovers loose material, a combo jets sewer lines, and a hydro excavation trailer suits small jobs.',
+);
+$p = VA_KB::select_packs( $gas, 'Do I need a CDL to drive it?' );
+check( 'a category the customer asked about outlasts later passing mentions', in_array( 'hydro-excavator', $p, true ) && count( $p ) <= 3, json_encode( $p ) );
+
 $p = VA_KB::select_packs( array(), 'Compare a combo, a hydrovac, a tanker and a roll-off box.' );
 check( 'a message naming more than 3 categories keeps 3 of them', 3 === count( $p ), json_encode( $p ) );
 

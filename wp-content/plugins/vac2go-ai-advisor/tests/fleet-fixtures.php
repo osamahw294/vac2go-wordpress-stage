@@ -173,10 +173,14 @@ $words = array(
 	'just a day cab tractor to pull it' => 'tractor',
 	'I need to transport water, do you have a water truck?' => 'water',
 	'something towable, a trailer would be fine' => 'trailer',
+	// Eval 2026-10-09: these loaded no pack and the advisor said it had no figures.
+	'Question about Combination equipment: what water pressure do the units run?' => 'combination',
+	'Can the jetter damage clay pipe?' => 'combination',
 );
 foreach ( $words as $text => $cat ) {
 	check( "\"{$text}\" → category {$cat}", in_array( $cat, cats_of( $text ), true ), json_encode( cats_of( $text ) ) );
 }
+check( '"a combination of sand and water" is not the Combination category', ! in_array( 'combination', cats_of( 'a combination of sand and water' ), true ) );
 
 // ---------------------------------------------------------------------------
 echo "\n== No false matches on ordinary words ==\n";

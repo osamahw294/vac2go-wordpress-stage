@@ -30,7 +30,15 @@ console.log(`${cases.length} to run (${done.size} already done) → ${out}`);
 
 let nonce = null;
 async function freshNonce() {
-	nonce = (await (await fetch(`${API}/nonce?_=${Date.now()}`, { cache: 'no-store' })).json()).nonce;
+	for (let attempt = 1; ; attempt++) {
+		try {
+			nonce = (await (await fetch(`${API}/nonce?_=${Date.now()}`, { cache: 'no-store' })).json()).nonce;
+			return;
+		} catch (e) {
+			if (attempt >= 5) throw e;
+			await sleep(20000);
+		}
+	}
 }
 
 async function ask(c) {
@@ -53,11 +61,19 @@ async function ask(c) {
 async function askOnce(c, session) {
 	for (let attempt = 1; attempt <= 4; attempt++) {
 		const t0 = Date.now();
-		const r = await fetch(`${API}/chat`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': nonce },
-			body: JSON.stringify({ session_id: session, request_id: randomUUID(), message: c.q, website: '', elapsed_ms: 15000 }),
-		});
+		let r;
+		try {
+			r = await fetch(`${API}/chat`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': nonce },
+				body: JSON.stringify({ session_id: session, request_id: randomUUID(), message: c.q, website: '', elapsed_ms: 15000 }),
+			});
+		} catch (e) {
+			// A network blip (connect timeout, reset) is not the advisor's answer: wait, retry.
+			console.log(`  network error (${e.cause?.code || e.message}); retrying in 20s`);
+			await sleep(20000);
+			continue;
+		}
 		if (r.status === 403) { await freshNonce(); continue; }
 		const body = await r.json().catch(() => ({}));
 		if (body.limited) {

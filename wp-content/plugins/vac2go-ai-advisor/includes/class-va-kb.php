@@ -81,12 +81,16 @@ class VA_KB {
 	 * carries that category's detail.
 	 *
 	 * Over the cap, the categories the CURRENT message names always stay: the customer
-	 * is asking about them right now. The remaining slots go to the most recent of the
-	 * earlier ones, and the kept packs stay in first-mention order, so the prefix only
-	 * changes when the set itself changes. (Without this, an advisor answer that lists
-	 * every category pushed out the very pack the next question was about.)
+	 * is asking about them right now. The remaining slots go, in this order, to the
+	 * categories the customer named in earlier questions (most recent first), then each
+	 * answer's lead category (the first one it names, most recent first), then anything
+	 * else (most recent first). An answer that lists poor fits ("not for daylighting
+	 * (hydro excavator) or jetting (combination unit)") names categories in passing;
+	 * those must not push out the one the conversation is about. The kept packs stay in
+	 * first-mention order, so the prefix only changes when the set itself changes.
 	 *
-	 * @param string[] $history Earlier questions and answers, oldest first.
+	 * @param string[] $history Earlier questions and answers, oldest first, alternating
+	 *                          (question, answer, question, answer, ...).
 	 * @return string[] Category ids, at most MAX_PACKS.
 	 */
 	public static function select_packs( array $history, $current ) {
@@ -102,14 +106,49 @@ class VA_KB {
 			return $order;
 		}
 
-		$now    = array_slice( VA_Fleet::resolve( (string) $current )['categories'], 0, self::MAX_PACKS );
-		$others = array_values( array_diff( $order, $now ) );
-		$room   = self::MAX_PACKS - count( $now );
-		$keep   = array_merge( $now, $room > 0 ? array_slice( $others, -$room ) : array() );
+		$asked = array();
+		$leads = array();
+		for ( $i = count( $history ) - 1; $i >= 0; $i-- ) {
+			if ( 0 === $i % 2 ) {
+				$asked = array_merge( $asked, VA_Fleet::resolve( (string) $history[ $i ] )['categories'] );
+			} else {
+				$leads = array_merge( $leads, self::lead_categories( (string) $history[ $i ] ) );
+			}
+		}
+		$now  = array_slice( VA_Fleet::resolve( (string) $current )['categories'], 0, self::MAX_PACKS );
+		$rank = array_values( array_unique( array_merge( $now, $asked, $leads, array_reverse( $order ) ) ) );
+		$keep = array_slice( $rank, 0, self::MAX_PACKS );
 
 		return array_values( array_filter( $order, function ( $c ) use ( $keep ) {
 			return in_array( $c, $keep, true );
 		} ) );
+	}
+
+	/**
+	 * The categories a text names first: those found in the shortest leading run of
+	 * words that names any. Usually one; two only when they first appear together.
+	 *
+	 * @return string[]
+	 */
+	public static function lead_categories( $text ) {
+		$words = preg_split( '/\s+/u', trim( (string) $text ) );
+		$n     = count( $words );
+		if ( 0 === $n || array() === VA_Fleet::resolve( (string) $text )['categories'] ) {
+			return array();
+		}
+		// Categories found in a prefix only grow with its length: binary search for the
+		// shortest prefix that names one.
+		$lo = 1;
+		$hi = $n;
+		while ( $lo < $hi ) {
+			$mid = intdiv( $lo + $hi, 2 );
+			if ( array() === VA_Fleet::resolve( implode( ' ', array_slice( $words, 0, $mid ) ) )['categories'] ) {
+				$lo = $mid + 1;
+			} else {
+				$hi = $mid;
+			}
+		}
+		return VA_Fleet::resolve( implode( ' ', array_slice( $words, 0, $lo ) ) )['categories'];
 	}
 
 	/**

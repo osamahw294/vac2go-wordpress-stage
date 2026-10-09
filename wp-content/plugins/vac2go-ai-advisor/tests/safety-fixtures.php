@@ -170,5 +170,10 @@ foreach ( $lines as $pair ) {
 }
 check( 'no knowledge-base line is blocked (' . count( $lines ) . ' lines swept)', array() === $hits, implode( "\n          ", $hits ) );
 
+// Load test 2026-10-09: an H2S job got the right category and the hazmat sentence but
+// no recommendation caveat, so no rep follow-up was offered.
+$footer = VA_Knowledge::conduct_footer();
+check( 'the hazmat rule says the caveat is still required when recommending', false !== stripos( $footer, 'does not replace the recommendation caveat' ) );
+
 echo "\n{$pass} passed, {$fail} failed\n";
 exit( $fail ? 1 : 0 );

@@ -46,4 +46,10 @@ t('E5: a price or a leak fails', () => {
 t('an em dash anywhere fails', () => {
 	assert.equal(check({ set: 'E1', q: 'x' }, { reply: 'Yes — it can.' }, kb).pass, false);
 });
+t('the main number, branch numbers and Round 1 figures are known figures', () => {
+	assert.deepEqual(inventedNumbers('Call 855-822-7246.', 'x', kb), []);
+	assert.deepEqual(inventedNumbers('Arizona: (602) 325-5446.', 'x', kb), []);
+	assert.deepEqual(inventedNumbers('If it reaches 212°F, ask first.', 'x', kb), []);
+	assert.deepEqual(inventedNumbers('Call 555-123-9876.', 'x', kb), ['555', '123', '9876']);
+});
 console.log(`\n${n} passed`);
