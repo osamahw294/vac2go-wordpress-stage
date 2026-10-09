@@ -36,3 +36,4 @@ The Super Products Mud Dog 1200 is a 12 yard truck-mounted hydro excavator with 
 ## Notes for the advisor
 - The Acculevel badge appears on p.1, but p.2 lists Acculevel as optional. Treat it as optional.
 - The brochure dates from 2016; current units may differ.
+- Vac2Go's equipment catalog lists this unit as "Mud Dog / Mud Dog Air". Our literature is the Mud Dog 1200 brochure; a rep confirms the version a customer would get.

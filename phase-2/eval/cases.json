@@ -655,7 +655,7 @@
 		"set": "E1",
 		"category": "trailer",
 		"q": "Question about Trailer equipment: Trailer is a form factor rather than a function. Which trailer types are available: jetter trailer, hydro excavation trailer, vacuum trailer, roll-off trailer, others?",
-		"reference": "Vac2Go's trailer units are hydro excavation trailers (Bossvac Hydrovac Trailer, Kaiser Premier TerraVac), a jetter trailer (GapVax Combo G7 Trailer Jetter), a vacuum excavator trailer (Vermeer LP XDT) and the Two Box Roll-Off Trailers. Ask about site access and volume first, then point the customer to the right type."
+		"reference": "Vac2Go's trailer units are hydro excavation trailers (Bossvac Hydrovac Trailer, Kaiser Premier TerraVac), a jetter trailer (GapVax Combo G7 Trailer Jetter), and a vacuum excavator trailer (Vermeer LP XDT). Ask about site access and volume first, then point the customer to the right type."
 	},
 	{
 		"id": "E1-trailer-02",
@@ -795,7 +795,7 @@
 		"set": "E1",
 		"category": "trailer",
 		"q": "Question about Trailer equipment: Can a trailer be left on site for the duration of a project? Is that a common rental pattern, and does it change the rental structure?",
-		"reference": "Yes, leaving a trailer stationary on a construction site for the duration of a multi-week project is a very common rental pattern. It also eliminates daily travel wear and tear. Rental rates are a question for a Vac2Go rep."
+		"reference": "Yes, leaving a trailer stationary on a construction site for the duration of a multi-week project is a very common rental pattern. It does not change the structural rental rate, but it eliminates daily travel wear and tear."
 	},
 	{
 		"id": "E1-tanker-01",
@@ -921,7 +921,7 @@
 		"set": "E1",
 		"category": "tanker",
 		"q": "Question about Tanker equipment: Does the tank need to be cleaned between products, who handles that, and what is the policy on prior-product residue?",
-		"reference": "Tanks must be returned chemically clean. A Vac2Go rep can explain the return-condition policy and any cleaning charges."
+		"reference": "Tanks must be returned chemically clean. Vac2Go enforces a strict \"clean for clean\" policy; any prior-product residue or heel left in the tank will result in substantial commercial cleaning surcharges billed back to the customer."
 	},
 	{
 		"id": "E1-tanker-19",
@@ -2287,6 +2287,78 @@
 		"source_line": "Pump flow (GPM) and pressure, GVWR, weights, overall truck dimensions, chassis make and model, tank lining. A Vac2Go rep can confirm these."
 	},
 	{
+		"id": "E2-gapvax-mc1312-unknown",
+		"set": "E2",
+		"unit": "gapvax-mc1312",
+		"q": "What is the no document for the mc1312 itself: debris body of the GapVax MC1312?",
+		"expect": "unknown",
+		"source_line": "No document for the MC1312 itself: debris body, water capacity, airflow, vacuum, pump, hose reel, boom, dimensions, weights and chassis. A Vac2Go rep can confirm these."
+	},
+	{
+		"id": "E2-vac-jet-rodding-unknown",
+		"set": "E2",
+		"unit": "vac-jet-rodding",
+		"q": "What is the no literature has been provided for this unit: configuration of the Vac Jet Rodding?",
+		"expect": "unknown",
+		"source_line": "No literature has been provided for this unit: configuration, capacities, pump, hose reel and dimensions. A Vac2Go rep can confirm these."
+	},
+	{
+		"id": "E2-guzzcavator-1",
+		"set": "E2",
+		"unit": "guzzcavator",
+		"q": "What is the debris body on the Guzzcavator?",
+		"expect_numbers": [
+			"16"
+		],
+		"source_line": "Debris body: 16 yd3 payload capacity"
+	},
+	{
+		"id": "E2-guzzcavator-2",
+		"set": "E2",
+		"unit": "guzzcavator",
+		"q": "What is the blower on the Guzzcavator?",
+		"expect_numbers": [
+			"5250",
+			"27"
+		],
+		"source_line": "Blower: positive displacement tri-lobe; max airflow range 5,250 cfm; max vacuum range 27 Hg"
+	},
+	{
+		"id": "E2-guzzcavator-unknown",
+		"set": "E2",
+		"unit": "guzzcavator",
+		"q": "What is the chassis of the Guzzcavator?",
+		"expect": "unknown",
+		"source_line": "Chassis, engine, weights, GVWR, vacuum hose diameter and dump angle. A Vac2Go rep can confirm these."
+	},
+	{
+		"id": "E2-ctos-70-bbl-liquid-vacuum-unknown",
+		"set": "E2",
+		"unit": "ctos-70-bbl-liquid-vacuum",
+		"q": "What is the no literature has been provided for this unit: pump or blower of the CTOS 70-BBL Liquid Vacuum?",
+		"expect": "unknown",
+		"source_line": "No literature has been provided for this unit: pump or blower, tank material, certifications, dimensions and chassis. A Vac2Go rep can confirm these."
+	},
+	{
+		"id": "E2-huber-dominator-ss-1",
+		"set": "E2",
+		"unit": "huber-dominator-ss",
+		"q": "What is the stainless option in the dominator literature on the Huber Dominator SS?",
+		"expect_numbers": [
+			"304",
+			"316"
+		],
+		"source_line": "Stainless option in the Dominator literature: 304 or 316L stainless steel tank and wetted parts"
+	},
+	{
+		"id": "E2-huber-dominator-ss-unknown",
+		"set": "E2",
+		"unit": "huber-dominator-ss",
+		"q": "What is the no document describes the dominator ss as its own model: its tank capacity of the Huber Dominator SS?",
+		"expect": "unknown",
+		"source_line": "No document describes the Dominator SS as its own model: its tank capacity, pump, certifications and dimensions. A Vac2Go rep can confirm these."
+	},
+	{
 		"id": "E3-01",
 		"q": "We need to vacuum fly ash out of a power plant hopper. It's bone dry and dusty.",
 		"category": "industrial-vacuum",
@@ -2628,11 +2700,12 @@
 	},
 	{
 		"id": "E4-11",
-		"q": "Who would I contact at the Arizona office?",
+		"q": "What is the phone number for your Arizona office?",
 		"must": [
-			"vac2go.com/contact"
+			"602",
+			"325-5446"
 		],
-		"why": "Phase 1: locations deflect to contact",
+		"why": "Client answer to Q6: branch numbers are answered from the locations list",
 		"set": "E4"
 	},
 	{
@@ -2683,6 +2756,15 @@
 		"why": "Multi-turn: unit question after a combination recommendation",
 		"set": "E4",
 		"q": "What debris body does the Camel 1600 have?"
+	},
+	{
+		"id": "E4-16",
+		"q": "Do you have a GapVax MC1312?",
+		"must_not": [
+			"not on (our|Vac2Go's) current list"
+		],
+		"why": "Client answer to Q7: the MC1312 is in the fleet catalog",
+		"set": "E4"
 	},
 	{
 		"id": "E5-01",

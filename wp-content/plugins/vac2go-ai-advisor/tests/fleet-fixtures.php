@@ -41,7 +41,10 @@ function cats_of( $text ) {
 // ---------------------------------------------------------------------------
 echo "\n== The fleet itself ==\n";
 $units = VA_Fleet::units();
-check( 'exactly 41 units', 41 === count( $units ), 'got ' . count( $units ) );
+// 41 website units plus 5 distinct models from Vac2Go's equipment catalog (client answer
+// to Q7, 2026-10-09): GapVax MC1312, Guzzcavator, Vac Jet Rodding, CTOS 70-BBL Liquid
+// Vacuum, Huber Dominator SS.
+check( 'exactly 46 units', 46 === count( $units ), 'got ' . count( $units ) );
 check( 'exactly 10 categories', 10 === count( VA_Fleet::categories() ) );
 foreach ( $units as $id => $u ) {
 	check( "{$id} has a known category", isset( VA_Fleet::categories()[ $u['category'] ] ), $u['category'] );
@@ -50,8 +53,8 @@ $per_group = array();
 foreach ( $units as $u ) {
 	$per_group[ $u['website_group'] ] = ( $per_group[ $u['website_group'] ] ?? 0 ) + 1;
 }
-$want = array( 'Industrial Vacuum' => 10, 'Hydro Excavators' => 9, 'Combination' => 5, 'Liquid Vacuum' => 5, 'Liquid Ring' => 3, 'Pull-Behind' => 6, 'Additional' => 3 );
-check( 'website group counts match vac2go.com (10/9/5/5/3/6/3)', $per_group == $want, json_encode( $per_group ) );
+$want = array( 'Industrial Vacuum' => 10, 'Hydro Excavators' => 9, 'Combination' => 5, 'Liquid Vacuum' => 5, 'Liquid Ring' => 3, 'Pull-Behind' => 6, 'Additional' => 3, 'Equipment catalog' => 5 );
+check( 'website group counts match vac2go.com (10/9/5/5/3/6/3), plus 5 catalog-only units', $per_group == $want, json_encode( $per_group ) );
 
 // ---------------------------------------------------------------------------
 echo "\n== Every website name resolves to its own unit ==\n";
@@ -86,8 +89,13 @@ $legacy = array(
 	'Super Products SuperSucker' => 'super-products-supersucker', 'CTOS Tornado F4' => 'tornado-f4', 'GapVax HV33' => 'gapvax-hv-33',
 	'GapVax HV56' => 'gapvax-hv-56', 'Keith Huber Baron' => 'huber-baron-hx', 'Kaiser CV Series' => 'kaiser-premier-cv-series',
 	'Super Products Mud Dog Air' => 'super-products-mud-dog-1200', 'HXX (TruVac/Vactor)' => 'truvac-hxx',
+	// Vac2Go synonym ring (Q5)
+	'Shellvac' => 'schellvac-svhx', 'Kaiser Premium' => 'kaiser-premier-cv-series', 'Guzzler' => 'guzzler-classic', 'XCR with cyclone' => 'guzzler-xcr',
+	'Super Sucker' => 'super-products-supersucker', 'High Dump' => 'super-products-high-dump', 'Huber air mover' => 'huber-am30-hd', 'Knight' => 'huber-knight',
+	'Camel' => 'super-products-camel-max-series', 'GapVax combo' => 'gapvax-mc1510', 'hydrovac trailer' => 'bossvac-hydrovac-trailer', 'trailer jetter' => 'gapvax-combo-g7-trailer-jetter',
+	'150 BBL' => '130-bbl-tankers', 'Dragon vac trailer' => '130-bbl-tankers', 'cable roll off' => 'roll-off-trucks', 'roll-off trailer' => 'two-box-roll-off-trailers', 'truck tractor' => 'tractors',
 	'Keith Huber SC1512' => 'huber-sc-1512', 'Vactor 2100+' => 'vactor-2100-plus', 'Vactor 2100i' => 'vactor-2100-plus',
-	'CTOS 70-BBL Liquid Vacuum' => 'huber-dominator', 'Keith Huber Dominator SS' => 'huber-dominator',
+	'Keith Huber Dominator SS' => 'huber-dominator-ss',
 	'Keith Huber Scrubber' => 'huber-scrubber', 'High Volume Pump' => 'imperial-industries-high-volume-pump',
 	'Keith Huber King Vac' => 'huber-king-vac', 'Keith Huber Knight' => 'huber-knight', 'BossVac BV500' => 'bossvac-hydrovac-trailer',
 	'GapVax G7 Jetter Trailer' => 'gapvax-combo-g7-trailer-jetter', 'Kaiser Premier Terravac' => 'kaiser-premier-terravac',
@@ -103,11 +111,20 @@ foreach ( $legacy as $name => $id ) {
 }
 check( 'Keith Huber Berringer → both Berringer units', array() === array_diff( array( 'huber-berringer-pd', 'huber-berringer-liquid-ring' ), units_of( 'Keith Huber Berringer' ) ) );
 
-// Not on the website: resolve to a category, never to an invented unit.
-foreach ( array( 'GapVax MC1312' => 'combination', 'Guzzcavator' => 'hydro-excavator', 'Vac Jet Rodding' => 'combination' ) as $name => $cat ) {
+// Vac2Go's equipment catalog (Q7): these are real fleet units.
+foreach ( array( 'GapVax MC1312' => 'gapvax-mc1312', 'Guzzcavator' => 'guzzcavator', 'Vac Jet Rodding' => 'vac-jet-rodding', 'CTOS 70-BBL Liquid Vacuum' => 'ctos-70-bbl-liquid-vacuum', 'Keith Huber Dominator SS' => 'huber-dominator-ss' ) as $name => $id ) {
+	check( "catalog unit \"{$name}\" → {$id}", in_array( $id, units_of( $name ), true ), json_encode( units_of( $name ) ) );
+	check( "catalog unit \"{$name}\" is not reported as off-list", array() === VA_Fleet::resolve( $name )['off_list'] );
+}
+// The catalog lists these on one line with the website unit.
+check( 'Vactor 2100i → Vactor 2100 Plus (catalog: "Vactor 2100+ / 2100i")', in_array( 'vactor-2100-plus', units_of( 'the 2100i' ), true ) );
+check( 'Mud Dog Air → Mud Dog 1200 (catalog: "Mud Dog / Mud Dog Air")', in_array( 'super-products-mud-dog-1200', units_of( 'Mud Dog Air' ), true ) );
+
+// Brands Vac2Go does not carry (synonym ring): a category, never a unit.
+foreach ( array( 'Vacmaster 3000' => 'industrial-vacuum', 'a Vac-Con sewer truck' => 'combination', 'Tellus trailer' => 'trailer' ) as $name => $cat ) {
 	$r = VA_Fleet::resolve( $name );
 	check( "off-list \"{$name}\" → category {$cat}, no unit", in_array( $cat, $r['categories'], true ) && array() === $r['units'], json_encode( $r ) );
-	check( "off-list \"{$name}\" is reported as not on the current list", in_array( $name, array_column( $r['off_list'], 'name' ), true ), json_encode( $r['off_list'] ) );
+	check( "off-list \"{$name}\" is reported as a brand Vac2Go doesn't carry", array() !== $r['off_list'], json_encode( $r['off_list'] ) );
 }
 
 // The tagging sheet's "Unit(s) Covered" column spells a few names differently.
@@ -167,12 +184,12 @@ $plain = array(
 	'I need a truck',
 	'Digging around water lines is a standard job',
 	'We have a classic problem with clay',
-	'the knight shift crew can sit with the truck',
+	'the night shift crew can sit with the truck',
 	'What can you do?',
 	'hello',
 	'How much does it cost per day?',
 	'we need to vacuum a lot of material quickly',
-	'it is a high dump site',
+	'the site has a high fence',
 );
 foreach ( $plain as $text ) {
 	$r = VA_Fleet::resolve( $text );

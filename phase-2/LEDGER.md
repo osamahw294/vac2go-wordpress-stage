@@ -49,3 +49,14 @@ Branch: phase-2 (from stage @ f0284ec0). One line per finished step; every devia
   - E: typed contact details got "I'm not able to pass along contact details" and the form didn't return → rule points to the form; widget re-shows the form on a 'contact' tag even after it was dismissed (not after a real submission), pre-filled with the typed email/phone. Playwright test written after the code, so proven both ways: fails on the previous widget, passes on the new one; all 6 widget tests pass on a local mock site.
 - Ruling: version 2.7.1 (widget file changed) — cost if wrong: none.
 - Not a bug: the user hit the 6-a-minute per-IP limit while testing quickly (the V1 lockout working); the 2100i "not on our current list" answer is honest and kept.
+- Client answers (2026-10-09, phase-2/feedback-client-questions.txt + work/feedback-client-data/): applied Q5, Q6, Q7, Q9, Q10, Q13 as v2.8.0 (DB version 7), tests first throughout:
+  - Q7: fleet = website 41 + 5 catalog-only units (MC1312, Guzzcavator, Vac Jet Rodding, CTOS 70-BBL Liquid Vacuum, Dominator SS) with cards (Guzzcavator full, from its verified fact file; the rest state what isn't known); 2100i and Mud Dog Air as the catalog's combined entries. fleet 260/260, cards 900/900.
+  - Q5: every synonym-ring alias; Vacmaster / Vac-Con / Tellus as brands not carried; banned phrases as context-aware patterns (39 blocked, 11 benign sentences pass, KB sweep clean); previous shipped lists (v2.6, v2.7) migrate. safety 94/94.
+  - Q13: Two Box Roll-Off Trailers → Roll-Off only; Scrubber → Liquid Vacuum only.
+  - Q6: kb/locations.md (13 branches, as given) in the core; branch questions answered.
+  - Q9: two policy lines restored to the client's wording (9 logged edits remain).
+  - Q10: rules: only knowledge figures; differences as a range; every figure with the configuration note; compare only when every compared unit has the figure. packs 141/141.
+- Ruling: AM30 HD and SC 1009 kept although the catalog doesn't list them — they are on vac2go.com and are canonical units in the client's own synonym ring — cost if wrong: remove two units.
+- Ruling: single-word aliases "Knight", "High Dump", "Guzzler", "Camel", "Dragon" added because the client's synonym ring lists them (overrides the earlier single-word exclusion) — cost if wrong: an incidental word loads a pack.
+- Ruling: banned-phrase list's numeric-date pattern and unit+chassis co-occurrence rule not added (would block "3/4 in" lines and the cards' own chassis facts; rules already cover chassis) — recorded in CLIENT-QUESTIONS.md — cost if wrong: two patterns.
+- Not received: Q1 (link inaccessible), Q3 tractor spec and Q4 HV-57 brochures (said attached, absent). Q2, Q8, Q11 pending client.

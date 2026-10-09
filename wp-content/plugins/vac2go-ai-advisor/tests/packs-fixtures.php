@@ -86,7 +86,8 @@ foreach ( VA_Fleet::units_in( 'combination' ) as $uid ) {
 	check( "combination pack carries the {$uid} card", false !== strpos( $combo, '# ' . VA_Fleet::unit( $uid )['name'] ) );
 }
 check( 'pack has no source tags', false === strpos( $combo, '{src' ) );
-check( 'a unit listed in two categories appears in both packs (Two Box Roll-Off Trailers)', false !== strpos( VA_KB::pack( 'trailer' ), '# Two Box Roll-Off Trailers' ) && false !== strpos( VA_KB::pack( 'roll-off' ), '# Two Box Roll-Off Trailers' ) );
+// Client answer to Q13: Two Box Roll-Off Trailers sit under Roll-Off only.
+check( 'Two Box Roll-Off Trailers are in the Roll-Off pack, not the Trailer pack', false === strpos( VA_KB::pack( 'trailer' ), '# Two Box Roll-Off Trailers' ) && false !== strpos( VA_KB::pack( 'roll-off' ), '# Two Box Roll-Off Trailers' ) );
 check( 'unknown category → empty pack', '' === VA_KB::pack( 'nope' ) );
 foreach ( VA_Fleet::categories() as $cid => $c ) {
 	$tokens = (int) ( strlen( VA_KB::pack( $cid ) ) / 4 );
@@ -111,14 +112,15 @@ $units_line = function ( $name ) use ( $core ) {
 };
 check( 'Liquid Ring units do not include the Scrubber (a support skid)', false === strpos( $units_line( 'Liquid Ring' ), 'Huber Scrubber' ) );
 check( 'Trailer units do not include the Two Box Roll-Off Trailers', false === strpos( $units_line( 'Trailer' ), 'Two Box Roll-Off Trailers' ) );
-check( 'the Scrubber is still mentioned with Liquid Ring as related equipment', 1 === preg_match( '/### Liquid Ring\n.*?Related equipment[^\n]*Huber Scrubber/s', $core ) );
+// Client answer to Q13: the Huber Scrubber is a Liquid Vacuum unit.
+check( 'the Huber Scrubber is listed with the Liquid Vacuum units', false !== strpos( $units_line( 'Liquid Vacuum' ), 'Huber Scrubber' ) );
 check( 'each unit is a unit of exactly one category in the core', ( function () use ( $core ) {
 	preg_match_all( '/^Vac2Go units: (.*)$/m', $core, $m );
 	$all = array();
 	foreach ( $m[1] as $line ) {
 		$all = array_merge( $all, explode( ', ', rtrim( $line, '.' ) ) );
 	}
-	return 41 === count( $all ) && 41 === count( array_unique( $all ) );
+	return 46 === count( $all ) && 46 === count( array_unique( $all ) );
 } )() );
 check( 'core is under ~12k tokens', strlen( $core ) / 4 < 12000, (string) ( strlen( $core ) / 4 ) );
 
@@ -129,11 +131,25 @@ check( 'no Phase 1 "one fully-detailed unit" framing', false === stripos( $rules
 check( 'keeps the recommendation caveat sentence', false !== strpos( $rules, 'This is a high-level recommendation. Confirm specifics with a Vac2Go rep.' ) );
 check( 'keeps the hazmat closing sentence', false !== strpos( $rules, VA_Knowledge::HAZMAT_SENTENCE ) );
 check( 'keeps the canary marker', false !== strpos( $rules, 'VA-CANARY-TESTTOKEN12345' ) );
-check( 'allows KB figures with a hedge (D3)', false !== stripos( $rules, 'figures that appear in the knowledge' ) );
+check( 'figures only from the knowledge (Q10)', false !== stripos( $rules, 'Quote a figure only if the knowledge contains it' ) );
 check( 'never invent or extrapolate figures', false !== stripos( $rules, 'never invent' ) );
 check( 'unit cards win over general category figures', false !== stripos( $rules, "use the unit card's figure" ) );
 check( 'off-list names are handled', false !== stripos( $rules, 'not on our current list' ) );
 check( 'no "route them" wording for the model to echo', false === stripos( $rules, 'route them' ) );
+
+// Client answer to Q6 (2026-10-09): branch phone numbers, exactly as given.
+$branches = array( 'Alabama (251) 440-3133', 'Arizona (602) 325-5446', 'Florida – Fort Myers (407) 232-6255', 'Florida – Orlando (407) 232-6255', 'Georgia (839) 232-1212', 'Indiana (219) 359-3314', 'Kentucky (502) 699-4029', 'New Jersey (540) 246-4850', 'Ohio (440) 287-1687', 'South Carolina (839) 232-1212', 'Tennessee (901) 455-2464', 'Texas (346) 460-5522', 'Utah (385) 213-7690' );
+foreach ( $branches as $b ) {
+	check( "core lists the branch: {$b}", false !== strpos( $core, $b ) );
+}
+check( 'branch locations are no longer deflected as a policy question', false === stripos( $rules, 'regional or international coverage, branch locations' ) );
+check( 'branch questions are answered from the list', false !== stripos( $rules, 'branch' ) && false !== stripos( $rules, 'locations list' ) );
+
+// Client answer to Q10: only knowledge figures; differences as a range; every figure
+// followed by "depends on the configuration"; compare only on confirmed figures.
+check( 'differing figures are given as a range', false !== stripos( $rules, 'as a range' ) );
+check( 'every quoted figure is followed by the configuration note', false !== stripos( $rules, 'every figure you quote' ) && false !== stripos( $rules, 'depends on the configuration' ) );
+check( 'comparisons only when every compared unit has the figure', false !== stripos( $rules, 'only when every unit you compare' ) );
 check( 'no 6-bullet cap that splits unit lists', false === stripos( $rules, 'never more than 6 bullets' ) );
 check( 'typed contact details are pointed at the follow-up form', false !== stripos( $rules, 'Want a rep to follow up?' ) );
 check( 'admin notes are appended when set', ( function () {

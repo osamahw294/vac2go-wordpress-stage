@@ -36,3 +36,4 @@ Which platform you get depends on the unit {src: Vactor 2100 Plus brochure p.2, 
 - 475 hp is the transfer case rating, not engine horsepower.
 - "18 Hg" is printed without "in".
 - The brochure dates from 2011; current units likely differ. For any basic figure, say it is not in our literature and a rep can confirm.
+- Vac2Go's equipment catalog lists this unit as "Vactor 2100+ / 2100i". Our literature is the 2100 Plus brochure; a rep confirms which version a customer would get.

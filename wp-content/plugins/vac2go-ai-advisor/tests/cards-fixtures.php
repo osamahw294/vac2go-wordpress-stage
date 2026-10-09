@@ -63,7 +63,7 @@ foreach ( VA_Fleet::units() as $id => $u ) {
 	}
 	check( "{$id}: title is the fleet name", 0 === strpos( $raw, '# ' . $u['name'] . "\n" ), strtok( $raw, "\n" ) );
 
-	$is_thin = in_array( $id, array( 'tractors', 'super-products-high-dump' ), true );
+	$is_thin = null === $u['fact_file'] || 'super-products-high-dump' === $id; // no literature of their own
 	foreach ( $sections_required as $s ) {
 		if ( '## Key specs' === $s && $is_thin ) {
 			continue; // no literature of their own; these cards carry no spec list
@@ -112,6 +112,9 @@ foreach ( VA_Fleet::units() as $id => $u ) {
 			$source .= (string) @file_get_contents( $facts_dir . '/' . $f );
 		}
 	}
+	// Numbers in unit names (MC1312, 70-BBL, 2100i, or another unit a card points to,
+	// like the MC1510) come from the fleet list, not from a spec sheet.
+	$source .= ' ' . $u['name'] . ' ' . implode( ' ', $u['aliases'] ) . ' ' . implode( ' ', array_column( VA_Fleet::units(), 'name' ) );
 	$have    = numbers_in( $source );
 	$missing = array();
 	foreach ( numbers_in( $card ) as $n ) {

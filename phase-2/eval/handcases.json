@@ -295,11 +295,12 @@
 		},
 		{
 			"id": "E4-11",
-			"q": "Who would I contact at the Arizona office?",
+			"q": "What is the phone number for your Arizona office?",
 			"must": [
-				"vac2go.com/contact"
+				"602",
+				"325-5446"
 			],
-			"why": "Phase 1: locations deflect to contact"
+			"why": "Client answer to Q6: branch numbers are answered from the locations list"
 		},
 		{
 			"id": "E4-12",
@@ -342,6 +343,14 @@
 				"16"
 			],
 			"why": "Multi-turn: unit question after a combination recommendation"
+		},
+		{
+			"id": "E4-16",
+			"q": "Do you have a GapVax MC1312?",
+			"must_not": [
+				"not on (our|Vac2Go's) current list"
+			],
+			"why": "Client answer to Q7: the MC1312 is in the fleet catalog"
 		}
 	],
 	"E5": [

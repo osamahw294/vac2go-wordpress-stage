@@ -30,10 +30,12 @@ class VA_Filter {
 	const MIN_CANARY_LEN = 12;
 
 	/**
-	 * The pattern list the plugin shipped with before v2.7, kept to recognise a
-	 * stored list nobody has edited (see migrate_patterns()).
+	 * Pattern lists earlier versions shipped, kept to recognise a stored list nobody
+	 * has edited (see migrate_patterns()).
 	 */
-	const OLD_DEFAULT_PATTERNS = '/\\$\\s?\\d/
+	const PREVIOUS_DEFAULT_PATTERNS = array(
+		// v2.6 and earlier
+		'/\\$\\s?\\d/
 /\\b\\d[\\d,\\.]*\\s?(usd|dollars?|bucks)\\b/i
 /\\busd\\s?\\d/i
 /[£€]\\s?\\d/u
@@ -56,18 +58,48 @@ class VA_Filter {
 /\\bfree of charge\\b/i
 /\\bdiscount(ed)?\\b/i
 /\\bcan deliver by\\b/i
-/\\bship(ped)? (today|tomorrow)\\b/i';
+/\\bship(ped)? (today|tomorrow)\\b/i',
+		// v2.7
+		'/\\$\\s?\\d/
+/\\b\\d[\\d,\\.]*\\s?(usd|dollars?|bucks)\\b/i
+/\\busd\\s?\\d/i
+/[£€]\\s?\\d/u
+/\\b(one|two|three|four|five|six|seven|eight|nine|ten|twenty|fifty)\\s+(hundred\\s+|thousand\\s+)?(dollars?|bucks)\\b/i
+/\\b\\d[\\d,\\.]*\\s*(\\/|per)\\s*-?\\s*(day|week|month|hour)\\b/i
+/\\b(the\\s+)?(rate|cost|price)\\s+is\\b/i
+/\\bquote\\s+(you|of)\\b/i
+/\\bwe(\'ll| will)?\\s+rent\\s+it\\s+to\\s+you\\b/i
+/\\b(it\'?s|we have|that\'?s|consider (it|this))\\s+a\\s+deal\\b/i
+/\\bconsider (it|this) (sold|agreed)\\b/i
+/(?<!\\bnot )(?<!n\'t )(?<!n’t )(?<!cannot )(?<!can not )\\bguaranteed?\\b/i
+/\\byou can pick (it|one) up\\b/i
+/\\breserved?\\s+(it\\s+|one\\s+)?for you\\b/i
+/\\bin stock\\b/i
+/\\bavailable (now|today|immediately)\\b/i
+/\\bwe (can|will) (guarantee|promise)\\b/i
+/\\bthis is binding\\b/i
+/\\bi agree to (sell|rent|lease)\\b/i
+/\\bno charge\\b/i
+/\\bfree of charge\\b/i
+/\\bdiscount(ed)?\\b/i
+/\\bcan deliver by\\b/i
+/\\bship(ped)? (today|tomorrow)\\b/i',
+	);
 
 	/**
 	 * Replace the stored pattern list with the current defaults, but only when it is
-	 * still exactly the old shipped list. An admin-edited list is left alone.
+	 * still exactly a list an earlier version shipped. An admin-edited list is left alone.
 	 */
 	public static function migrate_patterns() {
 		$norm = function ( $t ) {
 			return trim( str_replace( array( "\r\n", "\r" ), "\n", (string) $t ) );
 		};
-		if ( $norm( get_option( 'va_banned_patterns', '' ) ) === $norm( self::OLD_DEFAULT_PATTERNS ) ) {
-			update_option( 'va_banned_patterns', self::default_patterns_text() );
+		$stored = $norm( get_option( 'va_banned_patterns', '' ) );
+		foreach ( self::PREVIOUS_DEFAULT_PATTERNS as $old ) {
+			if ( $stored === $norm( $old ) ) {
+				update_option( 'va_banned_patterns', self::default_patterns_text() );
+				return;
+			}
 		}
 	}
 
@@ -102,6 +134,37 @@ class VA_Filter {
 			'/\bdiscount(ed)?\b/i',
 			'/\bcan deliver by\b/i',
 			'/\bship(ped)? (today|tomorrow)\b/i',
+			// Vac2Go's banned-phrase list (client answer to Q5, 2026-10-09). Words with
+			// benign uses ("agreed", "approved", "authorized", "available") are matched
+			// only in their committal phrasing, as the list itself advises.
+			// A. Binding / agreement / authority
+			'/\blegally binding\b/i',
+			'/\bbinding (offer|agreement|contract)\b/i',
+			'/\bthis (is|constitutes) an? (contract|offer)\b/i',
+			'/\b(we|you) have a deal\b|\bdo we have a deal\b/i',
+			'/\b(i|we) (promise|accept your|accept the (offer|terms|order|price|deal))\b/i',
+			'/\byou have my word\b/i',
+			'/\bhereby\b/i',
+			'/\bno (takesies|backsies)\b/i',
+			'/\b(i|we) authori[sz]e\b/i',
+			'/\byour (request|order|rental|reservation) is (approved|confirmed)\b|\b(confirmed order|order confirmed)\b/i',
+			'/\bi\'?ve (reserved|booked|held)\b|\bit\'?s booked\b/i',
+			'/\bfinal offer\b|\bthis offer is valid\b/i',
+			// B. Price / quote
+			'/\bit costs\b|\bpriced at\b|\byour total is\b/i',
+			'/\b(your quote is|here\'?s your quote|i can quote you)\b/i',
+			'/\b(we can|we\'?ll|we will) do it for\b|\bi can offer it at\b|\bspecial price\b/i',
+			'/\b(daily|weekly|monthly) rate is\b/i',
+			'/\b\d{1,3}\s?%\s?(off|discount)\b|\bpercent off\b|\b(we\'?ll|we will) (knock|take) off\b/i',
+			'/\b\d[\d,\.]*\s*(\/|per)\s*-?\s*weekend\b/i',
+			// C. Availability commitments
+			'/\bcurrently available\b|\bin stock and ready\b|\bready to go now\b/i',
+			'/\bwe have one (available|in)\b|\bone is available in\b/i',
+			'/\b(i can get it to you|it\'?ll be there|it will be there) by\b/i',
+			'/\b(deliver|ready|available|arrive)\w*\b.{0,20}\b(today|tomorrow|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/i',
+			// D. Rental-terms commitments
+			'/\b(the )?minimum rental is\b|\byour rental (term|period) is\b|\byour contract term\b|\bbilling starts\b/i',
+			'/\b(the )?lease terms are\b|\brent[\s-]to[\s-]own (is|for)\b|\blease[\s-]to[\s-]own terms\b/i',
 		);
 		return implode( "\n", $lines );
 	}

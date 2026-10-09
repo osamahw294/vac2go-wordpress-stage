@@ -1,227 +1,897 @@
 {
-	"about": "Canonical Vac2Go fleet for the advisor: the 41 units on vac2go.com/vac-truck-rentals (checked 2026-10-08). 'category' is the advisor's category; 'website_group' is the group the website shows. Aliases are matched case-insensitively on word boundaries, with hyphens/spaces/apostrophes ignored and an optional plural 's'. Older names from the Phase 1 prompt (mostly suppliers: CTOS, Bergey's, Dragon, ITI, Benlee, 'Keith Huber') are aliases of the unit they supply. Names not on the website are in 'off_list' and resolve to a category only.",
+	"about": "Canonical Vac2Go fleet for the advisor: the 41 units on vac2go.com/vac-truck-rentals plus 5 distinct models from Vac2Go's equipment catalog (client answer to Q7, 2026-10-09). 'category' is the advisor's category (client answer to Q13 for the Two Box Roll-Off Trailers and the Huber Scrubber); 'website_group' is the group the website shows, or 'Equipment catalog' for catalog-only units. Aliases come from the client's synonym ring (Q5), the catalog, the brochures and older supplier names (CTOS, Bergey's, Dragon, ITI, Benlee, 'Keith Huber'). Matched case-insensitively on word boundaries, hyphens/spaces/apostrophes ignored, optional plural 's'. 'off_list' holds brands Vac2Go does not carry; they resolve to a category only.",
 	"categories": {
-		"industrial-vacuum": { "name": "Industrial Vacuum", "aliases": ["industrial vacuum", "industrial vac", "air mover", "airmover", "vacuum loader", "vac loader", "dry vac"] },
-		"hydro-excavator": { "name": "Hydro Excavator", "aliases": ["hydro excavator", "hydroexcavator", "hydro excavation", "hydroexcavation", "hydrovac", "hydro vac", "daylighting", "potholing", "pot holing"] },
-		"combination": { "name": "Combination", "aliases": ["combination unit", "combination truck", "combination sewer", "combo truck", "combo unit", "sewer combo", "jet vac", "jetvac", "sewer cleaner", "sewer jetter"] },
-		"liquid-vacuum": { "name": "Liquid Vacuum", "aliases": ["liquid vacuum", "liquid vac", "honey truck", "septic truck", "lvpd", "lvts", "lvt"] },
-		"liquid-ring": { "name": "Liquid Ring", "aliases": ["liquid ring"] },
-		"trailer": { "name": "Trailer", "aliases": ["trailer", "towable", "tow behind", "pull behind"] },
-		"tanker": { "name": "Tanker", "aliases": ["tanker", "vacuum tanker"] },
-		"roll-off": { "name": "Roll-Off", "aliases": ["roll off", "rolloff"] },
-		"tractor": { "name": "Tractor", "aliases": ["tractor", "day cab", "semi tractor"] },
-		"water": { "name": "Water", "aliases": ["water truck", "water hauler", "water tanker"] }
+		"industrial-vacuum": {
+			"name": "Industrial Vacuum",
+			"aliases": [
+				"industrial vacuum",
+				"industrial vac",
+				"air mover",
+				"airmover",
+				"vacuum loader",
+				"vac loader",
+				"dry vac",
+				"air mover with baghouse",
+				"baghouse vac"
+			]
+		},
+		"hydro-excavator": {
+			"name": "Hydro Excavator",
+			"aliases": [
+				"hydro excavator",
+				"hydroexcavator",
+				"hydro excavation",
+				"hydroexcavation",
+				"hydrovac",
+				"hydro vac",
+				"daylighting",
+				"potholing",
+				"pot holing",
+				"hydro excavation truck",
+				"vacuum excavation truck",
+				"daylighting truck",
+				"potholing truck"
+			]
+		},
+		"combination": {
+			"name": "Combination",
+			"aliases": [
+				"combination unit",
+				"combination truck",
+				"combination sewer",
+				"combo truck",
+				"combo unit",
+				"sewer combo",
+				"jet vac",
+				"jetvac",
+				"sewer cleaner",
+				"sewer jetter",
+				"combo",
+				"combination cleaner",
+				"sewer combination"
+			]
+		},
+		"liquid-vacuum": {
+			"name": "Liquid Vacuum",
+			"aliases": [
+				"liquid vacuum",
+				"liquid vac",
+				"honey truck",
+				"septic truck",
+				"lvpd",
+				"lvts",
+				"lvt",
+				"liquid vac truck",
+				"septic pumping truck"
+			]
+		},
+		"liquid-ring": {
+			"name": "Liquid Ring",
+			"aliases": [
+				"liquid ring",
+				"l ring",
+				"liquid ring vacuum truck",
+				"l ring air mover"
+			]
+		},
+		"trailer": {
+			"name": "Trailer",
+			"aliases": [
+				"trailer",
+				"towable",
+				"tow behind",
+				"pull behind"
+			]
+		},
+		"tanker": {
+			"name": "Tanker",
+			"aliases": [
+				"tanker",
+				"vacuum tanker",
+				"dot 412 tanker",
+				"407 412 tanker",
+				"asme tank",
+				"coded tanker",
+				"durakane",
+				"rubber lined tanker"
+			]
+		},
+		"roll-off": {
+			"name": "Roll-Off",
+			"aliases": [
+				"roll off",
+				"rolloff",
+				"roll off truck"
+			]
+		},
+		"tractor": {
+			"name": "Tractor",
+			"aliases": [
+				"tractor",
+				"day cab",
+				"semi tractor",
+				"truck tractor"
+			]
+		},
+		"water": {
+			"name": "Water",
+			"aliases": [
+				"water truck",
+				"water hauler",
+				"water tanker"
+			]
+		}
 	},
 	"units": {
 		"gapvax-hv-57": {
-			"name": "GapVax HV-57", "category": "industrial-vacuum", "website_group": "Industrial Vacuum",
-			"aliases": ["gapvax hv 57", "hv 57", "hv57"],
-			"fact_file": null, "sources": ["Phase 1 knowledge (brochure held by the Vac2Go team, not in the Phase 2 batches)"]
+			"name": "GapVax HV-57",
+			"category": "industrial-vacuum",
+			"website_group": "Industrial Vacuum",
+			"aliases": [
+				"gapvax hv 57",
+				"hv 57",
+				"hv57",
+				"gapvax air mover"
+			],
+			"fact_file": null,
+			"sources": [
+				"Phase 1 knowledge (brochure held by the Vac2Go team, not in the Phase 2 batches)"
+			]
 		},
 		"guzzler-classic": {
-			"name": "Guzzler Classic", "category": "industrial-vacuum", "website_group": "Industrial Vacuum",
-			"aliases": ["guzzler classic", "classic guzzler", "guzzler cl"],
-			"fact_file": "guzzler-classic.md", "sources": ["Guzzler-Classic-Vacuum-Truck-Brochure.pdf"]
+			"name": "Guzzler Classic",
+			"category": "industrial-vacuum",
+			"website_group": "Industrial Vacuum",
+			"aliases": [
+				"guzzler classic",
+				"classic guzzler",
+				"guzzler cl",
+				"guzzler"
+			],
+			"fact_file": "guzzler-classic.md",
+			"sources": [
+				"Guzzler-Classic-Vacuum-Truck-Brochure.pdf"
+			]
 		},
 		"guzzler-dense-phase": {
-			"name": "Guzzler Dense Phase", "category": "industrial-vacuum", "website_group": "Industrial Vacuum",
-			"aliases": ["guzzler dense phase", "dense phase", "guzzler nx"],
-			"fact_file": "guzzler-dense-phase.md", "sources": ["Guzzler-Dense-Phase-Offloading-Solutions-2003-Brochure.pdf"]
+			"name": "Guzzler Dense Phase",
+			"category": "industrial-vacuum",
+			"website_group": "Industrial Vacuum",
+			"aliases": [
+				"guzzler dense phase",
+				"dense phase",
+				"guzzler nx"
+			],
+			"fact_file": "guzzler-dense-phase.md",
+			"sources": [
+				"Guzzler-Dense-Phase-Offloading-Solutions-2003-Brochure.pdf"
+			]
 		},
 		"guzzler-high-rail": {
-			"name": "Guzzler High-Rail", "category": "industrial-vacuum", "website_group": "Industrial Vacuum",
-			"aliases": ["guzzler high rail", "high rail", "hi rail guzzler"],
-			"fact_file": "guzzler-classic.md", "sources": ["Guzzler-Classic-Vacuum-Truck-Brochure.pdf (option paragraph only)"]
+			"name": "Guzzler High-Rail",
+			"category": "industrial-vacuum",
+			"website_group": "Industrial Vacuum",
+			"aliases": [
+				"guzzler high rail",
+				"high rail",
+				"hi rail guzzler"
+			],
+			"fact_file": "guzzler-classic.md",
+			"sources": [
+				"Guzzler-Classic-Vacuum-Truck-Brochure.pdf (option paragraph only)"
+			]
 		},
 		"guzzler-xcr": {
-			"name": "Guzzler XCR", "category": "industrial-vacuum", "website_group": "Industrial Vacuum",
-			"aliases": ["guzzler xcr", "xcr"],
-			"fact_file": "guzzler-classic.md", "sources": ["Guzzler-Classic-Vacuum-Truck-Brochure.pdf (option paragraph only)"]
+			"name": "Guzzler XCR",
+			"category": "industrial-vacuum",
+			"website_group": "Industrial Vacuum",
+			"aliases": [
+				"guzzler xcr",
+				"xcr",
+				"xcr with cyclone"
+			],
+			"fact_file": "guzzler-classic.md",
+			"sources": [
+				"Guzzler-Classic-Vacuum-Truck-Brochure.pdf (option paragraph only)"
+			]
 		},
 		"huber-am30-hd": {
-			"name": "Huber AM30 HD", "category": "industrial-vacuum", "website_group": "Industrial Vacuum",
-			"aliases": ["huber am30 hd", "am30 hd", "am30"],
-			"fact_file": "huber-am36.md", "sources": ["None names the AM30 HD; Vac2Go treats it as the AM36 (tagging sheet)"]
+			"name": "Huber AM30 HD",
+			"category": "industrial-vacuum",
+			"website_group": "Industrial Vacuum",
+			"aliases": [
+				"huber am30 hd",
+				"am30 hd",
+				"am30",
+				"huber air mover"
+			],
+			"fact_file": "huber-am36.md",
+			"sources": [
+				"None names the AM30 HD; Vac2Go treats it as the AM36 (tagging sheet)"
+			]
 		},
 		"huber-am36": {
-			"name": "Huber AM36", "category": "industrial-vacuum", "website_group": "Industrial Vacuum",
-			"aliases": ["huber am36", "keith huber am36", "am36", "huber air mover"],
-			"fact_file": "huber-am36.md", "sources": ["AM36_HD.pdf", "Huber Air Mover Brochure.pdf"]
+			"name": "Huber AM36",
+			"category": "industrial-vacuum",
+			"website_group": "Industrial Vacuum",
+			"aliases": [
+				"huber am36",
+				"keith huber am36",
+				"am36",
+				"huber air mover"
+			],
+			"fact_file": "huber-am36.md",
+			"sources": [
+				"AM36_HD.pdf",
+				"Huber Air Mover Brochure.pdf"
+			]
 		},
 		"presvac-powervac": {
-			"name": "PresVac PowerVac", "category": "industrial-vacuum", "website_group": "Industrial Vacuum",
-			"aliases": ["presvac powervac", "powervac", "power vac", "presvac", "pres vac"],
-			"fact_file": "presvac-powervac.md", "sources": ["PowerVac.pdf"]
+			"name": "PresVac PowerVac",
+			"category": "industrial-vacuum",
+			"website_group": "Industrial Vacuum",
+			"aliases": [
+				"presvac powervac",
+				"powervac",
+				"power vac",
+				"presvac",
+				"pres vac"
+			],
+			"fact_file": "presvac-powervac.md",
+			"sources": [
+				"PowerVac.pdf"
+			]
 		},
 		"super-products-high-dump": {
-			"name": "Super Products High Dump", "category": "industrial-vacuum", "website_group": "Industrial Vacuum",
-			"aliases": ["super products high dump", "superproducts high dump"],
-			"fact_file": "supersucker.md", "sources": ["No dedicated document (open question C5)"]
+			"name": "Super Products High Dump",
+			"category": "industrial-vacuum",
+			"website_group": "Industrial Vacuum",
+			"aliases": [
+				"super products high dump",
+				"superproducts high dump",
+				"high dump"
+			],
+			"fact_file": "supersucker.md",
+			"sources": [
+				"No dedicated document (open question C5)"
+			]
 		},
 		"super-products-supersucker": {
-			"name": "Super Products Supersucker", "category": "industrial-vacuum", "website_group": "Industrial Vacuum",
-			"aliases": ["super products supersucker", "supersucker", "super sucker"],
-			"fact_file": "supersucker.md", "sources": ["Supersucker Brochure.pdf"]
+			"name": "Super Products Supersucker",
+			"category": "industrial-vacuum",
+			"website_group": "Industrial Vacuum",
+			"aliases": [
+				"super products supersucker",
+				"supersucker",
+				"super sucker"
+			],
+			"fact_file": "supersucker.md",
+			"sources": [
+				"Supersucker Brochure.pdf"
+			]
 		},
 		"gapvax-hv-33": {
-			"name": "GapVax HV-33", "category": "hydro-excavator", "website_group": "Hydro Excavators",
-			"aliases": ["gapvax hv 33", "hv 33", "hv33"],
-			"fact_file": "gapvax-hv33.md", "sources": ["HV33-brochure.pdf"]
+			"name": "GapVax HV-33",
+			"category": "hydro-excavator",
+			"website_group": "Hydro Excavators",
+			"aliases": [
+				"gapvax hv 33",
+				"hv 33",
+				"hv33"
+			],
+			"fact_file": "gapvax-hv33.md",
+			"sources": [
+				"HV33-brochure.pdf"
+			]
 		},
 		"gapvax-hv-56": {
-			"name": "GapVax HV-56", "category": "hydro-excavator", "website_group": "Hydro Excavators",
-			"aliases": ["gapvax hv 56", "hv 56", "hv56"],
-			"fact_file": "gapvax-hv56.md", "sources": ["GapVax Hydrovac Literature 2026.pdf"]
+			"name": "GapVax HV-56",
+			"category": "hydro-excavator",
+			"website_group": "Hydro Excavators",
+			"aliases": [
+				"gapvax hv 56",
+				"hv 56",
+				"hv56"
+			],
+			"fact_file": "gapvax-hv56.md",
+			"sources": [
+				"GapVax Hydrovac Literature 2026.pdf"
+			]
 		},
 		"huber-baron-hx": {
-			"name": "Huber Baron HX", "category": "hydro-excavator", "website_group": "Hydro Excavators",
-			"aliases": ["huber baron hx", "keith huber baron", "baron hx", "baron", "hx1512", "hx 1512"],
-			"fact_file": "huber-baron-hx.md", "sources": ["70-9797_Huber_Brochure_HydroEx_v10.pdf", "70-9798_Huber_SellSheet_HydroEx_v05.pdf", "Baron-HX-1512-hydro-excavator_012626_comp.pdf"]
+			"name": "Huber Baron HX",
+			"category": "hydro-excavator",
+			"website_group": "Hydro Excavators",
+			"aliases": [
+				"huber baron hx",
+				"keith huber baron",
+				"baron hx",
+				"baron",
+				"hx1512",
+				"hx 1512"
+			],
+			"fact_file": "huber-baron-hx.md",
+			"sources": [
+				"70-9797_Huber_Brochure_HydroEx_v10.pdf",
+				"70-9798_Huber_SellSheet_HydroEx_v05.pdf",
+				"Baron-HX-1512-hydro-excavator_012626_comp.pdf"
+			]
 		},
 		"kaiser-premier-cv-series": {
-			"name": "Kaiser Premier CV Series", "category": "hydro-excavator", "website_group": "Hydro Excavators",
-			"aliases": ["kaiser premier cv", "kaiser cv", "cv series", "cv100", "cv200"],
-			"fact_file": "kaiser-premier-cv.md", "sources": ["Kaiser Premier CV Series Hydrovacs (2019) Brochure.pdf"]
+			"name": "Kaiser Premier CV Series",
+			"category": "hydro-excavator",
+			"website_group": "Hydro Excavators",
+			"aliases": [
+				"kaiser premier cv",
+				"kaiser cv",
+				"cv series",
+				"cv100",
+				"cv200",
+				"kaiser premier",
+				"kaiser premium"
+			],
+			"fact_file": "kaiser-premier-cv.md",
+			"sources": [
+				"Kaiser Premier CV Series Hydrovacs (2019) Brochure.pdf"
+			]
 		},
 		"schellvac-svhx": {
-			"name": "Schellvac SVHX", "category": "hydro-excavator", "website_group": "Hydro Excavators",
-			"aliases": ["schellvac svhx", "schellvac", "schell vac", "svhx"],
-			"fact_file": "schellvac-svhx.md", "sources": ["schellvac-brochure-copy.pdf"]
+			"name": "Schellvac SVHX",
+			"category": "hydro-excavator",
+			"website_group": "Hydro Excavators",
+			"aliases": [
+				"schellvac svhx",
+				"schellvac",
+				"schell vac",
+				"svhx",
+				"shellvac"
+			],
+			"fact_file": "schellvac-svhx.md",
+			"sources": [
+				"schellvac-brochure-copy.pdf"
+			]
 		},
 		"super-products-mud-dog-1200": {
-			"name": "Super Products Mud Dog 1200", "category": "hydro-excavator", "website_group": "Hydro Excavators",
-			"aliases": ["super products mud dog", "mud dog 1200", "mud dog", "muddog"],
-			"fact_file": "mud-dog-1200.md", "sources": ["Mud-Dog-1200 Brochure.pdf"]
+			"name": "Super Products Mud Dog 1200",
+			"category": "hydro-excavator",
+			"website_group": "Hydro Excavators",
+			"aliases": [
+				"super products mud dog",
+				"mud dog 1200",
+				"mud dog",
+				"muddog",
+				"mud dog hydro vac",
+				"mud dog air"
+			],
+			"fact_file": "mud-dog-1200.md",
+			"sources": [
+				"Mud-Dog-1200 Brochure.pdf"
+			]
 		},
 		"tornado-f4": {
-			"name": "Tornado F4", "category": "hydro-excavator", "website_group": "Hydro Excavators",
-			"aliases": ["ctos tornado f4", "tornado f4", "tornado hydrovac"],
-			"fact_file": "tornado-f4.md", "sources": ["Tornado-F4-Brochure.pdf"]
+			"name": "Tornado F4",
+			"category": "hydro-excavator",
+			"website_group": "Hydro Excavators",
+			"aliases": [
+				"ctos tornado f4",
+				"tornado f4",
+				"tornado hydrovac"
+			],
+			"fact_file": "tornado-f4.md",
+			"sources": [
+				"Tornado-F4-Brochure.pdf"
+			]
 		},
 		"truvac-hxx": {
-			"name": "Truvac HXX", "category": "hydro-excavator", "website_group": "Hydro Excavators",
-			"aliases": ["truvac hxx", "vactor hxx", "hxx", "truvac"],
-			"fact_file": "truvac-hxx.md", "sources": ["Truvac HXX Brochure.pdf", "HXX_Brochure.pdf"]
+			"name": "Truvac HXX",
+			"category": "hydro-excavator",
+			"website_group": "Hydro Excavators",
+			"aliases": [
+				"truvac hxx",
+				"vactor hxx",
+				"hxx",
+				"truvac"
+			],
+			"fact_file": "truvac-hxx.md",
+			"sources": [
+				"Truvac HXX Brochure.pdf",
+				"HXX_Brochure.pdf"
+			]
 		},
 		"vactor-paradigm": {
-			"name": "Vactor Paradigm", "category": "hydro-excavator", "website_group": "Hydro Excavators",
-			"aliases": ["vactor paradigm", "paradigm"],
-			"fact_file": "vactor-paradigm.md", "sources": ["Paradigm_Brochure.pdf"]
+			"name": "Vactor Paradigm",
+			"category": "hydro-excavator",
+			"website_group": "Hydro Excavators",
+			"aliases": [
+				"vactor paradigm",
+				"paradigm"
+			],
+			"fact_file": "vactor-paradigm.md",
+			"sources": [
+				"Paradigm_Brochure.pdf"
+			]
 		},
 		"gapvax-mc1510": {
-			"name": "GapVax MC1510", "category": "combination", "website_group": "Combination",
-			"aliases": ["gapvax mc1510", "mc1510", "mc 1510"],
-			"fact_file": "gapvax-mc1510.md", "sources": ["GapVax MC1510 - Spec Reference.docx"]
+			"name": "GapVax MC1510",
+			"category": "combination",
+			"website_group": "Combination",
+			"aliases": [
+				"gapvax mc1510",
+				"mc1510",
+				"mc 1510",
+				"gapvax mc",
+				"gapvax combo"
+			],
+			"fact_file": "gapvax-mc1510.md",
+			"sources": [
+				"GapVax MC1510 - Spec Reference.docx"
+			]
 		},
 		"huber-sc-1009": {
-			"name": "Huber SC 1009", "category": "combination", "website_group": "Combination",
-			"aliases": ["huber sc 1009", "sc1009", "sc 1009", "lancer sc1009"],
-			"fact_file": "huber-sc-1009-1512.md", "sources": ["70-9797_Huber_Brochure_SC_ComboSewerCleaner_v07.pdf", "70-9798_Huber_SellSheet_SC_Combo_Sewer_Cleaner_v06.pdf", "Huber-Lancer-SC-Series-sewer-combos.pdf"]
+			"name": "Huber SC 1009",
+			"category": "combination",
+			"website_group": "Combination",
+			"aliases": [
+				"huber sc 1009",
+				"sc1009",
+				"sc 1009",
+				"lancer sc1009"
+			],
+			"fact_file": "huber-sc-1009-1512.md",
+			"sources": [
+				"70-9797_Huber_Brochure_SC_ComboSewerCleaner_v07.pdf",
+				"70-9798_Huber_SellSheet_SC_Combo_Sewer_Cleaner_v06.pdf",
+				"Huber-Lancer-SC-Series-sewer-combos.pdf"
+			]
 		},
 		"huber-sc-1512": {
-			"name": "Huber SC 1512", "category": "combination", "website_group": "Combination",
-			"aliases": ["huber sc 1512", "keith huber sc1512", "sc1512", "sc 1512", "lancer sc1512"],
-			"fact_file": "huber-sc-1009-1512.md", "sources": ["70-9797_Huber_Brochure_SC_ComboSewerCleaner_v07.pdf", "70-9798_Huber_SellSheet_SC_Combo_Sewer_Cleaner_v06.pdf", "Huber-Lancer-SC-Series-sewer-combos.pdf"]
+			"name": "Huber SC 1512",
+			"category": "combination",
+			"website_group": "Combination",
+			"aliases": [
+				"huber sc 1512",
+				"keith huber sc1512",
+				"sc1512",
+				"sc 1512",
+				"lancer sc1512"
+			],
+			"fact_file": "huber-sc-1009-1512.md",
+			"sources": [
+				"70-9797_Huber_Brochure_SC_ComboSewerCleaner_v07.pdf",
+				"70-9798_Huber_SellSheet_SC_Combo_Sewer_Cleaner_v06.pdf",
+				"Huber-Lancer-SC-Series-sewer-combos.pdf"
+			]
 		},
 		"super-products-camel-max-series": {
-			"name": "Super Products Camel Max Series", "category": "combination", "website_group": "Combination",
-			"aliases": ["super products camel max", "camel max", "camelmax", "camel 900", "camel 1200", "camel 1600"],
-			"fact_file": "camel-max.md", "sources": ["CamelMax_Brochure_020926-1.pdf"]
+			"name": "Super Products Camel Max Series",
+			"category": "combination",
+			"website_group": "Combination",
+			"aliases": [
+				"super products camel max",
+				"camel max",
+				"camelmax",
+				"camel 900",
+				"camel 1200",
+				"camel 1600",
+				"camel"
+			],
+			"fact_file": "camel-max.md",
+			"sources": [
+				"CamelMax_Brochure_020926-1.pdf"
+			]
 		},
 		"vactor-2100-plus": {
-			"name": "Vactor 2100 Plus", "category": "combination", "website_group": "Combination",
-			"aliases": ["vactor 2100 plus", "vactor 2100", "2100 plus"],
-			"fact_file": "vactor-2100-plus.md", "sources": ["Vactor-2100-Plus-Combo-Unit-Vacuum-Truck-Brochure.pdf"]
+			"name": "Vactor 2100 Plus",
+			"category": "combination",
+			"website_group": "Combination",
+			"aliases": [
+				"vactor 2100 plus",
+				"vactor 2100",
+				"2100 plus",
+				"2100i",
+				"vactor 2100i"
+			],
+			"fact_file": "vactor-2100-plus.md",
+			"sources": [
+				"Vactor-2100-Plus-Combo-Unit-Vacuum-Truck-Brochure.pdf"
+			]
 		},
 		"huber-berringer-pd": {
-			"name": "Huber Berringer PD", "category": "liquid-vacuum", "website_group": "Liquid Vacuum",
-			"aliases": ["huber berringer pd", "berringer pd", "berringer"],
-			"fact_file": "huber-berringer.md", "sources": ["Berringer-Brochure.pdf"]
+			"name": "Huber Berringer PD",
+			"category": "liquid-vacuum",
+			"website_group": "Liquid Vacuum",
+			"aliases": [
+				"huber berringer pd",
+				"berringer pd",
+				"berringer",
+				"huber berringer"
+			],
+			"fact_file": "huber-berringer.md",
+			"sources": [
+				"Berringer-Brochure.pdf"
+			]
 		},
 		"huber-dominator": {
-			"name": "Huber Dominator", "category": "liquid-vacuum", "website_group": "Liquid Vacuum",
-			"aliases": ["huber dominator", "keith huber dominator", "dominator", "ctos 70 bbl", "70 bbl"],
-			"fact_file": "huber-dominator.md", "sources": ["Dominator Series IV Brochure.pdf", "DominatorPD Brochure.pdf"]
+			"name": "Huber Dominator",
+			"category": "liquid-vacuum",
+			"website_group": "Liquid Vacuum",
+			"aliases": [
+				"huber dominator",
+				"keith huber dominator",
+				"dominator"
+			],
+			"fact_file": "huber-dominator.md",
+			"sources": [
+				"Dominator Series IV Brochure.pdf",
+				"DominatorPD Brochure.pdf"
+			]
 		},
 		"huber-scrubber": {
-			"name": "Huber Scrubber", "category": "liquid-vacuum", "also_in": ["liquid-ring"], "website_group": "Liquid Vacuum",
-			"aliases": ["huber scrubber", "keith huber scrubber", "scrubber", "vapor scrubber", "vts36"],
-			"fact_file": "huber-scrubber.md", "sources": ["Scrubber Huber.pdf"]
+			"name": "Huber Scrubber",
+			"category": "liquid-vacuum",
+			"website_group": "Liquid Vacuum",
+			"aliases": [
+				"huber scrubber",
+				"keith huber scrubber",
+				"scrubber",
+				"vapor scrubber",
+				"vts36",
+				"scrubber unit"
+			],
+			"fact_file": "huber-scrubber.md",
+			"sources": [
+				"Scrubber Huber.pdf"
+			]
 		},
 		"imperial-industries-high-volume-pump": {
-			"name": "Imperial Industries High Volume Pump", "category": "liquid-vacuum", "website_group": "Liquid Vacuum",
-			"aliases": ["imperial industries", "imperial high volume", "high volume pump", "imperial"],
-			"fact_file": "imperial-industries-high-volume-pump.md", "sources": ["Imperial Industries 5000 Gallon Unit Specs.docx"]
+			"name": "Imperial Industries High Volume Pump",
+			"category": "liquid-vacuum",
+			"website_group": "Liquid Vacuum",
+			"aliases": [
+				"imperial industries",
+				"imperial high volume",
+				"high volume pump",
+				"imperial",
+				"imperial high volume pump"
+			],
+			"fact_file": "imperial-industries-high-volume-pump.md",
+			"sources": [
+				"Imperial Industries 5000 Gallon Unit Specs.docx"
+			]
 		},
 		"portable-restroom-truck": {
-			"name": "Portable Restroom Truck", "category": "liquid-vacuum", "website_group": "Liquid Vacuum",
-			"aliases": ["portable restroom truck", "portable restroom", "restroom truck", "porta potty truck"],
-			"fact_file": "portable-restroom-truck.md", "sources": ["Portable Restroom Truck Specs.pdf"]
+			"name": "Portable Restroom Truck",
+			"category": "liquid-vacuum",
+			"website_group": "Liquid Vacuum",
+			"aliases": [
+				"portable restroom truck",
+				"portable restroom",
+				"restroom truck",
+				"porta potty truck"
+			],
+			"fact_file": "portable-restroom-truck.md",
+			"sources": [
+				"Portable Restroom Truck Specs.pdf"
+			]
 		},
 		"huber-berringer-liquid-ring": {
-			"name": "Huber Berringer Liquid Ring", "category": "liquid-ring", "website_group": "Liquid Ring",
-			"aliases": ["huber berringer liquid ring", "berringer liquid ring", "berringer"],
-			"fact_file": "huber-berringer.md", "sources": ["Berringer-Brochure.pdf"]
+			"name": "Huber Berringer Liquid Ring",
+			"category": "liquid-ring",
+			"website_group": "Liquid Ring",
+			"aliases": [
+				"huber berringer liquid ring",
+				"berringer liquid ring",
+				"berringer"
+			],
+			"fact_file": "huber-berringer.md",
+			"sources": [
+				"Berringer-Brochure.pdf"
+			]
 		},
 		"huber-king-vac": {
-			"name": "Huber King Vac", "category": "liquid-ring", "website_group": "Liquid Ring",
-			"aliases": ["huber king vac", "keith huber king vac", "king vac", "kingvac"],
-			"fact_file": "huber-king-vac.md", "sources": ["Huber_KingVac Brochure.pdf"]
+			"name": "Huber King Vac",
+			"category": "liquid-ring",
+			"website_group": "Liquid Ring",
+			"aliases": [
+				"huber king vac",
+				"keith huber king vac",
+				"king vac",
+				"kingvac"
+			],
+			"fact_file": "huber-king-vac.md",
+			"sources": [
+				"Huber_KingVac Brochure.pdf"
+			]
 		},
 		"huber-knight": {
-			"name": "Huber Knight", "category": "liquid-ring", "website_group": "Liquid Ring",
-			"aliases": ["huber knight", "keith huber knight", "knight liquid ring", "knight vac"],
-			"fact_file": "huber-knight.md", "sources": ["Knight Brochure.pdf"]
+			"name": "Huber Knight",
+			"category": "liquid-ring",
+			"website_group": "Liquid Ring",
+			"aliases": [
+				"huber knight",
+				"keith huber knight",
+				"knight liquid ring",
+				"knight vac",
+				"knight"
+			],
+			"fact_file": "huber-knight.md",
+			"sources": [
+				"Knight Brochure.pdf"
+			]
 		},
 		"130-bbl-tankers": {
-			"name": "130 BBL Tankers", "category": "tanker", "website_group": "Pull-Behind",
-			"aliases": ["130 bbl", "130 barrel", "dragon tanker", "dragon 130", "iti ss code tanker", "iti tanker", "huber 130"],
-			"fact_file": "130-bbl-tankers.md", "sources": ["Vac2Go 130 BBL Tanker - Spec Reference.docx"]
+			"name": "130 BBL Tankers",
+			"category": "tanker",
+			"website_group": "Pull-Behind",
+			"aliases": [
+				"130 bbl",
+				"130 barrel",
+				"dragon tanker",
+				"dragon 130",
+				"iti ss code tanker",
+				"iti tanker",
+				"huber 130",
+				"130bbl",
+				"150 bbl",
+				"150bbl",
+				"dragon",
+				"dragon vac trailer"
+			],
+			"fact_file": "130-bbl-tankers.md",
+			"sources": [
+				"Vac2Go 130 BBL Tanker - Spec Reference.docx"
+			]
 		},
 		"bossvac-hydrovac-trailer": {
-			"name": "Bossvac Hydrovac Trailer", "category": "trailer", "website_group": "Pull-Behind",
-			"aliases": ["bossvac hydrovac trailer", "bossvac", "boss vac", "bv500", "bv 500"],
-			"fact_file": "bossvac-bv500-hydrovac-trailer.md", "sources": ["BossVac Brochure.png"]
+			"name": "Bossvac Hydrovac Trailer",
+			"category": "trailer",
+			"website_group": "Pull-Behind",
+			"aliases": [
+				"bossvac hydrovac trailer",
+				"bossvac",
+				"boss vac",
+				"bv500",
+				"bv 500",
+				"hydrovac trailer"
+			],
+			"fact_file": "bossvac-bv500-hydrovac-trailer.md",
+			"sources": [
+				"BossVac Brochure.png"
+			]
 		},
 		"gapvax-combo-g7-trailer-jetter": {
-			"name": "GapVax Combo G7 Trailer Jetter", "category": "trailer", "website_group": "Pull-Behind",
-			"aliases": ["gapvax combo g7", "gapvax g7", "g7 jetter", "g7 trailer", "g7"],
-			"fact_file": "gapvax-g7-trailer-jetter.md", "sources": ["GapVax G7 Trailer brochure 2024.pdf"]
+			"name": "GapVax Combo G7 Trailer Jetter",
+			"category": "trailer",
+			"website_group": "Pull-Behind",
+			"aliases": [
+				"gapvax combo g7",
+				"gapvax g7",
+				"g7 jetter",
+				"g7 trailer",
+				"g7",
+				"trailer jetter"
+			],
+			"fact_file": "gapvax-g7-trailer-jetter.md",
+			"sources": [
+				"GapVax G7 Trailer brochure 2024.pdf"
+			]
 		},
 		"kaiser-premier-terravac": {
-			"name": "Kaiser Premier TerraVac", "category": "trailer", "website_group": "Pull-Behind",
-			"aliases": ["kaiser premier terravac", "kaiser terravac", "terravac", "terra vac", "xpose800", "xpose 800"],
-			"fact_file": "kaiser-premier-terravac.md", "sources": ["TerraVac_Brochure_WEB_012021.pdf"]
+			"name": "Kaiser Premier TerraVac",
+			"category": "trailer",
+			"website_group": "Pull-Behind",
+			"aliases": [
+				"kaiser premier terravac",
+				"kaiser terravac",
+				"terravac",
+				"terra vac",
+				"xpose800",
+				"xpose 800"
+			],
+			"fact_file": "kaiser-premier-terravac.md",
+			"sources": [
+				"TerraVac_Brochure_WEB_012021.pdf"
+			]
 		},
 		"two-box-roll-off-trailers": {
-			"name": "Two Box Roll-Off Trailers", "category": "roll-off", "also_in": ["trailer"], "website_group": "Pull-Behind",
-			"aliases": ["two box roll off trailer", "two box trailer", "2 box roll off", "benlee two box", "benlee"],
-			"fact_file": "two-box-roll-off-trailers.md", "sources": ["Vac2Go Two Box Roll-Off Trailer - Spec Reference.docx"]
+			"name": "Two Box Roll-Off Trailers",
+			"category": "roll-off",
+			"website_group": "Pull-Behind",
+			"aliases": [
+				"two box roll off trailer",
+				"two box trailer",
+				"2 box roll off",
+				"benlee two box",
+				"benlee",
+				"roll off trailer"
+			],
+			"fact_file": "two-box-roll-off-trailers.md",
+			"sources": [
+				"Vac2Go Two Box Roll-Off Trailer - Spec Reference.docx"
+			]
 		},
 		"vermeer-lp-xdt-vacuum-excavator": {
-			"name": "Vermeer LP XDT Vacuum Excavator", "category": "trailer", "website_group": "Pull-Behind",
-			"aliases": ["vermeer lp xdt", "vermeer", "lpxdt", "lp xdt", "lp573", "lp873", "lp1273"],
-			"fact_file": "vermeer-lp-xdt.md", "sources": ["Vermeer LP873XDT Brochure.pdf"]
+			"name": "Vermeer LP XDT Vacuum Excavator",
+			"category": "trailer",
+			"website_group": "Pull-Behind",
+			"aliases": [
+				"vermeer lp xdt",
+				"vermeer",
+				"lpxdt",
+				"lp xdt",
+				"lp573",
+				"lp873",
+				"lp1273",
+				"vermeer vacuum excavator"
+			],
+			"fact_file": "vermeer-lp-xdt.md",
+			"sources": [
+				"Vermeer LP873XDT Brochure.pdf"
+			]
 		},
 		"roll-off-trucks": {
-			"name": "Roll-Off Trucks", "category": "roll-off", "website_group": "Additional",
-			"aliases": ["roll off truck", "rolloff truck", "hoist truck", "bergeys roll off", "bte roll off", "ctos roll off", "galfab", "palmer roll off"],
-			"fact_file": "roll-off-trucks.md", "sources": ["Vac2Go Roll-Off Truck - Spec Reference.docx"]
+			"name": "Roll-Off Trucks",
+			"category": "roll-off",
+			"website_group": "Additional",
+			"aliases": [
+				"roll off truck",
+				"rolloff truck",
+				"hoist truck",
+				"bergeys roll off",
+				"bte roll off",
+				"ctos roll off",
+				"galfab",
+				"palmer roll off",
+				"cable roll off",
+				"hook roll off"
+			],
+			"fact_file": "roll-off-trucks.md",
+			"sources": [
+				"Vac2Go Roll-Off Truck - Spec Reference.docx"
+			]
 		},
 		"tractors": {
-			"name": "Tractors", "category": "tractor", "website_group": "Additional",
-			"aliases": ["tractor", "day cab", "semi tractor", "bergeys day cab", "kenworth t880", "peterbilt 579"],
-			"fact_file": null, "sources": ["No document (tractor spec reference not received, open question G3)"]
+			"name": "Tractors",
+			"category": "tractor",
+			"website_group": "Additional",
+			"aliases": [
+				"tractor",
+				"day cab",
+				"semi tractor",
+				"bergeys day cab",
+				"kenworth t880",
+				"peterbilt 579",
+				"truck tractor"
+			],
+			"fact_file": null,
+			"sources": [
+				"No document (tractor spec reference not received, open question G3)"
+			]
 		},
 		"water-trucks": {
-			"name": "Water Trucks", "category": "water", "website_group": "Additional",
-			"aliases": ["water truck", "bergeys water truck", "ctos water truck", "iti water truck", "load king water"],
-			"fact_file": "water-trucks.md", "sources": ["4000 Water Truck Brochure.pdf", "Vac2Go Water Truck - Spec Reference.docx"]
+			"name": "Water Trucks",
+			"category": "water",
+			"website_group": "Additional",
+			"aliases": [
+				"water truck",
+				"bergeys water truck",
+				"ctos water truck",
+				"iti water truck",
+				"load king water"
+			],
+			"fact_file": "water-trucks.md",
+			"sources": [
+				"4000 Water Truck Brochure.pdf",
+				"Vac2Go Water Truck - Spec Reference.docx"
+			]
+		},
+		"gapvax-mc1312": {
+			"name": "GapVax MC1312",
+			"category": "combination",
+			"website_group": "Equipment catalog",
+			"aliases": [
+				"gapvax mc1312",
+				"mc1312",
+				"mc 1312",
+				"gapvax mc"
+			],
+			"fact_file": null,
+			"sources": [
+				"Vac2Go equipment catalog (no brochure received; the MC1510 spec reference is the only GapVax MC Series document)"
+			]
+		},
+		"vac-jet-rodding": {
+			"name": "Vac Jet Rodding",
+			"category": "combination",
+			"website_group": "Equipment catalog",
+			"aliases": [
+				"vac jet rodding",
+				"vac jet rodder",
+				"rodding truck"
+			],
+			"fact_file": null,
+			"sources": [
+				"Vac2Go equipment catalog (no literature received)"
+			]
+		},
+		"guzzcavator": {
+			"name": "Guzzcavator",
+			"category": "hydro-excavator",
+			"website_group": "Equipment catalog",
+			"aliases": [
+				"guzzcavator",
+				"guzzler guzzcavator"
+			],
+			"fact_file": "guzzcavator.md",
+			"sources": [
+				"Guzzcavator-Vacuum-Truck-Brochure.pdf"
+			]
+		},
+		"ctos-70-bbl-liquid-vacuum": {
+			"name": "CTOS 70-BBL Liquid Vacuum",
+			"category": "liquid-vacuum",
+			"website_group": "Equipment catalog",
+			"aliases": [
+				"ctos 70 bbl",
+				"70 bbl liquid vacuum",
+				"70 bbl"
+			],
+			"fact_file": null,
+			"sources": [
+				"Vac2Go equipment catalog (no literature received)"
+			]
+		},
+		"huber-dominator-ss": {
+			"name": "Huber Dominator SS",
+			"category": "liquid-vacuum",
+			"website_group": "Equipment catalog",
+			"aliases": [
+				"huber dominator ss",
+				"keith huber dominator ss",
+				"dominator ss",
+				"stainless dominator"
+			],
+			"fact_file": "huber-dominator.md",
+			"sources": [
+				"Dominator Series IV Brochure.pdf and DominatorPD Brochure.pdf (stainless option only; no SS-specific document)"
+			]
 		}
 	},
 	"off_list": [
-		{ "name": "GapVax MC1312", "aliases": ["mc1312", "mc 1312"], "categories": ["combination"], "note": "Named in the Phase 1 prompt but not on vac2go.com." },
-		{ "name": "Guzzcavator", "aliases": ["guzzcavator"], "categories": ["hydro-excavator", "industrial-vacuum"], "note": "Brochure received but not on vac2go.com (tagging sheet: not attributed)." },
-		{ "name": "Vac Jet Rodding", "aliases": ["vac jet rodding"], "categories": ["combination"], "note": "Named in the Phase 1 prompt but not on vac2go.com." }
+		{
+			"name": "Vacmaster",
+			"aliases": [
+				"vacmaster",
+				"vacmaster 3000",
+				"vacmaster 4000"
+			],
+			"categories": [
+				"industrial-vacuum"
+			],
+			"note": "Brand customers name; Vac2Go does not carry it (synonym ring)."
+		},
+		{
+			"name": "Vac-Con",
+			"aliases": [
+				"vaccon",
+				"vac con",
+				"vac con sewer truck"
+			],
+			"categories": [
+				"combination"
+			],
+			"note": "Brand customers name; Vac2Go does not carry it (synonym ring)."
+		},
+		{
+			"name": "Tellus trailer",
+			"aliases": [
+				"tellus",
+				"tellus trailer"
+			],
+			"categories": [
+				"trailer"
+			],
+			"note": "Brand customers name; Vac2Go does not carry it (synonym ring)."
+		}
 	]
 }

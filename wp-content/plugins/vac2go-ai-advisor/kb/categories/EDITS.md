@@ -29,20 +29,14 @@ Every change made to the client's wording when building these category files, ge
 ## Trailer: Trailer is a form factor rather than a function. Which trailer types are available: jetter trailer, hydro excavation trailer, vacuum trailer, roll-off trailer, others?
 
 - **Was:** The advisor should ask about site access and volume constraints first, then direct the user to the correct trailer type.
-- **Now:** Vac2Go's trailer units are hydro excavation trailers (Bossvac Hydrovac Trailer, Kaiser Premier TerraVac), a jetter trailer (GapVax Combo G7 Trailer Jetter), a vacuum excavator trailer (Vermeer LP XDT) and the Two Box Roll-Off Trailers. Ask about site access and volume first, then point the customer to the right type.
-- **Why:** The answer was an instruction to the advisor with no list. Replaced with the trailer units on vac2go.com, keeping the instruction. (K2, G8)
+- **Now:** Vac2Go's trailer units are hydro excavation trailers (Bossvac Hydrovac Trailer, Kaiser Premier TerraVac), a jetter trailer (GapVax Combo G7 Trailer Jetter), and a vacuum excavator trailer (Vermeer LP XDT). Ask about site access and volume first, then point the customer to the right type.
+- **Why:** The answer was an instruction to the advisor with no list. Replaced with Vac2Go's trailer units, keeping the instruction. The Two Box Roll-Off Trailers sit under Roll-Off (client answer to Q13). (K2, G8, Q13)
 
 ## Trailer: What are the most common reasons customers rent a trailer unit?
 
 - **Was:** Limited physical space on the job site and significantly lower rental costs compared to full-size trucks for small, localized projects.
 - **Now:** Limited physical space on the job site, and a smaller setup than a full-size truck for small, localized projects.
 - **Why:** Rental-cost comparison removed until the client allows rate statements; a rep handles rates. (K3, Q9)
-
-## Trailer: Can a trailer be left on site for the duration of a project? Is that a common rental pattern, and does it change the rental structure?
-
-- **Was:** It does not change the structural rental rate, but it eliminates daily travel wear and tear.
-- **Now:** It also eliminates daily travel wear and tear. Rental rates are a question for a Vac2Go rep.
-- **Why:** Rate statement removed until the client allows it. (K3, Q9)
 
 ## Tanker: Is barrel capacity how tankers are usually specified, and what sizes are available?
 
@@ -55,12 +49,6 @@ Every change made to the client's wording when building these category files, ge
 - **Was:** Vac2Go doesn't require or make recommendations on what you do as a customer.
 - **Now:** Approval depends on each tank's rating and certification. Confirm compatibility for a specific product with a Vac2Go rep before the rental.
 - **Why:** The original line did not answer the question. Replacement follows the other tanker answers ("if it's rated for it"). Pending client confirmation. (K4, Q8)
-
-## Tanker: Does the tank need to be cleaned between products, who handles that, and what is the policy on prior-product residue?
-
-- **Was:** Vac2Go enforces a strict "clean for clean" policy; any prior-product residue or heel left in the tank will result in substantial commercial cleaning surcharges billed back to the customer.
-- **Now:** A Vac2Go rep can explain the return-condition policy and any cleaning charges.
-- **Why:** Charge-back terms removed until the client allows policy statements; a rep handles terms. (K3, Q9)
 
 ## Roll-Off: What is a roll-off: a roll-off hoist truck that hauls boxes, a vacuum unit that discharges into a roll-off box, the boxes themselves, or some combination?
 

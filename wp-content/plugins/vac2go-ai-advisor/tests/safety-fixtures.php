@@ -72,8 +72,34 @@ foreach ( array(
 	check( "still blocked: \"{$t}\"", blocked( $t ) );
 }
 
+echo "\n== Vac2Go's banned-phrase list (client answer to Q5) ==\n";
+foreach ( array(
+	'This is legally binding.', 'That is a binding agreement.', 'We have a deal.', 'Do we have a deal?', 'I promise it will be there.', 'You have my word on that.',
+	'I hereby agree to the terms.', 'No takesies backsies.', 'We authorize that rate.', 'Your request is approved.', 'Your order is confirmed.',
+	"I've booked it for you.", "I've reserved one.", "I've held one for you.", 'This is my final offer.', 'This offer is valid until Friday.',
+	'It costs about that.', 'It is priced at a good level.', 'Your total is ready.', "Here's your quote.", 'I can offer it at a special price.',
+	'The daily rate is low.', 'We can do it for less.', 'You get 10% off.', "We'll knock off a bit.", 'It is currently available.', 'It is ready to go now.',
+	'We have one available.', 'One is available in Texas.', "It'll be there by Friday.", 'I can get it to you by Monday.', 'It is available tomorrow.',
+	'We can deliver on Monday.', 'The minimum rental is a week.', 'You can rent to own for a year.', 'Billing starts on delivery.', 'Your rental period is open.',
+	'That is 900 per weekend.', 'We accept your offer.',
+) as $t ) {
+	check( "blocked: \"{$t}\"", blocked( $t ) );
+}
+foreach ( array(
+	'The baghouse holds a total of 60 filter bags.', 'The hose comes to the reel at the rear.', 'Water trucks are available on a variety of chassis.',
+	'The hose reel is available with a 3/4 in hose.', 'Stainless steel is available as an option.', 'A rep can explain the return-condition policy and any cleaning charges.',
+	'Tanks must be returned chemically clean.', 'It does not change the structural rental rate, but it eliminates daily travel wear and tear.',
+	"I can't approve or confirm pricing.", 'Which configuration you get depends on the unit.', 'It is approved for DOT 412 service if the tank is rated for it.',
+) as $t ) {
+	check( "not blocked: \"{$t}\"", ! blocked( $t ), VA_Filter::apply( $t )['reason'] ?? '' );
+}
+
 echo "\n== Stored pattern lists are migrated only when untouched ==\n";
-$GLOBALS['va_options']['va_banned_patterns'] = VA_Filter::OLD_DEFAULT_PATTERNS;
+$GLOBALS['va_options']['va_banned_patterns'] = VA_Filter::PREVIOUS_DEFAULT_PATTERNS[1];
+VA_Filter::migrate_patterns();
+check( 'the v2.7 default list (on staging now) is replaced by the current defaults', VA_Filter::default_patterns_text() === get_option( 'va_banned_patterns' ) );
+unset( $GLOBALS['va_options']['va_banned_patterns'] );
+$GLOBALS['va_options']['va_banned_patterns'] = VA_Filter::PREVIOUS_DEFAULT_PATTERNS[0];
 VA_Filter::migrate_patterns();
 check( 'an untouched Phase 1 list is replaced by the current defaults', VA_Filter::default_patterns_text() === get_option( 'va_banned_patterns' ) );
 $GLOBALS['va_options']['va_banned_patterns'] = "/\\bmy custom\\b/i\n/\\bguaranteed?\\b/i";

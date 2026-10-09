@@ -193,7 +193,11 @@ class VA_KB {
 			$off[] = $o['name'] . ' (closest category: ' . implode( ' or ', $names ) . ')';
 		}
 		if ( $off ) {
-			$out[] = "### Not on Vac2Go's current list\n" . implode( '; ', $off ) . '.';
+			$out[] = "### Brands Vac2Go does not carry\n" . implode( '; ', $off ) . '.';
+		}
+		$locations = self::dir() . '/locations.md';
+		if ( is_readable( $locations ) ) {
+			$out[] = trim( (string) file_get_contents( $locations ) );
 		}
 		return implode( "\n\n", $out ) . "\n";
 	}

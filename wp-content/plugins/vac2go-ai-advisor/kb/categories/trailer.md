@@ -2,7 +2,7 @@
 
 ## Summary
 
-Trailer is a form factor, not a function. Vac2Go's trailer units are hydro excavation trailers, a jetter trailer, a vacuum excavator trailer and two-box roll-off trailers. Trailers suit tight access (alleys, residential areas, parking garages), small-volume and maintenance jobs, and projects where the unit stays parked on site for weeks. Compared with truck-mounted units they use smaller hoses (2 to 3 inch maximum particle size), carry less water and debris, and recovered material leaves by towing the trailer or by pumping into a staging tank. The customer supplies a suitable tow vehicle. Most rental trailers are not built for hazardous, regulated or flammable material. Move up to a truck when volume, hose distance or continuous production grows.
+Trailer is a form factor, not a function. Vac2Go's trailer units are hydro excavation trailers, a jetter trailer and a vacuum excavator trailer (two-box roll-off trailers sit under Roll-Off). Trailers suit tight access (alleys, residential areas, parking garages), small-volume and maintenance jobs, and projects where the unit stays parked on site for weeks. Compared with truck-mounted units they use smaller hoses (2 to 3 inch maximum particle size), carry less water and debris, and recovered material leaves by towing the trailer or by pumping into a staging tank. The customer supplies a suitable tow vehicle. Most rental trailers are not built for hazardous, regulated or flammable material. Move up to a truck when volume, hose distance or continuous production grows.
 
 ## Questions and answers
 
@@ -12,7 +12,7 @@ From Vac2Go's Round 2 Knowledge Base Entries. Answer from these, keeping their m
 
 **Q: Trailer is a form factor rather than a function. Which trailer types are available: jetter trailer, hydro excavation trailer, vacuum trailer, roll-off trailer, others?**
 
-Vac2Go's trailer units are hydro excavation trailers (Bossvac Hydrovac Trailer, Kaiser Premier TerraVac), a jetter trailer (GapVax Combo G7 Trailer Jetter), a vacuum excavator trailer (Vermeer LP XDT) and the Two Box Roll-Off Trailers. Ask about site access and volume first, then point the customer to the right type.
+Vac2Go's trailer units are hydro excavation trailers (Bossvac Hydrovac Trailer, Kaiser Premier TerraVac), a jetter trailer (GapVax Combo G7 Trailer Jetter), and a vacuum excavator trailer (Vermeer LP XDT). Ask about site access and volume first, then point the customer to the right type.
 
 **Q: What kinds of jobs are trailer units used for?**
 
@@ -97,4 +97,4 @@ Driven primarily by towability (weight limits) and debris tank capacity.
 
 **Q: Can a trailer be left on site for the duration of a project? Is that a common rental pattern, and does it change the rental structure?**
 
-Yes, leaving a trailer stationary on a construction site for the duration of a multi-week project is a very common rental pattern. It also eliminates daily travel wear and tear. Rental rates are a question for a Vac2Go rep.
+Yes, leaving a trailer stationary on a construction site for the duration of a multi-week project is a very common rental pattern. It does not change the structural rental rate, but it eliminates daily travel wear and tear.

@@ -62,3 +62,23 @@ Tick or correct each line.
   - Which trailer types are available?
   - How does DOT 407 vs DOT 412 play out across the tanker fleet?
   - Are lined or stainless tankers available?
+
+---
+
+## Answers received 2026-10-09 and what was done (v2.8.0)
+
+| Q | Client answer | Status |
+|---|---|---|
+| Q1 | Round 1 (Industrial Vacuum) is behind a project-tool link | **Blocked**: the link can't be opened by us. Need an export of the document. Industrial Vacuum still runs on the draft. |
+| Q2 | Water Q&A still coming from Vac2Go | Waiting. Water runs on the draft. |
+| Q3 | Tractor spec "attached" | **Not received**: no tractor file was in the attachments. |
+| Q4 | HV-57 brochures "attached" | **Not received**: no HV-57 file was in the attachments. |
+| Q5 | Synonym ring + banned-phrase list | **Done**: all aliases added (incl. Vacmaster, Vac-Con, Tellus as brands not carried); banned phrases added to the filter in context-aware form. Not added: the numeric-date pattern (it reads "3/4 in" as a date and would block real answers) and the unit + chassis co-occurrence rule (unit cards legitimately state chassis facts; the advisor's rules already block chassis claims). |
+| Q6 | 13 branch phone numbers | **Done**: the advisor answers branch/phone questions from the list. |
+| Q7 | Fleet = Vac2Go equipment catalog | **Done**: GapVax MC1312, Guzzcavator, Vac Jet Rodding, CTOS 70-BBL Liquid Vacuum and Huber Dominator SS added as fleet units (46 total); Vactor 2100i and Mud Dog Air treated as the catalog's combined entries. The website units Huber AM30 HD and SC 1009 stay (website + synonym ring). |
+| Q8 | Updates to come | Waiting. |
+| Q9 | Policy lines allowed | **Done**: the clean-return charges and "trailer on site doesn't change the rate" lines restored to the client's wording. ("Significantly lower rental costs" stays reworded; it wasn't part of the question.) |
+| Q10 | Only KB figures; differences as a range; always "depends on the configuration"; compare only on confirmed figures | **Done**: rules updated exactly to this. |
+| Q11 | Daily cap on hold | Waiting. $25/day default stays on staging. |
+| Q12 | Groups B and C are in the Q1 document | **Blocked** with Q1. |
+| Q13 | Two Box Roll-Off Trailers → Roll-Off; Scrubber → Liquid Vacuum | **Done**: each now in that one category only. |

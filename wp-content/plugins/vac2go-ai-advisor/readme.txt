@@ -1,7 +1,7 @@
 === Vac2Go AI Equipment Advisor ===
 Contributors: HighWater
 Requires PHP: 8.1
-Stable tag: 2.7.1
+Stable tag: 2.8.0
 License: GPLv2 or later
 
 Front-end AI equipment advisor for Vac2Go. Recommends a truck category from a plain-
@@ -51,6 +51,14 @@ What the model receives each turn, every block prompt-cached: the rules and a co
 corrections, then "knowledge packs" (a category's full Q&A plus its unit cards) for
 the categories the conversation is about: at most 3, chosen from the whole
 conversation, always including what the current message names.
+
+Client answers applied 2026-10-09 (phase-2/CLIENT-QUESTIONS.md): the fleet is the
+41 website units plus 5 catalog-only units (Q7); aliases from Vac2Go's synonym ring,
+including brands they don't carry (Q5); the Two Box Roll-Off Trailers sit under
+Roll-Off and the Huber Scrubber under Liquid Vacuum (Q13); branch phone numbers in
+kb/locations.md (Q6); policy lines allowed (Q9); figures only from the knowledge, as a
+range where they differ, always with the configuration note (Q10); Vac2Go's
+banned-phrase list in the default filter patterns (Q5).
 
 Admin -> Knowledge shows every category and card with sources and sizes. To change
 an answer, use a correction in the Review Queue; to change the knowledge, edit kb/.

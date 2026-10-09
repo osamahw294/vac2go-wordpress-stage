@@ -80,7 +80,7 @@ foreach ( VA_Fleet::categories() as $id => $c ) {
 check( 'all 173 Round 2 questions are present', 173 === $questions, "found {$questions}" );
 
 $edits = (string) @file_get_contents( "{$dir}/EDITS.md" );
-check( 'EDITS.md logs 11 edits', 11 === substr_count( $edits, '- **Was:**' ) );
+check( 'EDITS.md logs 9 edits', 9 === substr_count( $edits, '- **Was:**' ) );
 check( 'EDITS.md lists the 4 advisor notes', 4 === preg_match_all( '/^- \*\*[A-Za-z -]+\*\*, after "/m', $edits ) );
 
 echo "\n{$pass} passed, {$fail} failed\n";

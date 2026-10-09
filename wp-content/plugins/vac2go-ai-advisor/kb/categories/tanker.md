@@ -83,7 +83,7 @@ They can carry light slurry, but if the product settles during a long transit, i
 
 **Q: Does the tank need to be cleaned between products, who handles that, and what is the policy on prior-product residue?**
 
-Tanks must be returned chemically clean. A Vac2Go rep can explain the return-condition policy and any cleaning charges.
+Tanks must be returned chemically clean. Vac2Go enforces a strict "clean for clean" policy; any prior-product residue or heel left in the tank will result in substantial commercial cleaning surcharges billed back to the customer.
 
 **Q: Is there a potable-rated tanker in the fleet?**
 
