@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Vac2Go AI Equipment Advisor
  * Description: Front-end AI equipment advisor for Vac2Go. Recommends a truck category from a plain-language job description and answers GapVax HV-57 spec questions, grounded in a fixed knowledge base with server-side guardrails, an output filter pipeline, full Q&A logging, and a human review/correction workflow.
- * Version: 2.9.1
+ * Version: 2.10.0
  * Author: HighWater
  * License: GPL-2.0-or-later
  * Requires PHP: 8.1
@@ -13,11 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'VA_ADVISOR_VERSION', '2.9.1' );
+define( 'VA_ADVISOR_VERSION', '2.10.0' );
 define( 'VA_ADVISOR_FILE', __FILE__ );
 define( 'VA_ADVISOR_DIR', plugin_dir_path( __FILE__ ) );
 define( 'VA_ADVISOR_URL', plugin_dir_url( __FILE__ ) );
-define( 'VA_ADVISOR_DB_VERSION', '8' );
+define( 'VA_ADVISOR_DB_VERSION', '9' );
 
 // Anthropic models + API endpoint (per build spec; do not change models without sign-off).
 define( 'VA_ADVISOR_MODEL', 'claude-fable-5-1' );
@@ -80,6 +80,22 @@ add_action(
 		if ( (string) get_option( 'va_db_version' ) !== VA_ADVISOR_DB_VERSION ) {
 			VA_DB::activate();
 		}
+	}
+);
+
+// Switching the answer model moves the price settings to that model's list prices.
+add_action(
+	'update_option_va_model',
+	function ( $old, $new ) {
+		VA_DB::apply_model_prices( VA_DB::active_model() );
+	},
+	10,
+	2
+);
+add_action(
+	'add_option_va_model',
+	function () {
+		VA_DB::apply_model_prices( VA_DB::active_model() );
 	}
 );
 

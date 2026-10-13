@@ -33,7 +33,7 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 			<?php endif; ?>
 		</p>
 	</div>
-	<p><strong>Answer model:</strong> <code><?php echo esc_html( VA_ADVISOR_MODEL ); ?></code> &nbsp; <strong>Judge/classifier model:</strong> <code><?php echo esc_html( VA_ADVISOR_JUDGE_MODEL ); ?></code></p>
+	<p><strong>Answer model:</strong> <code><?php echo esc_html( VA_DB::active_model() ); ?></code> &nbsp; <strong>Judge/classifier model:</strong> <code><?php echo esc_html( VA_ADVISOR_JUDGE_MODEL ); ?></code></p>
 
 	<form method="post" action="options.php">
 		<?php settings_fields( 'va_advisor_settings' ); ?>
@@ -177,6 +177,14 @@ $key_ok = defined( 'VA_ANTHROPIC_KEY' ) && '' !== trim( (string) VA_ANTHROPIC_KE
 			<tr>
 				<th scope="row"><label for="va_hourly_spend_alert_usd">Hourly spike alert (USD)</label></th>
 				<td><input name="va_hourly_spend_alert_usd" id="va_hourly_spend_alert_usd" type="number" min="0" step="0.5" value="<?php echo esc_attr( get_option( 'va_hourly_spend_alert_usd', 5 ) ); ?>" class="small-text"> <span class="description">Emails the admin when the estimated spend in the last 60 minutes reaches this many dollars, so a sudden surge is caught before the daily 80% warning. Alert only, never blocks. 0 = off.</span></td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="va_model">Model</label></th>
+				<td><select name="va_model" id="va_model">
+					<?php foreach ( VA_DB::MODELS as $id => $m ) : ?>
+						<option value="<?php echo esc_attr( $id ); ?>" <?php selected( VA_DB::active_model(), $id ); ?>><?php echo esc_html( $m[0] ); ?></option>
+					<?php endforeach; ?>
+				</select> <span class="description">The model that writes answers. Changing it sets the prices below to that model's list prices.</span></td>
 			</tr>
 			<tr>
 				<th scope="row">Prices (USD per million tokens)</th>

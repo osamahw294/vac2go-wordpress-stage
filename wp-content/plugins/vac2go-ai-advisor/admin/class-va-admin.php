@@ -95,6 +95,18 @@ class VA_Admin {
 		register_setting( 'va_advisor_settings', 'va_price_in_per_m', array( 'type' => 'number', 'sanitize_callback' => 'floatval' ) );
 		register_setting( 'va_advisor_settings', 'va_price_out_per_m', array( 'type' => 'number', 'sanitize_callback' => 'floatval' ) );
 		register_setting( 'va_advisor_settings', 'va_price_cache_read_per_m', array( 'type' => 'number', 'sanitize_callback' => 'floatval' ) );
+		// After the price settings: on a model change the saved form's old prices are
+		// written first, then the model's list prices replace them.
+		register_setting(
+			'va_advisor_settings',
+			'va_model',
+			array(
+				'type'              => 'string',
+				'sanitize_callback' => function ( $v ) {
+					return isset( VA_DB::MODELS[ $v ] ) ? $v : VA_DB::DEFAULT_MODEL;
+				},
+			)
+		);
 		register_setting( 'va_advisor_settings', 'va_admin_email', $string( 'sanitize_email' ) );
 	}
 

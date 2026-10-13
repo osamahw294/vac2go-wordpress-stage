@@ -547,8 +547,11 @@ class VA_REST {
 
 	private static function call_anthropic( array $messages, array $packs = array() ) {
 		$body = array(
-			'model'      => VA_ADVISOR_MODEL,
+			'model'      => VA_DB::active_model(),
 			'max_tokens' => VA_Knowledge::max_tokens(),
+			// Explicit, so every model runs at the same depth: Fable 5.1's default is
+			// high, Opus 5.5's is medium.
+			'output_config' => array( 'effort' => 'high' ),
 			'system'     => VA_Knowledge::get_system_blocks( $packs ), // cached blocks: rules+core, corrections, packs
 			'messages'   => $messages,
 		);

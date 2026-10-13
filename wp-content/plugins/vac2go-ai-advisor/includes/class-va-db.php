@@ -18,6 +18,42 @@ class VA_DB {
 	const PRICE_CACHE_READ_PER_M = 0.25;
 	const CACHE_WRITE_MULTIPLIER = 1.25;
 
+	/**
+	 * Answer models the site can use: label, then list prices per million tokens
+	 * (input, output, cache read). Fable 5.1 is the default; Opus 5.5 and Sonnet 5.5
+	 * are offered so their quality, speed and cost can be compared on staging.
+	 */
+	const DEFAULT_MODEL = 'claude-fable-5-1';
+
+	const MODELS = array(
+		'claude-fable-5-1'  => array( 'Claude Fable 5.1', 10.0, 50.0, 0.25 ),
+		'claude-opus-5-5'   => array( 'Claude Opus 5.5', 4.0, 20.0, 0.20 ),
+		'claude-sonnet-5-5' => array( 'Claude Sonnet 5.5', 2.0, 10.0, 0.20 ),
+	);
+
+	/** The model answers come from (Settings -> Model); anything unlisted means Fable 5.1. */
+	public static function active_model() {
+		$m = (string) get_option( 'va_model', self::DEFAULT_MODEL );
+		return isset( self::MODELS[ $m ] ) ? $m : self::DEFAULT_MODEL;
+	}
+
+	/** List prices for a model: array( input, output, cache read ) per million tokens. */
+	public static function model_prices( $model ) {
+		$m = isset( self::MODELS[ $model ] ) ? self::MODELS[ $model ] : self::MODELS[ self::DEFAULT_MODEL ];
+		return array( $m[1], $m[2], $m[3] );
+	}
+
+	/**
+	 * Switching the model moves the price settings to that model's list prices, so
+	 * spend and the daily ceiling stay accurate.
+	 */
+	public static function apply_model_prices( $model ) {
+		list( $in, $out, $cread ) = self::model_prices( $model );
+		update_option( 'va_price_in_per_m', $in );
+		update_option( 'va_price_out_per_m', $out );
+		update_option( 'va_price_cache_read_per_m', $cread );
+	}
+
 	/** What the plugin shipped with before v2.7, which understated spend about 3x. */
 	const OLD_DEFAULT_PRICES = array( 3.0, 15.0, 0.30 );
 
@@ -59,6 +95,7 @@ class VA_DB {
 			client_history_ignored TINYINT(1) NOT NULL DEFAULT 0,
 			history_truncated TINYINT(1) NOT NULL DEFAULT 0,
 			packs VARCHAR(255) NULL,
+			model VARCHAR(64) NULL,
 			contact_name VARCHAR(190) NULL,
 			contact_email VARCHAR(190) NULL,
 			contact_phone VARCHAR(60) NULL,
@@ -147,6 +184,7 @@ class VA_DB {
 			'client_history_ignored'      => 0,
 			'history_truncated'           => 0,
 			'packs'            => null,
+			'model'            => null,
 			'ip_hash'          => null,
 			'user_agent'       => null,
 			'created_at'       => current_time( 'mysql' ),
@@ -177,6 +215,8 @@ class VA_DB {
 				'client_history_ignored'      => (int) $row['client_history_ignored'],
 				'history_truncated'           => (int) $row['history_truncated'],
 				'packs'            => $row['packs'],
+				// Which model answered: only turns that reached a model carry token usage.
+				'model'            => null !== $row['model'] ? $row['model'] : ( null !== $row['input_tokens'] ? self::active_model() : null ),
 				'contact_name'     => $contact['contact_name'],
 				'contact_email'    => $contact['contact_email'],
 				'contact_phone'    => $contact['contact_phone'],

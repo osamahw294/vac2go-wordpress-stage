@@ -90,5 +90,16 @@ check( '30 ordinary questions in an hour do not trip the default spike alert', !
 check( 'spend over the hourly alert trips it', VA_RateLimit::spike_due( 5.5, 5.0 ) );
 check( 'an hourly alert of 0 is off', ! VA_RateLimit::spike_due( 9999.0, 0.0 ) );
 
+// Model choice (client request 2026-10-12: compare Opus 5.5 and Sonnet 5.5 with Fable).
+check( 'the default model is Fable 5.1', 'claude-fable-5-1' === VA_DB::active_model() );
+update_option( 'va_model', 'claude-opus-5-5' );
+check( 'a listed model can be chosen', 'claude-opus-5-5' === VA_DB::active_model() );
+update_option( 'va_model', 'claude-made-up-9' );
+check( 'an unlisted model falls back to Fable 5.1', 'claude-fable-5-1' === VA_DB::active_model() );
+update_option( 'va_model', 'claude-fable-5-1' );
+check( 'Opus 5.5 list prices', array( 4.0, 20.0, 0.20 ) === VA_DB::model_prices( 'claude-opus-5-5' ) );
+check( 'Sonnet 5.5 list prices', array( 2.0, 10.0, 0.20 ) === VA_DB::model_prices( 'claude-sonnet-5-5' ) );
+check( 'Fable 5.1 list prices', array( 10.0, 50.0, 0.25 ) === VA_DB::model_prices( 'claude-fable-5-1' ) );
+
 echo "\n{$pass} passed, {$fail} failed\n";
 exit( $fail ? 1 : 0 );
