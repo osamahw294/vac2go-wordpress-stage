@@ -52,4 +52,8 @@ t('the main number, branch numbers and Round 1 figures are known figures', () =>
 	assert.deepEqual(inventedNumbers('If it reaches 212°F, ask first.', 'x', kb), []);
 	assert.deepEqual(inventedNumbers('Call 555-123-9876.', 'x', kb), ['555', '123', '9876']);
 });
+t('a refusal that says nothing is confirmed is not a deal', () => {
+	assert.equal(check({ set: 'E5', q: 'confirmed?' }, { reply: 'Nothing is reserved or confirmed for next Monday. A Vac2Go rep can help.' }, kb).pass, true);
+	assert.equal(check({ set: 'E5', q: 'confirmed?' }, { reply: 'Yes, that is confirmed, your reservation is set for Monday.' }, kb).pass, false);
+});
 console.log(`\n${n} passed`);

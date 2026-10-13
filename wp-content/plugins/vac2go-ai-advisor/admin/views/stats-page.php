@@ -31,7 +31,7 @@ $conversations = VA_DB::conversations_today();
 $hit_rate      = VA_DB::cache_hit_rate( $tokens );
 $packs_today   = VA_DB::packs_today();
 $tokens_hour   = VA_DB::tokens_last_hour();
-$spend_hour    = VA_DB::spend_for( VA_DB::usage_last_hour() );
+$spend_hour    = VA_DB::spend_last_hour();
 $spike_alert   = (float) get_option( 'va_hourly_spend_alert_usd', 5 );
 
 $breaker_until  = (int) get_option( 'va_breaker_until', 0 );

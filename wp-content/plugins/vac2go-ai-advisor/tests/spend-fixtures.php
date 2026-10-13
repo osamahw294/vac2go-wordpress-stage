@@ -101,5 +101,20 @@ check( 'Opus 5.5 list prices', array( 4.0, 20.0, 0.20 ) === VA_DB::model_prices(
 check( 'Sonnet 5.5 list prices', array( 2.0, 10.0, 0.20 ) === VA_DB::model_prices( 'claude-sonnet-5-5' ) );
 check( 'Fable 5.1 list prices', array( 10.0, 50.0, 0.25 ) === VA_DB::model_prices( 'claude-fable-5-1' ) );
 
+// Each question is priced at the rates of the model that answered it. Switching back to
+// Fable after an Opus test must not re-price the Opus usage at Fable rates (2026-10-13:
+// that would have shown $29.82 against a $25 cap for $13 of real spend).
+update_option( 'va_model', 'claude-fable-5-1' );
+update_option( 'va_price_in_per_m', 10.0 );
+update_option( 'va_price_out_per_m', 50.0 );
+update_option( 'va_price_cache_read_per_m', 0.25 );
+$opus_turn  = array( 'model' => 'claude-opus-5-5', 'input' => 1000000, 'output' => 0, 'cache_creation' => 0, 'cache_read' => 0 );
+$fable_turn = array( 'model' => 'claude-fable-5-1', 'input' => 1000000, 'output' => 0, 'cache_creation' => 0, 'cache_read' => 0 );
+$old_turn   = array( 'model' => null, 'input' => 1000000, 'output' => 0, 'cache_creation' => 0, 'cache_read' => 0 );
+check( 'an Opus question is priced at Opus rates while Fable is active', near( VA_DB::spend_by_model( array( $opus_turn ) ), 4.0 ) );
+check( 'a Fable question is priced at the configured prices', near( VA_DB::spend_by_model( array( $fable_turn ) ), 10.0 ) );
+check( 'a row from before models were logged uses the configured prices', near( VA_DB::spend_by_model( array( $old_turn ) ), 10.0 ) );
+check( 'mixed rows add up', near( VA_DB::spend_by_model( array( $opus_turn, $fable_turn ) ), 14.0 ) );
+
 echo "\n{$pass} passed, {$fail} failed\n";
 exit( $fail ? 1 : 0 );

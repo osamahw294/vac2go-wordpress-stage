@@ -296,7 +296,7 @@ class VA_RateLimit {
 	public static function check_hourly_spike() {
 		$threshold = (float) get_option( 'va_hourly_spend_alert_usd', 5 );
 		$usage     = VA_DB::usage_last_hour();
-		$spend     = VA_DB::spend_for( $usage );
+		$spend     = VA_DB::spend_last_hour();
 		if ( self::spike_due( $spend, $threshold ) ) {
 			$tokens = array_sum( $usage );
 			self::alert( 'spike', 'Vac2Go Advisor: usage spike', 'Estimated spend in the last 60 minutes: $' . number_format( $spend, 2 ) . ' (alert at $' . number_format( $threshold, 2 ) . '; ' . number_format( $tokens ) . ' tokens). Check Stats and the Review Queue for unusual traffic.' );

@@ -510,7 +510,63 @@ class VA_DB {
 	 * Estimated spend today in USD, from the configurable per-million prices.
 	 */
 	public static function estimated_spend_today() {
-		return self::spend_for( self::tokens_today() );
+		return self::spend_by_model( self::usage_by_model_since( gmdate( 'Y-m-d 00:00:00', current_time( 'timestamp' ) ) ) );
+	}
+
+	/**
+	 * USD for usage rows, each priced at the rates of the model that answered it: the
+	 * configured prices for the active model (and for rows logged before the model was
+	 * recorded), list prices for any other model. So switching models never re-prices
+	 * earlier usage.
+	 *
+	 * @param array<int,array{model:?string,input:int,output:int,cache_creation:int,cache_read:int}> $rows
+	 */
+	public static function spend_by_model( array $rows ) {
+		$total = 0.0;
+		foreach ( $rows as $r ) {
+			$m = isset( $r['model'] ) ? (string) $r['model'] : '';
+			if ( '' === $m || $m === self::active_model() || ! isset( self::MODELS[ $m ] ) ) {
+				$total += self::spend_for( $r );
+				continue;
+			}
+			list( $in, $out, $cread ) = self::model_prices( $m );
+			$total += ( $r['input'] * $in
+				+ $r['cache_creation'] * $in * self::CACHE_WRITE_MULTIPLIER
+				+ $r['cache_read'] * $cread
+				+ $r['output'] * $out ) / 1000000;
+		}
+		return $total;
+	}
+
+	/** Token usage per model since a site-local datetime, for spend_by_model(). */
+	public static function usage_by_model_since( $since ) {
+		global $wpdb;
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT model, COALESCE(SUM(input_tokens),0) AS input, COALESCE(SUM(output_tokens),0) AS output,
+				        COALESCE(SUM(cache_creation_input_tokens),0) AS cache_creation,
+				        COALESCE(SUM(cache_read_input_tokens),0) AS cache_read
+				 FROM ' . self::table() . ' WHERE created_at >= %s GROUP BY model',
+				$since
+			),
+			ARRAY_A
+		);
+		$out = array();
+		foreach ( (array) $rows as $r ) {
+			$out[] = array(
+				'model'          => $r['model'],
+				'input'          => (int) $r['input'],
+				'output'         => (int) $r['output'],
+				'cache_creation' => (int) $r['cache_creation'],
+				'cache_read'     => (int) $r['cache_read'],
+			);
+		}
+		return $out;
+	}
+
+	/** Estimated spend in the last 60 minutes, for the spike alert and Stats. */
+	public static function spend_last_hour() {
+		return self::spend_by_model( self::usage_by_model_since( gmdate( 'Y-m-d H:i:s', current_time( 'timestamp' ) - HOUR_IN_SECONDS ) ) );
 	}
 
 	/**
