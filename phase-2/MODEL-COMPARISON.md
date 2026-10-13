@@ -38,7 +38,7 @@ Answers were scored two ways:
 
 \* The one Fable miss is a correct answer worded in a way the checker didn't recognise.
 
-**How to read the AI grading:** a second AI checked each answer against Vac2Go's own answer to that question, and marked it down if it said anything extra or different. Fable scores slightly lower because it writes fuller answers that add correct details from other parts of Vac2Go's material (for example CDL rules from the Tractor section), and the grader counts those as "not in the reference". A difference of 2–4 questions out of 203 is within normal run-to-run variation.
+**AI grading, in simple terms:** another AI (Claude Haiku 4.5) compared each answer with Vac2Go's own answer and marked it wrong if it said anything different or extra. Fable lost a few points because it gives longer answers with extra correct details. A difference of 2–4 questions out of 203 is too small to matter.
 
 **All three models are equally accurate.**
 
