@@ -297,7 +297,7 @@ class VA_Filter {
 		}
 
 		// Stage 7: cosmetic em-dash normalization (never flags).
-		$clean = VA_Text::strip_em_dashes( VA_Text::normalize( $raw ) );
+		$clean = VA_Text::clean_output( $raw );
 
 		return array(
 			'text'     => $clean,

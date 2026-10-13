@@ -129,6 +129,16 @@ class VA_Stream {
 
 		$result = self::stream_model( $messages, isset( $ctx['packs'] ) ? $ctx['packs'] : array() );
 
+		// One retry, same as the buffered path, but only when the visitor has seen
+		// nothing yet (an empty answer, or a failure before the first released text).
+		if ( is_wp_error( $result ) && in_array( $result->get_error_code(), VA_REST::RETRY_ERRORS, true )
+			&& '' === self::$emitted_raw && null === self::$blocked ) {
+			self::$pending  = '';
+			self::$line_buf = '';
+			sleep( 1 );
+			$result = self::stream_model( $messages, isset( $ctx['packs'] ) ? $ctx['packs'] : array() );
+		}
+
 		if ( is_wp_error( $result ) ) {
 			$etype    = $result->get_error_code();
 			$fallback = "Sorry, I'm having trouble reaching the advisor right now. Please try again in a moment, or contact a Vac2Go rep at https://vac2go.com/contact/.";
@@ -169,7 +179,7 @@ class VA_Stream {
 		} else {
 			// Deterministic stages passed on the complete text; now the judge, which
 			// needs the whole answer and so can only run here.
-			$final = VA_Text::strip_em_dashes( VA_Text::normalize( $raw ) );
+			$final = VA_Text::clean_output( $raw );
 			$stage = null;
 
 			$verdict = VA_Filter::judge( $final, VA_ANTHROPIC_KEY );
@@ -478,7 +488,7 @@ class VA_Stream {
 		self::$pending     = substr( self::$pending, $cut );
 		self::$emitted_raw = $candidate_raw;
 
-		$visible = VA_Text::strip_em_dashes( VA_Text::normalize( $segment ) );
+		$visible = VA_Text::clean_output( $segment );
 		if ( '' !== $visible ) {
 			self::send( 'delta', array( 'text' => $visible ) );
 		}

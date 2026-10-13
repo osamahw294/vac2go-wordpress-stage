@@ -49,6 +49,27 @@ class VA_Text {
 	 * flags or replaces the message. Guarantees the no-em-dash rule regardless of
 	 * model compliance.
 	 */
+	/**
+	 * Everything a customer sees from the model goes through this: normalization, em
+	 * dashes, then markdown. The widget shows plain text, so markdown would appear
+	 * literally ("**5,250 CFM**"). Fable 5.1 never wrote it; Opus 5.5 did in a quarter
+	 * of its answers.
+	 */
+	public static function clean_output( $text ) {
+		return self::strip_markdown( self::strip_em_dashes( self::normalize( $text ) ) );
+	}
+
+	/**
+	 * Remove markdown emphasis and headings; turn "* " bullets into the "- " bullets
+	 * the widget renders. Plain text passes through unchanged.
+	 */
+	public static function strip_markdown( $text ) {
+		$text = str_replace( '**', '', (string) $text );
+		$text = preg_replace( '/^[ \t]*#{1,6}[ \t]+/m', '', $text );
+		$text = preg_replace( '/^([ \t]*)\*[ \t]+/m', '$1- ', $text );
+		return $text;
+	}
+
 	public static function strip_em_dashes( $text ) {
 		if ( false === strpos( $text, "\xE2\x80\x94" ) ) {
 			return $text;

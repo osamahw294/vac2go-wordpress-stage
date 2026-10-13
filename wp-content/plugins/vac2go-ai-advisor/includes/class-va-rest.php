@@ -15,6 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class VA_REST {
 
+	/**
+	 * Model errors worth one more try. An empty answer is one: the model can spend its
+	 * whole output budget thinking (Sonnet 5.5 did once in ~500 answers under load).
+	 */
+	const RETRY_ERRORS = array( 'timeout', 'upstream_5xx', 'upstream_429', 'upstream_empty' );
+
 	const NS               = 'vac2go/v1';
 	const MAX_MESSAGE_CH   = 2000;
 	const MAX_MESSAGE_B    = 8000;
@@ -538,7 +544,7 @@ class VA_REST {
 	 */
 	private static function call_anthropic_with_retry( array $messages, array $packs = array() ) {
 		$attempt = self::call_anthropic( $messages, $packs );
-		if ( is_wp_error( $attempt ) && in_array( $attempt->get_error_code(), array( 'timeout', 'upstream_5xx', 'upstream_429' ), true ) ) {
+		if ( is_wp_error( $attempt ) && in_array( $attempt->get_error_code(), self::RETRY_ERRORS, true ) ) {
 			sleep( 2 );
 			$attempt = self::call_anthropic( $messages, $packs );
 		}

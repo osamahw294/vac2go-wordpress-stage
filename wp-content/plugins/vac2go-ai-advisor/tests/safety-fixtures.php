@@ -175,5 +175,18 @@ check( 'no knowledge-base line is blocked (' . count( $lines ) . ' lines swept)'
 $footer = VA_Knowledge::conduct_footer();
 check( 'the hazmat rule says the caveat is still required when recommending', false !== stripos( $footer, 'does not replace the recommendation caveat' ) );
 
+// Model comparison 2026-10-13: Opus 5.5 wrote **bold** in 104 of 397 answers and the
+// widget shows it literally. Every model's answer is cleaned the same way.
+check( 'bold markdown is removed', 'The HV-57 has 5,250 CFM.' === VA_Text::clean_output( 'The HV-57 has **5,250 CFM**.' ) );
+check( 'a heading marker is removed', "Units\nGapVax HV-57" === VA_Text::clean_output( "## Units\nGapVax HV-57" ) );
+check( 'a star bullet becomes a dash bullet', "- Guzzler Classic\n- Huber AM36" === VA_Text::clean_output( "* Guzzler Classic\n* Huber AM36" ) );
+check( 'plain text is untouched', "A 3/4\" hose, 40 (5') bags.\n- GapVax HV-57" === VA_Text::clean_output( "A 3/4\" hose, 40 (5') bags.\n- GapVax HV-57" ) );
+check( 'em dashes are still replaced', 'Yes, it can.' === VA_Text::clean_output( 'Yes — it can.' ) );
+check( 'the rules ask for plain text without markdown', false !== stripos( VA_Knowledge::rules(), 'markdown' ) );
+
+// Sonnet 5.5 returned one empty answer under load: thinking shares the output budget.
+check( 'the output cap leaves room for thinking (8,000+)', VA_Knowledge::max_tokens() >= 8000, (string) VA_Knowledge::max_tokens() );
+check( 'an empty model answer is retried once', in_array( 'upstream_empty', VA_REST::RETRY_ERRORS, true ) );
+
 echo "\n{$pass} passed, {$fail} failed\n";
 exit( $fail ? 1 : 0 );
