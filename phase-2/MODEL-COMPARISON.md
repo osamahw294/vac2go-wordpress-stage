@@ -1,6 +1,6 @@
 # AI Equipment Advisor: model comparison
 
-Staging, 9 and 13 October 2026. Advisor version 2.10.1.
+Staging, 9 and 13 October 2026. Tested on advisor version 2.10.1; fixes in 2.11.0.
 
 ## Purpose
 
@@ -68,11 +68,11 @@ The costs are measured from the real token usage logged on staging, not estimate
 
 ## Issues found
 
-| Model | Issue | Impact | Fix |
+| Model | Issue | Impact | Status |
 |---|---|---|---|
-| Opus 5.5 | Used bold markdown (`**text**`) in 104 of 397 answers. | The chat window shows the asterisks literally. | Strip markdown on the server, plus a formatting rule. Small change. |
-| Sonnet 5.5 | Bold markdown in 5 of 397 answers. | Same, but rare. | Same fix. |
-| Sonnet 5.5 | 1 empty answer out of about 500 under load. The visitor saw "having trouble reaching the advisor". | Rare. The likely cause is the model spending its answer-length allowance on reasoning before writing. | Raise the answer-length allowance and retry once automatically on an empty answer. Small change. |
+| Opus 5.5 | Used bold markdown (`**text**`) in 104 of 397 answers. | The chat window shows the asterisks literally. | **Fixed** (v2.11.0): markdown is removed from every answer, for every model, and the rules ask for plain text. Checked on the saved test answers: 104 of 104 cleaned. |
+| Sonnet 5.5 | Bold markdown in 5 of 397 answers. | Same, but rare. | **Fixed** by the same change: 5 of 5 cleaned. |
+| Sonnet 5.5 | 1 empty answer out of about 500 under load. The visitor saw "having trouble reaching the advisor". | Rare. The likely cause is the model spending its answer-length allowance on reasoning before writing. | **Fixed** (v2.11.0): the answer-length allowance is now 4× larger, so reasoning can't use it all, and an empty answer is retried once automatically. |
 | All | None of the models leaked internal instructions, quoted prices, or agreed to deals or reservations. | – | – |
 
 During the tests, 5 load-test requests dropped on the test machine's own connection before reaching the server. They're excluded above as test-side, not advisor errors.
@@ -81,10 +81,7 @@ During the tests, 5 load-test requests dropped on the test machine's own connect
 
 **Sonnet 5.5** gives the same accuracy as Fable 5.1, is as fast or faster, and costs about **75–80% less**.
 
-Before switching, we would:
-
-1. Make the two small fixes above (markdown, and the empty-answer retry).
-2. Re-run the accuracy test on Sonnet 5.5 to confirm (about $5).
+Both issues above are fixed and live on staging (v2.11.0), for every model. They haven't been re-tested live yet. Before switching, we'd recommend one confirmation run of the accuracy test on the chosen model (about $5 for Sonnet 5.5).
 
 The model is a setting (WP admin → Vac2Go Advisor → Settings → Model), so switching, or switching back, takes one click and needs no code change.
 
