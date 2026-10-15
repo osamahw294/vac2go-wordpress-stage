@@ -85,10 +85,8 @@ Tick or correct each line.
 
 ## Branch-by-state mapping (received 2026-10-15)
 
-Applied: kb/locations.md now lists the 11 branches with the states each serves (48 states), so "I'm in St. Louis" gets the Tennessee branch. To confirm with the client:
+Applied: kb/locations.md lists the 11 branches with the states each serves (48 states), plus each branch's address and regional sales manager as published on vac2go.com/contact. "I'm in St. Louis" now gets the Tennessee branch with its address and number.
 
-- **Phone numbers that differ from the Q6 list:** Ohio (440) 287-**1686** (sheet) vs 287-**1687** (Q6); New Jersey **(640)** 246-4850 (sheet) vs **(540)** (Q6). We use the sheet's numbers; 640 is a New Jersey area code, 540 is Virginia's.
-- **Georgia:** Q6 listed a Georgia branch at (839) 232-1212; the sheet has no Georgia branch and splits Georgia between South Carolina (east, same number) and Alabama (west).
-- **Not covered:** Alaska, Hawaii and Washington DC (the advisor gives the main number).
-- **Exact locations:** the sheet gives branch names and phone numbers, not street addresses or cities. If customers should get an address, we need the addresses.
-- **Rep names:** the sheet names an RSM for each branch. The advisor gives the branch and its phone number but not the RSM's name, until you confirm names may be shown publicly.
+- **Phone numbers:** the sheet has Ohio (440) 287-**1686** and New Jersey **(640)** 246-4850. The website and the Q6 list both have 287-**1687** and **(540)**, so we use those. To confirm with the client.
+- **Not covered:** Alaska, Hawaii and Washington DC are in no branch's list; the advisor gives the main number. To confirm with the client.
+- Georgia: the website lists a Georgia location (Madison, GA) with the South Carolina team's number; the sheet routes east Georgia to South Carolina and west Georgia to Alabama. Both are in the knowledge.

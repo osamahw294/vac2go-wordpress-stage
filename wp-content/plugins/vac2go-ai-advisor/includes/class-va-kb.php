@@ -216,7 +216,7 @@ class VA_KB {
 					}
 				}
 			}
-			if ( preg_match( '/Serves: (.+?)\.?$/u', $line, $m ) ) {
+			if ( preg_match( '/Serves: ([^.]+)\./u', $line, $m ) ) {
 				// Drop "(West, Memphis area)" first: it holds commas of its own.
 				foreach ( explode( ', ', preg_replace( '/\s*\([^)]*\)/u', '', $m[1] ) ) as $state ) {
 					$names[] = trim( $state );
