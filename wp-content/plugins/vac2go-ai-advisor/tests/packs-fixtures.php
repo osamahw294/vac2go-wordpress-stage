@@ -169,7 +169,7 @@ $branches = array(
 	'Texas branch (346) 460-5522. Serves: Texas, Louisiana.',
 	'Indiana branch (219) 359-3314. Serves: Indiana, Illinois, Michigan, Wisconsin, Minnesota, Iowa, North Dakota, South Dakota, Nebraska (East).',
 	'Florida branch, Fort Myers and Orlando (407) 232-6255. Serves: Florida (peninsula).',
-	'New Jersey branch (540) 246-4850. Serves: New Jersey, Delaware, Connecticut, Rhode Island, Massachusetts, Vermont, New Hampshire, Maine.',
+	'New Jersey branch (640) 246-4850. Serves: New Jersey, Delaware, Connecticut, Rhode Island, Massachusetts, Vermont, New Hampshire, Maine, Washington DC.',
 	'Arizona branch (602) 325-5446. Serves: Arizona, California, Nevada, New Mexico.',
 	'Utah branch (385) 213-7690. Serves: Utah, Colorado, Idaho, Wyoming, Montana, Washington, Oregon, Nebraska (West).',
 );
@@ -193,9 +193,9 @@ foreach ( array(
 ) as $a ) {
 	check( "core has the address: {$a}", false !== strpos( $core, $a ) );
 }
-check( 'the mapping covers 48 states (all but Alaska and Hawaii)', 48 === count( $served ), (string) count( $served ) );
+check( 'the mapping covers 48 states and Washington DC (all but Alaska and Hawaii)', 49 === count( $served ), (string) count( $served ) );
 check( 'core says not to tell a listed state there is no branch', false !== stripos( $core, 'never say Vac2Go has no branch' ) );
-check( 'core gives the main number for places no branch serves', false !== stripos( $core, 'Alaska, Hawaii' ) );
+check( 'core gives the main number for places no branch serves', false !== stripos( $core, 'No branch serves Alaska, Hawaii or anywhere outside the US' ) );
 check( 'location names include served states and branch cities', array() === array_diff( array( 'Missouri', 'Colorado', 'Fort Myers', 'Orlando', 'Kentucky' ), VA_KB::location_names() ), implode( ', ', VA_KB::location_names() ) );
 check( 'branch locations are no longer deflected as a policy question', false === stripos( $rules, 'regional or international coverage, branch locations' ) );
 check( 'branch questions name the branch that serves the state', false !== stripos( $rules, 'branch that serves' ) );

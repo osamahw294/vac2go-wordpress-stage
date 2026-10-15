@@ -87,6 +87,7 @@ Tick or correct each line.
 
 Applied: kb/locations.md lists the 11 branches with the states each serves (48 states), plus each branch's address and regional sales manager as published on vac2go.com/contact. "I'm in St. Louis" now gets the Tennessee branch with its address and number.
 
-- **Phone numbers:** the sheet has Ohio (440) 287-**1686** and New Jersey **(640)** 246-4850. The website and the Q6 list both have 287-**1687** and **(540)**, so we use those. To confirm with the client.
-- **Not covered:** Alaska, Hawaii and Washington DC are in no branch's list; the advisor gives the main number. To confirm with the client.
+- **New Jersey phone:** client confirmed **(640) 246-4850** (2026-10-15). Note: vac2go.com/contact still shows (540) 246-4850.
+- **Ohio phone:** sheet (440) 287-**1686** vs website and Q6 287-**1687**; we use 1687. Client will follow up.
+- **Washington DC:** routes to New Jersey (client, 2026-10-15). Alaska and Hawaii get the main number.
 - Georgia: the website lists a Georgia location (Madison, GA) with the South Carolina team's number; the sheet routes east Georgia to South Carolina and west Georgia to Alabama. Both are in the knowledge.
