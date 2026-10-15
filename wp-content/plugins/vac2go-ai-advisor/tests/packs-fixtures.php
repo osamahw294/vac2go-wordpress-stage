@@ -158,13 +158,37 @@ check( 'unit cards win over general category figures', false !== stripos( $rules
 check( 'off-list names are handled', false !== stripos( $rules, 'not on our current list' ) );
 check( 'no "route them" wording for the model to echo', false === stripos( $rules, 'route them' ) );
 
-// Client answer to Q6 (2026-10-09): branch phone numbers, exactly as given.
-$branches = array( 'Alabama (251) 440-3133', 'Arizona (602) 325-5446', 'Florida – Fort Myers (407) 232-6255', 'Florida – Orlando (407) 232-6255', 'Georgia (839) 232-1212', 'Indiana (219) 359-3314', 'Kentucky (502) 699-4029', 'New Jersey (540) 246-4850', 'Ohio (440) 287-1687', 'South Carolina (839) 232-1212', 'Tennessee (901) 455-2464', 'Texas (346) 460-5522', 'Utah (385) 213-7690' );
+// Branch-by-state mapping from Vac2Go (2026-10-15): every branch with its phone and the
+// states it serves, so "I'm in St. Louis" gets the Tennessee branch, not "no branch".
+$branches = array(
+	'Kentucky branch (502) 699-4029. Serves: Kentucky, West Virginia, Tennessee (Middle and East).',
+	'South Carolina branch (839) 232-1212. Serves: South Carolina, North Carolina, Virginia, Maryland, Georgia (East).',
+	'Tennessee branch (901) 455-2464. Serves: Missouri, Kansas, Oklahoma, Arkansas, Tennessee (West, Memphis area).',
+	'Ohio branch (440) 287-1686. Serves: Ohio, Pennsylvania, New York.',
+	'Alabama branch (251) 440-3133. Serves: Alabama, Mississippi, Georgia (West), Florida (panhandle).',
+	'Texas branch (346) 460-5522. Serves: Texas, Louisiana.',
+	'Indiana branch (219) 359-3314. Serves: Indiana, Illinois, Michigan, Wisconsin, Minnesota, Iowa, North Dakota, South Dakota, Nebraska (East).',
+	'Florida branch, Fort Myers and Orlando (407) 232-6255. Serves: Florida (peninsula).',
+	'New Jersey branch (640) 246-4850. Serves: New Jersey, Delaware, Connecticut, Rhode Island, Massachusetts, Vermont, New Hampshire, Maine.',
+	'Arizona branch (602) 325-5446. Serves: Arizona, California, Nevada, New Mexico.',
+	'Utah branch (385) 213-7690. Serves: Utah, Colorado, Idaho, Wyoming, Montana, Washington, Oregon, Nebraska (West).',
+);
 foreach ( $branches as $b ) {
-	check( "core lists the branch: {$b}", false !== strpos( $core, $b ) );
+	check( "core lists the branch and its states: " . strtok( $b, '(' ), false !== strpos( $core, $b ) );
 }
+$served = array();
+foreach ( $branches as $b ) {
+	preg_match( '/Serves: (.+)\.$/', $b, $m );
+	foreach ( explode( ', ', preg_replace( '/\s*\([^)]*\)/', '', $m[1] ) ) as $st ) {
+		$served[ trim( $st ) ] = true;
+	}
+}
+check( 'the mapping covers 48 states (all but Alaska and Hawaii)', 48 === count( $served ), (string) count( $served ) );
+check( 'core says not to tell a listed state there is no branch', false !== stripos( $core, 'never say Vac2Go has no branch' ) );
+check( 'core gives the main number for places no branch serves', false !== stripos( $core, 'Alaska, Hawaii' ) );
+check( 'location names include served states and branch cities', array() === array_diff( array( 'Missouri', 'Colorado', 'Fort Myers', 'Orlando', 'Kentucky' ), VA_KB::location_names() ), implode( ', ', VA_KB::location_names() ) );
 check( 'branch locations are no longer deflected as a policy question', false === stripos( $rules, 'regional or international coverage, branch locations' ) );
-check( 'branch questions are answered from the list', false !== stripos( $rules, 'branch' ) && false !== stripos( $rules, 'locations list' ) );
+check( 'branch questions name the branch that serves the state', false !== stripos( $rules, 'branch that serves' ) );
 
 // Client answer to Q10: only knowledge figures; differences as a range; every figure
 // followed by "depends on the configuration"; compare only on confirmed figures.

@@ -139,7 +139,9 @@ check( 'pre-screen runs on the first message of a conversation', VA_REST::prescr
 check( 'pre-screen never runs mid-conversation ("dust" was declined as off-topic)', ! VA_REST::prescreen_applies( false ) );
 foreach ( array( 'dust', 'Compare the Camel 900, 1200 and 1600.', 'fly ash in a hopper', 'Tell me about the Huber Knight', 'need a hydrovac',
 	// Client answer to Q6: branch questions are on topic (declined on staging 2026-10-09).
-	'What is the phone number for your Arizona office?', 'Do you have a branch in Utah?', 'Where are your locations?', 'Who do I call in Texas?' ) as $t ) {
+	'What is the phone number for your Arizona office?', 'Do you have a branch in Utah?', 'Where are your locations?', 'Who do I call in Texas?',
+	// Branch mapping (2026-10-15): city-only questions are on topic.
+	"I'm in St. Louis, do you have a branch that I can go to?", 'Anything near Denver?', 'Closest yard to Boise?' ) as $t ) {
 	check( "clearly on topic: \"{$t}\"", VA_REST::clearly_relevant( $t ) );
 }
 check( 'an unrelated request is not waved through', ! VA_REST::clearly_relevant( 'write me a poem about the sea' ) );

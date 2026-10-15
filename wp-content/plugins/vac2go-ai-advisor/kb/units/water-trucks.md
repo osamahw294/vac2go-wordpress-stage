@@ -18,7 +18,7 @@ Water trucks with a Load King 4,000 gallon steel water tank, a shaft driven pump
 - Ladder: rear mounted, anti-slip rungs {src: Load King 4000 Water Truck brochure p.2}
 
 ## Typical uses
-- Transporting and spraying water; filling from a hydrant or by creek fill suction.
+- Dust suppression, soil compaction, site and equipment washdown, and on-site water supply; filled from a hydrant (standard) or by pond/creek suction. {src: Vac2Go Water Q&A}
 
 ## Standard and optional
 - Standard: everything listed above, plus DOT/ICC compliant lights and reflectors.
@@ -28,6 +28,6 @@ Water trucks with a Load King 4,000 gallon steel water tank, a shaft driven pump
 - Pump flow (GPM) and pressure, GVWR, weights, overall truck dimensions, chassis make and model, tank lining. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
-- Drinking water: do not tell customers these trucks carry potable (drinking) water. The manufacturer's photos show "NON POTABLE" decals on the tank, and the brochure says nothing about potable use. Any potable use must be confirmed with a rep.
+- Non-potable only: never for drinking water or food-grade use (Vac2Go's Water Q&A; the tank also carries "NON POTABLE" decals). Clean-water service only.
 - The tank is available on a variety of chassis brands and models; the chassis on a given truck depends on the unit.
 - The Vac2Go reference describes the hose reel as rear mounted and the nozzle as adjustable; the brochure says firemans nozzle. Both describe the same reel.

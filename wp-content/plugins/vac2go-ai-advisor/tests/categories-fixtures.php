@@ -65,13 +65,11 @@ foreach ( VA_Fleet::categories() as $id => $c ) {
 	check( "{$id}: title is the category name", 0 === strpos( $text, '# ' . $c['name'] . "\n" ) );
 	check( "{$id}: has a Summary", false !== strpos( $text, "## Summary\n" ) );
 	check( "{$id}: no em dashes", false === strpos( $text, '—' ) );
-	if ( 'industrial-vacuum' !== $id ) {
+	if ( ! in_array( $id, array( 'industrial-vacuum', 'water' ), true ) ) {
 		$questions += substr_count( $text, '**Q: ' );
 	}
 
-	if ( 'water' === $id ) {
-		check( "{$id}: marked as a draft", 0 === strpos( substr( $text, strlen( '# ' . $c['name'] . "\n\n" ) ), 'Draft.' ) );
-	}
+
 
 	if ( $round2 && preg_match( "/## Summary\n\n(.*?)\n\n/s", $text, $m ) ) {
 		$have    = numbers_in( $sources );
@@ -101,9 +99,19 @@ foreach ( array( 'Peterbilt', 'should identify', 'Recommendation', 'CONBUSTABLE'
 $r1edits = (string) @file_get_contents( __DIR__ . '/../kb/EDITS-ROUND1.md' );
 check( 'EDITS-ROUND1.md logs every Round 1 edit', substr_count( $r1edits, '- **Was:**' ) >= 8, 'found ' . substr_count( $r1edits, '- **Was:**' ) );
 
+// Water Q&A from Vac2Go (2026-10-15, client answer to Q2).
+$water = (string) @file_get_contents( "{$dir}/water.md" );
+check( 'water is no longer a draft', false === strpos( $water, 'Draft.' ) );
+check( 'water carries the 22 questions of Groups A, D, E', 22 === substr_count( $water, '**Q: ' ), 'found ' . substr_count( $water, '**Q: ' ) );
+check( 'water no longer offers a water truck as a refill for other units', false === stripos( $water, 'keep a hydro excavator supplied' ) );
+check( 'water says non-potable only', false !== stripos( $water, 'Non-potable only' ) );
+check( 'water has no em dashes', false === strpos( $water, '—' ) );
+$hydro = (string) @file_get_contents( "{$dir}/hydro-excavator.md" );
+check( 'hydro excavator notes that Vac2Go water trucks are not a refill source', false !== stripos( $hydro, 'not used to refill' ) );
+
 $edits = (string) @file_get_contents( "{$dir}/EDITS.md" );
 check( 'EDITS.md logs 9 edits', 9 === substr_count( $edits, '- **Was:**' ) );
-check( 'EDITS.md lists the 4 advisor notes', 4 === preg_match_all( '/^- \*\*[A-Za-z -]+\*\*, after "/m', $edits ) );
+check( 'EDITS.md lists the 5 advisor notes', 5 === preg_match_all( '/^- \*\*[A-Za-z -]+\*\*, after "/m', $edits ) );
 
 echo "\n{$pass} passed, {$fail} failed\n";
 exit( $fail ? 1 : 0 );

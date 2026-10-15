@@ -70,7 +70,7 @@ Tick or correct each line.
 | Q | Client answer | Status |
 |---|---|---|
 | Q1 | Round 1 Industrial Vacuum entries | **Applied** ("AI Equipment Advisor rev1.docx", received 2026-10-09): Groups A, D, E, F are the Industrial Vacuum knowledge, replacing the draft. 14 small edits logged in kb/EDITS-ROUND1.md (spelling, notes addressed to Vac2Go such as the Peterbilt example, one unsupported market claim). |
-| Q2 | Water Q&A still coming from Vac2Go | Waiting. Water runs on the draft. |
+| Q2 | Water Q&A | **Applied** ("Water_Truck_AI_Advisor.docx", received 2026-10-15): 22 questions replace the draft. One edit ("RSM" → "their Vac2Go branch"), logged in kb/EDITS-WATER.md. The Hydro Excavator answer about "staging a support water truck" now carries a note that Vac2Go's water trucks are not a refill source. |
 | Q3 | Tractor spec reference | **Applied** (received 2026-10-09): confirms the card (connects to tankers and double trailers, wet line kit available); no figures, as each tractor is spec'd per order. |
 | Q4 | HV-57 brochures | **Applied** (received 2026-10-09): all card figures confirmed; added 500 HP transfer case, floatball, manway, High Dump heights and the options list. The brochures show 28" Hg and 17 cu yd only; the Phase 1 ranges (27 to 28" Hg, 15 to 17 cu yd) are kept. |
 | Q5 | Synonym ring + banned-phrase list | **Done**: all aliases added (incl. Vacmaster, Vac-Con, Tellus as brands not carried); banned phrases added to the filter in context-aware form. Not added: the numeric-date pattern (it reads "3/4 in" as a date and would block real answers) and the unit + chassis co-occurrence rule (unit cards legitimately state chassis facts; the advisor's rules already block chassis claims). |
@@ -82,3 +82,13 @@ Tick or correct each line.
 | Q11 | Daily cap on hold | Waiting. $25/day default stays on staging. |
 | Q12 | Groups B and C | **Applied**: job matching (B) and industries (C) cover the whole fleet, so the advisor has them on every turn. |
 | Q13 | Two Box Roll-Off Trailers → Roll-Off; Scrubber → Liquid Vacuum | **Done**: each now in that one category only. |
+
+## Branch-by-state mapping (received 2026-10-15)
+
+Applied: kb/locations.md now lists the 11 branches with the states each serves (48 states), so "I'm in St. Louis" gets the Tennessee branch. To confirm with the client:
+
+- **Phone numbers that differ from the Q6 list:** Ohio (440) 287-**1686** (sheet) vs 287-**1687** (Q6); New Jersey **(640)** 246-4850 (sheet) vs **(540)** (Q6). We use the sheet's numbers; 640 is a New Jersey area code, 540 is Virginia's.
+- **Georgia:** Q6 listed a Georgia branch at (839) 232-1212; the sheet has no Georgia branch and splits Georgia between South Carolina (east, same number) and Alabama (west).
+- **Not covered:** Alaska, Hawaii and Washington DC (the advisor gives the main number).
+- **Exact locations:** the sheet gives branch names and phone numbers, not street addresses or cities. If customers should get an address, we need the addresses.
+- **Rep names:** the sheet names an RSM for each branch. The advisor gives the branch and its phone number but not the RSM's name, until you confirm names may be shown publicly.

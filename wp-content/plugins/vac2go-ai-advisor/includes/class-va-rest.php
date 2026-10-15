@@ -454,6 +454,7 @@ class VA_REST {
 			'dust', 'powder', 'silo', 'hopper', 'fuel', 'catalyst', 'brine', 'vapor',
 			// Branch and contact questions (client answer to Q6).
 			'office', 'branch', 'location', 'phone', 'call', 'contact', 'vac2go', 'address',
+			'near', 'closest', 'nearest', 'yard', 'located',
 		);
 		foreach ( $keywords as $kw ) {
 			if ( false !== mb_strpos( $m, $kw ) ) {

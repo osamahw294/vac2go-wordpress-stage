@@ -75,6 +75,8 @@ EDITS = [
 
 # (category, start of the question, note) appended after that answer.
 NOTES = [
+    ("hydro-excavator", "What water capacity does a hydro excavator carry",
+     "Vac2Go's own water trucks are not used to refill a hydro excavator: Vac2Go does not support truck-to-truck water transfer (Water Q&A, 2026-10-15). The customer arranges the water source, normally a hydrant."),
     ("combination", "How is a combination truck different from a jetter-only trailer?",
      "Unit literature differs from these general figures: the GapVax MC1510 sheet lists 60 to 100 GPM, and the GapVax G7 Trailer Jetter brochure shows a 3/4\" reel and 500 or 700 gallon tanks. Use the unit's own figures when a specific unit is discussed."),
     ("combination", "What debris size can a combination unit vacuum",

@@ -194,7 +194,8 @@ class VA_KB {
 	}
 
 	/**
-	 * Place names from kb/locations.md ("Alabama", "Fort Myers", "Orlando", ...), so
+	 * Place names from kb/locations.md (branch states, branch cities and every state a
+	 * branch serves: "Missouri", "Fort Myers", ...), so
 	 * a question naming one is recognised as on topic.
 	 *
 	 * @return string[]
@@ -206,9 +207,19 @@ class VA_KB {
 		}
 		$names = array();
 		foreach ( explode( "\n", (string) file_get_contents( $path ) ) as $line ) {
-			if ( preg_match( '/^- (.+?) \(\d{3}\)/u', $line, $m ) ) {
-				foreach ( preg_split( '/\s+[–-]\s+/u', $m[1] ) as $part ) {
-					$names[] = trim( $part );
+			// "- Florida branch, Fort Myers and Orlando (407) ... Serves: Florida (peninsula)."
+			if ( preg_match( '/^- (.+?) branch(?:, (.+?))? \(\d{3}\)/u', $line, $m ) ) {
+				$names[] = trim( $m[1] );
+				if ( ! empty( $m[2] ) ) {
+					foreach ( preg_split( '/,\s*|\s+and\s+/u', $m[2] ) as $city ) {
+						$names[] = trim( $city );
+					}
+				}
+			}
+			if ( preg_match( '/Serves: (.+?)\.?$/u', $line, $m ) ) {
+				// Drop "(West, Memphis area)" first: it holds commas of its own.
+				foreach ( explode( ', ', preg_replace( '/\s*\([^)]*\)/u', '', $m[1] ) ) as $state ) {
+					$names[] = trim( $state );
 				}
 			}
 		}
