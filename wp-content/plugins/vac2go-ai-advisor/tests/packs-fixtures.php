@@ -174,6 +174,10 @@ check( 'location names include states and branch cities', array() === array_diff
 check( 'branch locations are no longer deflected as a policy question', false === stripos( $rules, 'regional or international coverage, branch locations' ) );
 check( 'branch questions use the nearest-branch lookup', false !== strpos( $rules, 'find_nearest_branch' ) );
 check( 'branch answers give no distance', false !== stripos( $rules, 'never a distance' ) );
+// Staging 2026-10-21: in one chat, the Houston answer added "I also checked Nashville
+// again" with no lookup made, then corrected itself in the next answer.
+check( 'branch answers stick to the location asked about now', false !== stripos( $rules, 'only the location in the current message' ) );
+check( 'never claim a lookup that was not made', false !== stripos( $rules, 'never say you checked or looked up' ) );
 
 // Client answer to Q10: only knowledge figures; differences as a range; every figure
 // followed by "depends on the configuration"; compare only on confirmed figures.
