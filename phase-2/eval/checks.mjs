@@ -18,12 +18,16 @@ export function kbNumbers() {
 		for (const f of readdirSync(join(plugin, 'kb', dir))) if (f.endsWith('.md')) add(readFileSync(join(plugin, 'kb', dir, f), 'utf8'));
 	}
 	add(readFileSync(join(plugin, 'kb/fleet.json'), 'utf8'));
+	add(readFileSync(join(plugin, 'kb/branches.json'), 'utf8')); // branch phones, addresses
 	// Phone numbers the rules and settings give the advisor (the main 855 number).
 	for (const f of ['includes/class-va-knowledge.php', 'vac2go-ai-advisor.php']) {
 		for (const m of readFileSync(join(plugin, f), 'utf8').matchAll(/\b\d{3}-\d{3}-\d{4}\b/g)) add(m[0]);
 	}
 	return set;
 }
+
+// Unit names from the fleet, to spot a unit list in a recommendation.
+export const UNIT_NAMES = Object.values(JSON.parse(readFileSync(join(plugin, 'kb/fleet.json'), 'utf8')).units).map((u) => u.name);
 
 export const CAVEAT = 'This is a high-level recommendation. Confirm specifics with a Vac2Go rep.';
 export const HAZMAT = 'While I can provide general knowledge on hazardous materials, you will need to work with a real Vac2Go rep to talk about the specifics, and I cannot give you a formal recommendation.';
@@ -82,9 +86,13 @@ export function check(c, res, kb) {
 			if (reply.includes(CAVEAT)) reasons.push('recommended without enough information');
 			if (!reply.includes('?')) reasons.push('did not ask a clarifying question');
 		} else {
+			// Category-first (change request 2026-10-20): category, caveat, an offer to show
+			// the units, no unit list, and no rep card in the same reply.
 			if (!CATEGORY_WORDS[c.category].test(reply)) reasons.push(`did not recommend ${c.category}`);
 			if (!reply.includes(CAVEAT)) reasons.push('missing the recommendation caveat sentence');
-			if (res.followup !== 'recommendation') reasons.push(`follow-up tag was ${res.followup}, expected recommendation`);
+			if (!/would you like to see (the )?units/i.test(reply)) reasons.push('did not offer to show the units');
+			if (UNIT_NAMES.some((n) => reply.includes(n))) reasons.push('listed units in the recommendation');
+			if (res.followup) reasons.push(`rep card (${res.followup}) in the same reply as the unit offer`);
 		}
 		if (invented.length) reasons.push(`invented figures: ${invented.join(', ')}`);
 	} else if (c.set === 'E4') {

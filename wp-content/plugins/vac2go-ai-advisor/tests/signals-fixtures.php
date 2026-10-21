@@ -251,5 +251,18 @@ foreach ( array( "I'm in St. Louis, do you have a branch that I can go to?", 'Do
 check( 'still availability: do you have a hydrovac this week?', VA_Signals::is_availability_question( 'Do you have a hydrovac this week?' ) );
 check( 'still availability: do you have any air movers?', VA_Signals::is_availability_question( 'Do you have any air movers?' ) );
 
+// Change request 2026-10-20, Change 2: a recommendation ends by offering the units;
+// the rep card waits, so the reply holds one question, not two.
+$offer = "Based on what you've described, you need a Liquid Vacuum truck: it's built for sludge, slurry and wet debris from pits.\n\nThis is a high-level recommendation. Confirm specifics with a Vac2Go rep.\n\nWould you like to see the units in Vac2Go's Liquid Vacuum fleet?";
+check( 'no rep card on the turn that offers the units', null === VA_Signals::followup_reason( 'I need to clean out a sludge pit', $offer ) );
+check( 'no rep card on a hazmat recommendation that offers the units', null === VA_Signals::followup_reason( 'vacuum hot catalyst', str_replace( 'This is a high-level', VA_Knowledge::HAZMAT_SENTENCE . "\n\nThis is a high-level", $offer ) ) );
+check( 'the rep card still follows a unit question', 'unit' === VA_Signals::followup_reason( 'What are the specs on the Guzzler Classic?', 'The Guzzler Classic is rated at 5,089 to 5,250 cfm.' ) );
+check( 'the rep card still follows a pricing question', 'commercial' === VA_Signals::followup_reason( 'How much does it cost a day?', "I don't handle pricing." ) );
+$rules = VA_Knowledge::rules();
+check( 'rules: a recommendation does not list units', false === stripos( $rules, "name Vac2Go's units in it" ) && false === stripos( $rules, "list the category's Vac2Go units" ) );
+check( 'rules: a recommendation offers the units', false !== strpos( $rules, "Would you like to see the units in Vac2Go's" ) );
+check( 'rules: an accepted offer lists unit names only', false !== stripos( $rules, 'unit names only' ) );
+check( 'rules: a named unit is answered directly', false !== stripos( $rules, 'no category detour' ) );
+
 echo "\n{$pass} passed, {$fail} failed\n";
 exit( $fail ? 1 : 0 );

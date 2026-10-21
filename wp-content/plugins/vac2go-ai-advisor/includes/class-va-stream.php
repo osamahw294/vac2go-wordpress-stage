@@ -59,6 +59,16 @@ class VA_Stream {
 	private static $usage = array();
 
 	/**
+	 * The current model turn's content blocks, rebuilt from the stream (text,
+	 * thinking with its signature, tool_use with its input), so a turn that calls a
+	 * tool can be sent back unchanged with the tool's result.
+	 */
+	private static $blocks = array();
+
+	/** The current model turn's stop_reason ("end_turn", "tool_use", ...). */
+	private static $stop_reason = '';
+
+	/**
 	 * Streaming is only possible with cURL present and the admin toggle on.
 	 */
 	public static function is_available() {
@@ -127,17 +137,45 @@ class VA_Stream {
 		$ctx      = $prep['ctx'];
 		$messages = $prep['messages'];
 
-		$result = self::stream_model( $messages, isset( $ctx['packs'] ) ? $ctx['packs'] : array() );
+		$packs    = isset( $ctx['packs'] ) ? $ctx['packs'] : array();
+		$raw_all  = '';
+		$tool_log = array();
+		for ( $round = 1; $round <= VA_Tools::MAX_ROUNDS; $round++ ) {
+			$result = self::stream_model( $messages, $packs );
 
-		// One retry, same as the buffered path, but only when the visitor has seen
-		// nothing yet (an empty answer, or a failure before the first released text).
-		if ( is_wp_error( $result ) && in_array( $result->get_error_code(), VA_REST::RETRY_ERRORS, true )
-			&& '' === self::$emitted_raw && null === self::$blocked ) {
-			self::$pending  = '';
-			self::$line_buf = '';
-			sleep( 1 );
-			$result = self::stream_model( $messages, isset( $ctx['packs'] ) ? $ctx['packs'] : array() );
+			// One retry, same as the buffered path, but only when the visitor has seen
+			// nothing yet (an empty answer, or a failure before the first released text).
+			if ( is_wp_error( $result ) && in_array( $result->get_error_code(), VA_REST::RETRY_ERRORS, true )
+				&& '' === self::$emitted_raw && null === self::$blocked ) {
+				self::$pending  = '';
+				self::$line_buf = '';
+				sleep( 1 );
+				$result = self::stream_model( $messages, $packs );
+			}
+			if ( is_wp_error( $result ) ) {
+				break;
+			}
+			$raw_all .= $result['raw'];
+			if ( 'tool_use' !== $result['stop_reason'] || null !== self::$blocked || VA_Tools::MAX_ROUNDS === $round ) {
+				break;
+			}
+
+			// The model asked for a tool (the nearest-branch lookup): send its turn back
+			// unchanged, thinking blocks included, with the results, and keep streaming
+			// the answer into the same filtered buffer.
+			$tools      = VA_Tools::results_for( $result['content'] );
+			$tool_log   = $tools['log'] ? $tools['log'] : $tool_log;
+			$messages[] = array( 'role' => 'assistant', 'content' => $result['content'] );
+			$messages[] = array( 'role' => 'user', 'content' => $tools['results'] );
+			if ( '' !== trim( $result['raw'] ) ) {
+				self::$pending .= "\n\n";
+				$raw_all       .= "\n\n";
+			}
 		}
+		if ( ! is_wp_error( $result ) && '' === trim( $raw_all ) && null === self::$blocked ) {
+			$result = new WP_Error( 'upstream_empty', 'empty model response' );
+		}
+		$ctx['flags'] = array_merge( $ctx['flags'], $tool_log );
 
 		if ( is_wp_error( $result ) ) {
 			$etype    = $result->get_error_code();
@@ -162,7 +200,7 @@ class VA_Stream {
 			self::finish();
 		}
 
-		$raw   = $result['raw'];
+		$raw   = $raw_all;
 		$flags = $ctx['flags'];
 
 		// Flush whatever is still held back through the SAME guarded path, so the
@@ -239,6 +277,8 @@ class VA_Stream {
 		self::$blocked     = null;
 		self::$line_buf    = '';
 		self::$usage       = array();
+		self::$blocks      = array();
+		self::$stop_reason = '';
 	}
 
 	/**
@@ -288,7 +328,7 @@ class VA_Stream {
 	// -------------------------------------------------------------- model call --
 
 	/**
-	 * @return array{raw:string}|WP_Error
+	 * @return array{raw:string,stop_reason:string,content:array}|WP_Error
 	 */
 	private static function stream_model( array $messages, array $packs = array() ) {
 		$body = array(
@@ -297,11 +337,14 @@ class VA_Stream {
 			// Explicit, so every model runs at the same depth: Fable 5.1's default is
 			// high, Opus 5.5's is medium.
 			'output_config' => array( 'effort' => 'high' ),
+			'tools'      => VA_Tools::definitions(),
 			'system'     => VA_Knowledge::get_system_blocks( $packs ),
 			'messages'   => $messages,
 			'stream'     => true,
 		);
 
+		self::$blocks      = array();
+		self::$stop_reason = '';
 		$raw         = '';
 		$http_status = 0;
 		$err_body    = '';
@@ -362,11 +405,16 @@ class VA_Stream {
 			return self::map_error( $http_status, $err_body );
 		}
 
-		if ( null === self::$blocked && '' === trim( $raw ) ) {
+		if ( null === self::$blocked && '' === trim( $raw ) && 'tool_use' !== self::$stop_reason ) {
 			return new WP_Error( 'upstream_empty', 'empty model response' );
 		}
 
-		return array( 'raw' => $raw );
+		ksort( self::$blocks );
+		return array(
+			'raw'         => $raw,
+			'stop_reason' => self::$stop_reason,
+			'content'     => array_values( self::$blocks ),
+		);
 	}
 
 	/**
@@ -424,12 +472,43 @@ class VA_Stream {
 			switch ( $evt['type'] ) {
 				case 'message_start':
 					$u = isset( $evt['message']['usage'] ) ? $evt['message']['usage'] : array();
-					self::$usage['input_tokens']                = isset( $u['input_tokens'] ) ? (int) $u['input_tokens'] : null;
-					self::$usage['cache_creation_input_tokens'] = isset( $u['cache_creation_input_tokens'] ) ? (int) $u['cache_creation_input_tokens'] : null;
-					self::$usage['cache_read_input_tokens']     = isset( $u['cache_read_input_tokens'] ) ? (int) $u['cache_read_input_tokens'] : null;
+					// Added, not set: a tool call makes two or more model turns per answer.
+					foreach ( array( 'input_tokens', 'cache_creation_input_tokens', 'cache_read_input_tokens' ) as $k ) {
+						if ( isset( $u[ $k ] ) ) {
+							self::$usage[ $k ] = ( self::$usage[ $k ] ?? 0 ) + (int) $u[ $k ];
+						}
+					}
+					break;
+
+				case 'content_block_start':
+					$i                  = (int) ( $evt['index'] ?? 0 );
+					self::$blocks[ $i ] = isset( $evt['content_block'] ) && is_array( $evt['content_block'] ) ? $evt['content_block'] : array();
+					break;
+
+				case 'content_block_stop':
+					$i = (int) ( $evt['index'] ?? 0 );
+					if ( isset( self::$blocks[ $i ]['type'] ) && 'tool_use' === self::$blocks[ $i ]['type'] ) {
+						$input                       = json_decode( (string) ( self::$blocks[ $i ]['_json'] ?? '' ), true );
+						self::$blocks[ $i ]['input'] = is_array( $input ) ? $input : new stdClass();
+						unset( self::$blocks[ $i ]['_json'] );
+					}
 					break;
 
 				case 'content_block_delta':
+					$i = (int) ( $evt['index'] ?? 0 );
+					$d = isset( $evt['delta'] ) && is_array( $evt['delta'] ) ? $evt['delta'] : array();
+					if ( isset( self::$blocks[ $i ] ) ) {
+						$type = $d['type'] ?? '';
+						if ( 'text_delta' === $type ) {
+							self::$blocks[ $i ]['text'] = ( self::$blocks[ $i ]['text'] ?? '' ) . $d['text'];
+						} elseif ( 'thinking_delta' === $type ) {
+							self::$blocks[ $i ]['thinking'] = ( self::$blocks[ $i ]['thinking'] ?? '' ) . $d['thinking'];
+						} elseif ( 'signature_delta' === $type ) {
+							self::$blocks[ $i ]['signature'] = ( self::$blocks[ $i ]['signature'] ?? '' ) . $d['signature'];
+						} elseif ( 'input_json_delta' === $type ) {
+							self::$blocks[ $i ]['_json'] = ( self::$blocks[ $i ]['_json'] ?? '' ) . $d['partial_json'];
+						}
+					}
 					if ( isset( $evt['delta']['text'] ) ) {
 						$raw            .= $evt['delta']['text'];
 						self::$pending .= $evt['delta']['text'];
@@ -441,7 +520,10 @@ class VA_Stream {
 
 				case 'message_delta':
 					if ( isset( $evt['usage']['output_tokens'] ) ) {
-						self::$usage['output_tokens'] = (int) $evt['usage']['output_tokens'];
+						self::$usage['output_tokens'] = ( self::$usage['output_tokens'] ?? 0 ) + (int) $evt['usage']['output_tokens'];
+					}
+					if ( isset( $evt['delta']['stop_reason'] ) ) {
+						self::$stop_reason = (string) $evt['delta']['stop_reason'];
 					}
 					break;
 

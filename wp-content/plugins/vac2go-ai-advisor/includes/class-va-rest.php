@@ -358,6 +358,7 @@ class VA_REST {
 
 		$raw   = $api['text'];
 		$usage = $api['usage'];
+		$flags = array_merge( $flags, $api['tools'] );
 
 		// --- Output pipeline (S4): deterministic stages... ---
 		$filtered = VA_Filter::apply( $raw );
@@ -544,12 +545,36 @@ class VA_REST {
 	 * @return array{text:string, usage:array}|WP_Error error code = error_type.
 	 */
 	private static function call_anthropic_with_retry( array $messages, array $packs = array() ) {
-		$attempt = self::call_anthropic( $messages, $packs );
-		if ( is_wp_error( $attempt ) && in_array( $attempt->get_error_code(), self::RETRY_ERRORS, true ) ) {
-			sleep( 2 );
+		$total = array();
+		$log   = array();
+		for ( $round = 1; $round <= VA_Tools::MAX_ROUNDS; $round++ ) {
 			$attempt = self::call_anthropic( $messages, $packs );
+			if ( is_wp_error( $attempt ) && in_array( $attempt->get_error_code(), self::RETRY_ERRORS, true ) ) {
+				sleep( 2 );
+				$attempt = self::call_anthropic( $messages, $packs );
+			}
+			if ( is_wp_error( $attempt ) ) {
+				return $attempt;
+			}
+			foreach ( $attempt['usage'] as $k => $v ) {
+				$total[ $k ] = ( $total[ $k ] ?? 0 ) + (int) $v;
+			}
+			if ( 'tool_use' !== $attempt['stop_reason'] || VA_Tools::MAX_ROUNDS === $round ) {
+				$attempt['usage'] = $total;
+				$attempt['tools'] = $log;
+				if ( '' === $attempt['text'] ) {
+					return new WP_Error( 'upstream_empty', 'empty model response' );
+				}
+				return $attempt;
+			}
+			// The model asked for a tool: send its whole turn back unchanged (thinking
+			// blocks included), then the results, and let it write the answer.
+			$tools      = VA_Tools::results_for( $attempt['content'] );
+			$log        = $tools['log'] ? $tools['log'] : $log;
+			$messages[] = array( 'role' => 'assistant', 'content' => $attempt['content'] );
+			$messages[] = array( 'role' => 'user', 'content' => $tools['results'] );
 		}
-		return $attempt;
+		return new WP_Error( 'upstream_empty', 'empty model response' );
 	}
 
 	private static function call_anthropic( array $messages, array $packs = array() ) {
@@ -559,6 +584,7 @@ class VA_REST {
 			// Explicit, so every model runs at the same depth: Fable 5.1's default is
 			// high, Opus 5.5's is medium.
 			'output_config' => array( 'effort' => 'high' ),
+			'tools'      => VA_Tools::definitions(),
 			'system'     => VA_Knowledge::get_system_blocks( $packs ), // cached blocks: rules+core, corrections, packs
 			'messages'   => $messages,
 		);
@@ -618,14 +644,17 @@ class VA_REST {
 				}
 			}
 		}
-		if ( '' === trim( $text ) ) {
+		$stop = isset( $data['stop_reason'] ) ? (string) $data['stop_reason'] : '';
+		if ( '' === trim( $text ) && 'tool_use' !== $stop ) {
 			return new WP_Error( 'upstream_empty', 'empty model response' );
 		}
 
 		$usage = isset( $data['usage'] ) && is_array( $data['usage'] ) ? $data['usage'] : array();
 
 		return array(
-			'text'  => trim( $text ),
+			'text'        => trim( $text ),
+			'stop_reason' => $stop,
+			'content'     => isset( $data['content'] ) && is_array( $data['content'] ) ? $data['content'] : array(),
 			'usage' => array(
 				'input_tokens'                => isset( $usage['input_tokens'] ) ? (int) $usage['input_tokens'] : null,
 				'output_tokens'               => isset( $usage['output_tokens'] ) ? (int) $usage['output_tokens'] : null,
@@ -667,6 +696,8 @@ class VA_REST {
 				'client_history_ignored'      => (int) ( $flags['client_history_ignored'] ?? 0 ),
 				'history_truncated'           => (int) ( $flags['history_truncated'] ?? 0 ),
 				'packs'            => isset( $flags['packs'] ) && '' !== $flags['packs'] ? substr( (string) $flags['packs'], 0, 255 ) : null,
+				'location_query'   => isset( $flags['location_query'] ) ? substr( (string) $flags['location_query'], 0, 190 ) : null,
+				'location_result'  => isset( $flags['location_result'] ) ? substr( (string) $flags['location_result'], 0, 64 ) : null,
 				'ip_hash'          => $ip_hash,
 				'user_agent'       => $ua,
 			)

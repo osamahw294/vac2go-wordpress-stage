@@ -194,36 +194,52 @@ class VA_KB {
 	}
 
 	/**
-	 * Place names from kb/locations.md (branch states, branch cities and every state a
-	 * branch serves: "Missouri", "Fort Myers", ...), so
-	 * a question naming one is recognised as on topic.
+	 * Place names a location question may carry, so it counts as on topic in the
+	 * first-message pre-screen: every US state and every branch city.
 	 *
 	 * @return string[]
 	 */
 	public static function location_names() {
-		$path = self::dir() . '/locations.md';
-		if ( ! is_readable( $path ) ) {
-			return array();
-		}
 		$names = array();
-		foreach ( explode( "\n", (string) file_get_contents( $path ) ) as $line ) {
-			// "- Florida branch, Fort Myers and Orlando (407) ... Serves: Florida (peninsula)."
-			if ( preg_match( '/^- (.+?) branch(?:, (.+?))? \(\d{3}\)/u', $line, $m ) ) {
-				$names[] = trim( $m[1] );
-				if ( ! empty( $m[2] ) ) {
-					foreach ( preg_split( '/,\s*|\s+and\s+/u', $m[2] ) as $city ) {
-						$names[] = trim( $city );
-					}
-				}
+		$geo   = self::dir() . '/geo/states.tsv';
+		if ( is_readable( $geo ) ) {
+			foreach ( file( $geo, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES ) as $line ) {
+				$c       = explode( "\t", $line );
+				$names[] = $c[1];
 			}
-			if ( preg_match( '/Serves: ([^.]+)\./u', $line, $m ) ) {
-				// Drop "(West, Memphis area)" first: it holds commas of its own.
-				foreach ( explode( ', ', preg_replace( '/\s*\([^)]*\)/u', '', $m[1] ) ) as $state ) {
-					$names[] = trim( $state );
-				}
+		}
+		$names[] = 'Alaska';
+		$names[] = 'Hawaii';
+		foreach ( self::branch_data()['branches'] as $b ) {
+			if ( preg_match( '/^(.+?), [A-Z]{2} \d{5}$/', $b['address'], $m ) ) {
+				$parts   = explode( ', ', $m[1] );
+				$names[] = end( $parts );
 			}
 		}
 		return array_values( array_unique( $names ) );
+	}
+
+	/** kb/branches.json: the one source for branch names, phones and addresses. */
+	public static function branch_data() {
+		$data = json_decode( (string) @file_get_contents( self::dir() . '/branches.json' ), true );
+		return is_array( $data ) ? $data : array( 'main_number' => '855-822-7246', 'branches' => array() );
+	}
+
+	/**
+	 * The branch list the model sees. It answers questions about a named branch;
+	 * which branch serves a location comes from the find_nearest_branch tool, never
+	 * from this list (change request of 2026-10-20: no state-to-branch mapping).
+	 */
+	public static function branches_text() {
+		$d   = self::branch_data();
+		$out = array(
+			'### Vac2Go branches',
+			'Vac2Go services every state except Alaska and Hawaii. To find the branch for a customer\'s location (a ZIP code, city, state or area), call the find_nearest_branch tool; never pick a branch from this list by geography. Use this list for questions about a named branch, or to list all branches. The main number is ' . $d['main_number'] . ' and the contact page is https://vac2go.com/contact/.',
+		);
+		foreach ( $d['branches'] as $b ) {
+			$out[] = '- ' . $b['name'] . ': ' . $b['phone'] . '. ' . $b['address'] . '. Regional sales manager: ' . $b['manager'] . '.';
+		}
+		return implode( "\n", $out );
 	}
 
 	// ---------------------------------------------------------------- core --
@@ -269,12 +285,11 @@ class VA_KB {
 		}
 		// Round 1 Groups B and C route jobs and industries across the whole fleet (client
 		// answer to Q12), so they travel with every turn rather than in one category's pack.
-		foreach ( array( 'job-matching.md', 'locations.md' ) as $file ) {
-			$path = self::dir() . '/' . $file;
-			if ( is_readable( $path ) ) {
-				$out[] = trim( (string) file_get_contents( $path ) );
-			}
+		$path = self::dir() . '/job-matching.md';
+		if ( is_readable( $path ) ) {
+			$out[] = trim( (string) file_get_contents( $path ) );
 		}
+		$out[] = self::branches_text();
 		return implode( "\n\n", $out ) . "\n";
 	}
 }

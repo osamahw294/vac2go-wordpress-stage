@@ -1,7 +1,7 @@
 === Vac2Go AI Equipment Advisor ===
 Contributors: HighWater
 Requires PHP: 8.1
-Stable tag: 2.8.0
+Stable tag: 2.13.0
 License: GPLv2 or later
 
 Front-end AI equipment advisor for Vac2Go. Recommends a truck category from a plain-
@@ -56,7 +56,7 @@ Client answers applied 2026-10-09 (phase-2/CLIENT-QUESTIONS.md): the fleet is th
 41 website units plus 5 catalog-only units (Q7); aliases from Vac2Go's synonym ring,
 including brands they don't carry (Q5); the Two Box Roll-Off Trailers sit under
 Roll-Off and the Huber Scrubber under Liquid Vacuum (Q13); branch phone numbers in
-kb/locations.md (Q6); policy lines allowed (Q9); figures only from the knowledge, as a
+kb/branches.json (Q6); policy lines allowed (Q9); figures only from the knowledge, as a
 range where they differ, always with the configuration note (Q10); Vac2Go's
 banned-phrase list in the default filter patterns (Q5).
 
@@ -193,3 +193,23 @@ Without WordPress (CLI only):
     php tests/filter-fixtures.php    # output filter and streaming release
     php tests/signals-fixtures.php   # follow-up tags, availability CTA, hazmat
                                      # wording, corrections, rate-limit waits
+
+== Nearest branch (change request 2026-10-20) ==
+The answer model has one tool, find_nearest_branch (includes/class-va-tools.php). When
+a visitor gives a location and asks about a branch, the model passes the location as
+written; VA_Geo resolves it offline from bundled US Census data in kb/geo/ (ZIP code
+areas, places with 2025 populations, state centres; built by
+phase-2/tools/build_geo.py), in this order: ZIP, alias ("DFW", "the Bay Area"), "City,
+ST", bare state, bare city (most populous match). The closest of the 13 branches in
+kb/branches.json is chosen by haversine distance from each branch's ZIP centroid.
+Alaska, Hawaii and territories get the national line; anything unresolved makes the
+model ask where the visitor is. No HTTP request is made. The model is never given a
+distance. Every lookup is logged (location_query, location_result columns), so
+unresolved places can be added to VA_Geo::ALIASES. kb/branches.json is the one source
+for branch names, phones and addresses: the model's branch list is generated from it.
+
+== Category-first recommendations (change request 2026-10-20) ==
+A recommendation gives the category, a reason and the caveat, then asks "Would you like
+to see the units in Vac2Go's [category] fleet?". A yes gets unit names only. Questions
+about a named unit are answered directly. The rep follow-up card is not shown on the
+turn that asks the unit question (VA_Signals::UNIT_OFFER_PATTERN).

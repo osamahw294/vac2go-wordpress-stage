@@ -25,10 +25,14 @@ t('E2 unknown: says not available → pass; invents → fail', () => {
 	assert.equal(check({ set: 'E2', q: 'What is the GVWR?', expect: 'unknown' }, { reply: "I don't have that detail. A Vac2Go rep can confirm it." }, kb).pass, true);
 	assert.equal(check({ set: 'E2', q: 'What is the GVWR?', expect: 'unknown' }, { reply: 'The GVWR is 77,777 lb.' }, kb).pass, false);
 });
-t('E3: right category + caveat + tag → pass; missing caveat → fail', () => {
+t('E3 (category-first): category + caveat + unit offer, no unit list, no rep card → pass', () => {
 	const c = { set: 'E3', q: 'jet the sewer', category: 'combination' };
-	assert.equal(check(c, { reply: `That's Combination work. ${CAVEAT}`, followup: 'recommendation' }, kb).pass, true);
-	assert.equal(check(c, { reply: "That's Combination work.", followup: 'recommendation' }, kb).pass, false);
+	const good = `A Combination unit fits: it jets the line and vacuums the debris.\n\n${CAVEAT}\n\nWould you like to see the units in Vac2Go's Combination fleet?`;
+	assert.equal(check(c, { reply: good, followup: null }, kb).pass, true);
+	assert.equal(check(c, { reply: good.replace(CAVEAT, ''), followup: null }, kb).pass, false, 'missing caveat');
+	assert.equal(check(c, { reply: good.replace(/Would you like[^?]*\?/, ''), followup: null }, kb).pass, false, 'missing offer');
+	assert.equal(check(c, { reply: good + '\n- GapVax MC1510\n- Huber SC 1512', followup: null }, kb).pass, false, 'listed units');
+	assert.equal(check(c, { reply: good, followup: 'recommendation' }, kb).pass, false, 'rep card in the same reply');
 });
 t('E3 clarify: a question without a recommendation → pass', () => {
 	assert.equal(check({ set: 'E3', q: 'I need a truck', expect: 'clarify' }, { reply: 'What are you vacuuming, and roughly how much?' }, kb).pass, true);

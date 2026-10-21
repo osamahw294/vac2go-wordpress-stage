@@ -37,6 +37,8 @@ class VA_Signals {
 	/**
 	 * Questions about whether, when or where a unit can be had.
 	 */
+	const UNIT_OFFER_PATTERN = '/would you like to see (the )?units/i';
+
 	const AVAILABILITY_PATTERN = '/\b(avail\w*|in stock|on hand|in (your |the )?(yard|inventory|fleet) (now|today|right now)|lead[\s-]?time|how soon|when can (i|we|you)|(can|could) (i|we) get (one|it|a|an)|do you (guys )?have (any|one|a|an)|have (any|one) (open|free|ready)|ready to go|book(ing)?|reserve|reservation|schedule a (unit|truck)|this week|next week|tomorrow|asap)\b/i';
 
 	/**
@@ -68,6 +70,13 @@ class VA_Signals {
 		// which is the one place those details actually reach the team.
 		if ( preg_match( self::CONTACT_PATTERN, $q ) ) {
 			return 'contact';
+		}
+
+		// A recommendation ends by offering the units (change request 2026-10-20). That
+		// question takes precedence: the rep card waits for a later turn, so the reply
+		// asks one thing, and the advisor doesn't open by handing the visitor to sales.
+		if ( preg_match( self::UNIT_OFFER_PATTERN, $a ) ) {
+			return null;
 		}
 
 		// The recommendation caveat is mandatory on every category recommendation.

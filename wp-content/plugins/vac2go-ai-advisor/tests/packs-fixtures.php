@@ -158,47 +158,22 @@ check( 'unit cards win over general category figures', false !== stripos( $rules
 check( 'off-list names are handled', false !== stripos( $rules, 'not on our current list' ) );
 check( 'no "route them" wording for the model to echo', false === stripos( $rules, 'route them' ) );
 
-// Branch-by-state mapping from Vac2Go (2026-10-15): every branch with its phone and the
-// states it serves, so "I'm in St. Louis" gets the Tennessee branch, not "no branch".
-$branches = array(
-	'Kentucky branch (502) 699-4029. Serves: Kentucky, West Virginia, Tennessee (Middle and East).',
-	'South Carolina branch (839) 232-1212. Serves: South Carolina, North Carolina, Virginia, Maryland, Georgia (East).',
-	'Tennessee branch (901) 455-2464. Serves: Missouri, Kansas, Oklahoma, Arkansas, Tennessee (West, Memphis area).',
-	'Ohio branch (440) 287-1687. Serves: Ohio, Pennsylvania, New York.',
-	'Alabama branch (251) 440-3133. Serves: Alabama, Mississippi, Georgia (West), Florida (panhandle).',
-	'Texas branch (346) 460-5522. Serves: Texas, Louisiana.',
-	'Indiana branch (219) 359-3314. Serves: Indiana, Illinois, Michigan, Wisconsin, Minnesota, Iowa, North Dakota, South Dakota, Nebraska (East).',
-	'Florida branch, Fort Myers and Orlando (407) 232-6255. Serves: Florida (peninsula).',
-	'New Jersey branch (640) 246-4850. Serves: New Jersey, Delaware, Connecticut, Rhode Island, Massachusetts, Vermont, New Hampshire, Maine, Washington DC.',
-	'Arizona branch (602) 325-5446. Serves: Arizona, California, Nevada, New Mexico.',
-	'Utah branch (385) 213-7690. Serves: Utah, Colorado, Idaho, Wyoming, Montana, Washington, Oregon, Nebraska (West).',
-);
-foreach ( $branches as $b ) {
-	check( "core lists the branch and its states: " . strtok( $b, '(' ), false !== strpos( $core, $b ) );
+// Change request 2026-10-20: the branch for a location comes from the nearest-branch
+// tool, not from a state mapping. The knowledge keeps each branch's name, phone and
+// address (from kb/branches.json) for questions about a named branch.
+$bdata = json_decode( (string) file_get_contents( __DIR__ . '/../kb/branches.json' ), true );
+check( '13 branches', 13 === count( $bdata['branches'] ) );
+foreach ( $bdata['branches'] as $b ) {
+	check( "core lists {$b['name']} with its phone and address", false !== strpos( $core, $b['name'] . ': ' . $b['phone'] . '. ' . $b['address'] . '.' ) );
 }
-$served = array();
-foreach ( $branches as $b ) {
-	preg_match( '/Serves: ([^.]+)\./', $b, $m );
-	foreach ( explode( ', ', preg_replace( '/\s*\([^)]*\)/', '', $m[1] ) ) as $st ) {
-		$served[ trim( $st ) ] = true;
-	}
-}
-// Addresses and regional sales managers, as published on vac2go.com/contact (2026-10-15).
-foreach ( array(
-	'Address: 11120 Plantside Drive, Louisville, KY 40299. Regional sales manager: Jeff Wells.',
-	'Address: 1525 Three Place, Memphis, TN 38116. Regional sales manager: Mickey Still.',
-	'Address: 3600 S 7th Avenue, Phoenix, AZ 85041. Regional sales manager: Jamie Bernzweig.',
-	'Addresses: 6110 Idlewild St., Fort Myers, FL 33966; 500 Codisco Way, Sanford, FL 32771 (Orlando). Regional sales manager: Hunter Geis.',
-	'1210 Commerce Drive, Madison, GA 30650',
-) as $a ) {
-	check( "core has the address: {$a}", false !== strpos( $core, $a ) );
-}
-check( 'the mapping covers 48 states and Washington DC (all but Alaska and Hawaii)', 49 === count( $served ), (string) count( $served ) );
-check( 'core says not to tell a listed state there is no branch', false !== stripos( $core, 'never say Vac2Go has no branch' ) );
-check( 'core gives the main number for places no branch serves', false !== stripos( $core, 'No branch serves Alaska, Hawaii or anywhere outside the US' ) );
-check( 'location names include served states and branch cities', array() === array_diff( array( 'Missouri', 'Colorado', 'Fort Myers', 'Orlando', 'Kentucky' ), VA_KB::location_names() ), implode( ', ', VA_KB::location_names() ) );
+check( 'no state-to-branch mapping in the core', false === strpos( $core, 'Serves:' ) );
+check( 'no state-to-branch mapping left in kb/', ! file_exists( __DIR__ . '/../kb/locations.md' ) );
+check( 'core says to use the lookup for a location', false !== strpos( $core, 'find_nearest_branch' ) );
+check( 'core says every state but Alaska and Hawaii is served', false !== stripos( $core, 'every state except Alaska and Hawaii' ) );
+check( 'location names include states and branch cities', array() === array_diff( array( 'Missouri', 'Colorado', 'Fort Myers', 'Memphis', 'Kentucky' ), VA_KB::location_names() ), implode( ', ', array_slice( VA_KB::location_names(), 0, 20 ) ) );
 check( 'branch locations are no longer deflected as a policy question', false === stripos( $rules, 'regional or international coverage, branch locations' ) );
-check( 'branch questions name the branch that serves the state', false !== stripos( $rules, 'branch that serves' ) );
+check( 'branch questions use the nearest-branch lookup', false !== strpos( $rules, 'find_nearest_branch' ) );
+check( 'branch answers give no distance', false !== stripos( $rules, 'never a distance' ) );
 
 // Client answer to Q10: only knowledge figures; differences as a range; every figure
 // followed by "depends on the configuration"; compare only on confirmed figures.

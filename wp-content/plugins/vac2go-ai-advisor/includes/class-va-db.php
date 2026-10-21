@@ -96,6 +96,8 @@ class VA_DB {
 			history_truncated TINYINT(1) NOT NULL DEFAULT 0,
 			packs VARCHAR(255) NULL,
 			model VARCHAR(64) NULL,
+			location_query VARCHAR(190) NULL,
+			location_result VARCHAR(64) NULL,
 			contact_name VARCHAR(190) NULL,
 			contact_email VARCHAR(190) NULL,
 			contact_phone VARCHAR(60) NULL,
@@ -185,6 +187,8 @@ class VA_DB {
 			'history_truncated'           => 0,
 			'packs'            => null,
 			'model'            => null,
+			'location_query'   => null,
+			'location_result'  => null,
 			'ip_hash'          => null,
 			'user_agent'       => null,
 			'created_at'       => current_time( 'mysql' ),
@@ -217,6 +221,10 @@ class VA_DB {
 				'packs'            => $row['packs'],
 				// Which model answered: only turns that reached a model carry token usage.
 				'model'            => null !== $row['model'] ? $row['model'] : ( null !== $row['input_tokens'] ? self::active_model() : null ),
+				// Nearest-branch lookups, so unresolved places can be found and the
+				// alias table extended from real traffic.
+				'location_query'   => $row['location_query'],
+				'location_result'  => $row['location_result'],
 				'contact_name'     => $contact['contact_name'],
 				'contact_email'    => $contact['contact_email'],
 				'contact_phone'    => $contact['contact_phone'],

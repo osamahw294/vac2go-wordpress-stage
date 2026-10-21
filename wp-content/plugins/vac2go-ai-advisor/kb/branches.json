@@ -1,0 +1,19 @@
+{
+	"_source": "Branch names, addresses and regional sales managers as published on vac2go.com/contact (2026-10-15); phone numbers as confirmed by Vac2Go. Locations are matched by the ZIP code of each address (change request of 2026-10-20, Appendix A). Edit here only: the advisor's branch list and the nearest-branch lookup both read this file.",
+	"main_number": "855-822-7246",
+	"branches": [
+		{ "id": "kentucky", "name": "Kentucky branch (Louisville, corporate office)", "state": "KY", "phone": "(502) 699-4029", "address": "11120 Plantside Drive, Louisville, KY 40299", "zip": "40299", "manager": "Jeff Wells" },
+		{ "id": "alabama", "name": "Alabama branch (Theodore)", "state": "AL", "phone": "(251) 440-3133", "address": "3914 Hamilton Blvd, Theodore, AL 36582", "zip": "36582", "manager": "Anthony St. Andre" },
+		{ "id": "arizona", "name": "Arizona branch (Phoenix)", "state": "AZ", "phone": "(602) 325-5446", "address": "3600 S 7th Avenue, Phoenix, AZ 85041", "zip": "85041", "manager": "Jamie Bernzweig" },
+		{ "id": "florida-fort-myers", "name": "Florida branch (Fort Myers)", "state": "FL", "phone": "(407) 232-6255", "address": "6110 Idlewild St., Fort Myers, FL 33966", "zip": "33966", "manager": "Hunter Geis" },
+		{ "id": "florida-orlando", "name": "Florida branch (Orlando)", "state": "FL", "phone": "(407) 232-6255", "address": "500 Codisco Way, Sanford, FL 32771", "zip": "32771", "manager": "Hunter Geis" },
+		{ "id": "georgia", "name": "Georgia branch (Madison)", "state": "GA", "phone": "(839) 232-1212", "address": "1210 Commerce Drive, Madison, GA 30650", "zip": "30650", "manager": "Steven St. Andre" },
+		{ "id": "indiana", "name": "Indiana branch (Crown Point)", "state": "IN", "phone": "(219) 359-3314", "address": "601 E. 112th Avenue, Crown Point, IN 46307", "zip": "46307", "manager": "Patrick Splon" },
+		{ "id": "new-jersey", "name": "New Jersey branch (West Deptford)", "state": "NJ", "phone": "(640) 246-4850", "address": "265 Jessup Rd., West Deptford, NJ 08086", "zip": "08086", "manager": "Jason Mears" },
+		{ "id": "ohio", "name": "Ohio branch (Louisville, Ohio)", "state": "OH", "phone": "(440) 287-1687", "address": "5275 Louisville St. NE, Louisville, OH 44641", "zip": "44641", "manager": "Kriss Stepp" },
+		{ "id": "south-carolina", "name": "South Carolina branch (Rock Hill)", "state": "SC", "phone": "(839) 232-1212", "address": "489 E. Springdale Road, Rock Hill, SC 29730", "zip": "29730", "manager": "Steven St. Andre" },
+		{ "id": "tennessee", "name": "Tennessee branch (Memphis)", "state": "TN", "phone": "(901) 455-2464", "address": "1525 Three Place, Memphis, TN 38116", "zip": "38116", "manager": "Mickey Still" },
+		{ "id": "texas", "name": "Texas branch (Deer Park)", "state": "TX", "phone": "(346) 460-5522", "address": "1150 Hall Court, Deer Park, TX 77536", "zip": "77536", "manager": "Greg Brown" },
+		{ "id": "utah", "name": "Utah branch (Salt Lake City)", "state": "UT", "phone": "(385) 213-7690", "address": "758 W. 1500 N., Salt Lake City, UT 84116", "zip": "84116", "manager": "Layne Williams" }
+	]
+}
