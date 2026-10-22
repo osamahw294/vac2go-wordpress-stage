@@ -34,11 +34,10 @@ The Vactor HXX Paradigm is a compact, single-engine vacuum excavator that can di
 - Standard: everything above unless marked optional, plus wireless remote, IntelliView display, backup camera, E-stops and wrist strap, 6" air-operated vacuum relief valve.
 - Optional: DigRight, backfill hopper, lockable storage, hitch, hydraulic tool package, cold weather protection, amber LED lights, LED work lighting, compressor upgrade, 4X4 or Class 7 chassis.
 
-## Not in our literature
+## Not covered
 - Dimensions, weights, GVWR, dump angle, blower make and model, chassis make. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
 - Always give payload with its chassis caveat.
 - Non-CDL status is state dependent. Never tell a customer they can drive it without a CDL; a rep confirms.
-- The brochure also mentions Vactor's wider vacuum excavator range; those capacities are not the Paradigm's.
-- The brochure dates from 2016/2017.
+- Capacities of Vactor's wider vacuum excavator range are not the Paradigm's.

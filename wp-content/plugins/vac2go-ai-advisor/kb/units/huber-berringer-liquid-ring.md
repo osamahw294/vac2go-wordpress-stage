@@ -23,11 +23,11 @@ The Huber Berringer (formerly Keith Huber) is a liquid ring vacuum tank truck th
 - Standard: full opening hydraulically operated rear door, hydraulic tank lift, rear door and tank lift safety prop bars, full length body trays for hose storage, push button controls in a Nema 4 waterproof container, rear work lights, LED running lights, back-up alarm, grounding reel.
 - Optional: Berringer II package (above); multiple tank capacities; ASME and DOT 407/412 {src: Berringer-Brochure p.2}; Huber Lock rear door; stainless steel tank with wetted stainless parts; high pressure jetting with integrated water compartment; auxiliary transfer pump; top-mounted hydraulically operated 6" boom with 4" hose {src: Berringer-Brochure p.2}
 
-## Not in our literature
+## Not covered
 - Vacuum level (in Hg), liquid ring pump make/model, chassis, engine, GVWR/weights, dimensions, hose sizes and lengths, tank pressure rating, jetting pump figures, and which DOT spec (if any) the unit carries. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
-- Source is the 2016 Berringer product family brochure (the Berringer was introduced in 1990). It also covers the Berringer PD, whose PD blower figures do not apply here.
-- Quote tank size in gallons only. The brochure prints a barrel figure beside the gallons that does not match it; do not convert.
+- The Berringer PD is a different unit; its PD blower figures do not apply here.
+- Quote tank size in gallons only; do not convert to barrels.
 - Whether this unit is the 1180 CFM standard or the 1820 CFM Berringer II is not known. Give both and say it depends on configuration. {src: Berringer-Brochure p.2}
 - ASME and DOT are options. Never say this unit has them without confirmation.

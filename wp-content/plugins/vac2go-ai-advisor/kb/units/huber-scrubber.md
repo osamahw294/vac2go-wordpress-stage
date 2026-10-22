@@ -12,7 +12,7 @@ The Huber Scrubber (model VTS36-500) is not a vacuum truck. It is a skid-mounted
 - Typical carbon volume: 500 pounds each bed, twin carbon beds {src: Scrubber Huber p.1}
 - Unit footprint: 4'6" W x 8' L; unit height 9.5' {src: Scrubber Huber p.1}
 - Power from truck: 12V for emergency water purge pump {src: Scrubber Huber p.1}
-- Removal: the datasheet states vapors are removed up to 98.5% in the liquid scrubber and overall vapor removal efficiency is 99%+ {src: Scrubber Huber p.1}
+- Removal: vapors are stated to be removed up to 98.5% in the liquid scrubber and overall vapor removal efficiency is 99%+ {src: Scrubber Huber p.1}
 - Fire safety: in a thermal event a pump sprays 30 gallons of water to both beds {src: Scrubber Huber p.1}
 
 ## Typical uses
@@ -22,12 +22,11 @@ The Huber Scrubber (model VTS36-500) is not a vacuum truck. It is a skid-mounted
 - Standard: skid mount, emergency water purge system, temperature gauges on each carbon bed, sample valve between each vessel, easy-dump valves for carbon removal, Vapor Tech's Bio Scrub X chemical media. No cyclone or extractor is needed.
 - Optional: none listed.
 
-## Not in our literature
+## Not covered
 - Weight, which trucks or exhaust flows it suits, gases treated other than hydrocarbons (H2S is not mentioned), carbon type, media replacement interval, and how Vac2Go deploys it (on a truck or a trailer). A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
 - Describe it as an add-on vapor scrubber skid used with a vacuum truck, designed for stretched vacuum trucks or a small trailer or truck. It does not vacuum anything itself.
 - It goes on the exhaust/pressure side only; it is not designed for vacuum.
-- Quote removal figures only as "the manufacturer's datasheet states". Never present them as proof of regulatory compliance.
-- Do not say it treats H2S; the datasheet does not say so.
-- Source is a single 2017 datasheet.
+- Quote removal figures as manufacturer-stated figures. Never present them as proof of regulatory compliance.
+- Do not say it treats H2S; that is not stated.

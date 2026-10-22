@@ -21,7 +21,7 @@ Standard combination trucks are strictly wet-work machines. They are used only f
 **Q: How is a combination truck different from a jetter-only trailer?**
 
 The combination truck has a debris tank and a hydro reel, and with a 1 inch hose on the big reel it runs higher water pressure and can produce 80 to 100 GPM of water volume. The trailer unit has a 1/2 inch hose with 30 to 40 GPM output, no debris body, and carries less water onboard.
-Advisor note: Unit literature differs from these general figures: the GapVax MC1510 sheet lists 60 to 100 GPM, and the GapVax G7 Trailer Jetter brochure shows a 3/4" reel and 500 or 700 gallon tanks. Use the unit's own figures when a specific unit is discussed.
+Advisor note: Unit figures differ from these general figures: the GapVax MC1510 runs 60 to 100 GPM, and the GapVax G7 Trailer Jetter has a 3/4" reel and 500 or 700 gallon tanks. Use the unit's own figures when a specific unit is discussed.
 
 **Q: Can a combination unit be used for excavation or daylighting? When is a combination unit acceptable for excavation, and when is a hydro excavator required instead?**
 

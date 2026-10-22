@@ -71,7 +71,7 @@ Every change made to the client's wording in `AI Equipment Advisor rev1.docx`, g
 ## What are the unit’s overall dimensions and weight?
 
 - **Was:** These values should come from the actual Vac2Go fleet specifications rather than the base manufacturer brochure.
-- **Now:** These come from Vac2Go's fleet records for the specific unit, not the manufacturer's brochure. A Vac2Go rep can confirm them.
+- **Now:** These depend on the specific unit. A Vac2Go rep can confirm them.
 - **Why:** An instruction to Vac2Go, rewritten as the answer it implies.
 
 ## How is it different from a combination/sewer cleaning unit?

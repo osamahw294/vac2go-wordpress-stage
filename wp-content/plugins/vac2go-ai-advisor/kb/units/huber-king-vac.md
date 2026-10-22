@@ -19,11 +19,10 @@ The Huber King Vac (formerly Keith Huber) is a liquid ring vacuum truck that com
 - Optional wash down package: 10 gpm @ 2500 psi or 20 gpm @ 2500 psi, electric hose reel, 100' or 200' of 1/2" hose, hydrant water fill {src: Huber_KingVac Brochure p.2}
 - Optional jetting package: 35 gpm @ 2000 psi, electric or hydraulic hose reel, 1/2" to 3/4" jetting hose, integral water compartment {src: Huber_KingVac Brochure p.2}
 
-## Not in our literature
+## Not covered
 - Vacuum level (in Hg), pump make/model, number of cyclones, filter details, chassis, engine, GVWR/weights, dimensions, hose sizes and lengths supplied as standard, tank pressure rating, dump angle. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
-- Single source: the King Vac brochure (copyright 1999-2017; the King Vac was introduced in 1986). The PDF is marked as a proof.
-- Quote tank size as the brochure states it; do not do your own gallon/barrel conversions.
+- Quote tank size as stated; do not do your own gallon/barrel conversions.
 - Code (ASME/DOT 412), boom and water packages are options. Never say this unit has them without confirmation. {src: Huber_KingVac Brochure p.2}
-- Do not count cyclones from photos; the brochure gives no number.
+- The number of cyclones is not stated; do not give one.

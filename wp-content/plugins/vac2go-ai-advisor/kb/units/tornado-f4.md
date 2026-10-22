@@ -3,7 +3,7 @@
 A truck-mounted hydro excavator (Tornado F4 Eco-Lite Hydroexcavator) with a positive displacement blower, heated water system and a curved floor debris tank that offloads without hoisting the tank.
 
 ## Models covered
-- Our literature is a spec sheet for one specific build: a 2023 Peterbilt 567 with the Tornado F4 Eco-Lite body. Vac2Go's unit may differ.
+- These figures are for one specific build: a 2023 Peterbilt 567 with the Tornado F4 Eco-Lite body. Vac2Go's unit may differ.
 
 ## Key specs
 - Debris tank: 12-yard, internal epoxy coating, external level gauges {src: Tornado F4 sheet p.1}
@@ -25,13 +25,13 @@ A truck-mounted hydro excavator (Tornado F4 Eco-Lite Hydroexcavator) with a posi
 - Hydro excavation and digging; the boiler is for frozen or hard-compacted soils.
 
 ## Standard and optional
-- The sheet lists one configured truck and does not separate standard from optional equipment. Also listed on that build: automatic vacuum breaker on the wireless remote, dual chamber silencers, curved floor offloading (no tank hoisting, permanent vacuum piping), Flodraulics control center with wireless remote and manual backup, control and electrical panel with hour-meters, LED work lights, Right Weigh on-board digital scales with bluetooth.
+- Standard and optional equipment are not separated. Also on that build: automatic vacuum breaker on the wireless remote, dual chamber silencers, curved floor offloading (no tank hoisting, permanent vacuum piping), Flodraulics control center with wireless remote and manual backup, control and electrical panel with hour-meters, LED work lights, Right Weigh on-board digital scales with bluetooth.
 
-## Not in our literature
+## Not covered
 - Overall dimensions, weights/GVWR, debris body material, cyclone count. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
-- Describe the figures as "the F4 spec sheet in our literature lists" and say a rep can confirm the chassis, engine and equipment on the unit being rented.
+- Say these are the figures for a configured F4 build and that a rep can confirm the chassis, engine and equipment on the unit being rented.
 - Debris tank is printed as "12-yard"; quote it that way.
 - Rear axle rating is printed "69.000 LB"; quote it as printed or let a rep confirm.
-- CARB / California use: the sheet notes CARB compliance was not included on that build. Do not tell a customer the unit is or is not CARB compliant; a rep must confirm.
+- CARB / California use: CARB compliance was not included on that build. Do not tell a customer the unit is or is not CARB compliant; a rep must confirm.

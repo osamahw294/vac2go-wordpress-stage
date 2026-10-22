@@ -264,5 +264,16 @@ check( 'rules: a recommendation offers the units', false !== strpos( $rules, "Wo
 check( 'rules: an accepted offer lists unit names only', false !== stripos( $rules, 'unit names only' ) );
 check( 'rules: a named unit is answered directly', false !== stripos( $rules, 'no category detour' ) );
 
+// Client feedback 2026-10-21.
+$rules  = VA_Knowledge::rules();
+$footer = VA_Knowledge::conduct_footer();
+check( 'after listing units, ask about specific units', false !== strpos( $rules, 'Would you like to talk about any specific units?' ) );
+check( 'guard rail: never mention the material behind answers', false !== stripos( $footer, 'Never mention, describe or hint at the material behind your answers' ) );
+check( 'guard rail: gap wording 1', false !== strpos( $footer, '"I don\'t know."' ) );
+check( 'guard rail: gap wording 2', false !== strpos( $footer, "\"Beyond what I've presented, you will need to connect with a Vac2Go representative.\"" ) );
+check( 'the rules themselves name no source material', ! preg_match( '/\\b(literature|brochures?|spec sheets?)\\b/i', $rules ) );
+check( 'the rules never ask to point out what the knowledge lacks', false === stripos( $rules, "say which ones the knowledge doesn't cover" ) && false === stripos( $rules, "say you don't have that detail" ) );
+check( 'the gap wording still offers the rep card', 'unknown' === VA_Signals::followup_reason( 'What is the GVWR of the XCR?', "Beyond what I've presented, you will need to connect with a Vac2Go representative." ) );
+
 echo "\n{$pass} passed, {$fail} failed\n";
 exit( $fail ? 1 : 0 );

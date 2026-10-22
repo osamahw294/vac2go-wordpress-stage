@@ -52,7 +52,9 @@ function numbers_in( $text ) {
 	return array_values( array_unique( $out ) );
 }
 
-$sections_required = array( '## Key specs', '## Not in our literature' );
+// Words that describe the material behind an answer rather than the equipment.
+define( 'SOURCE_WORDS', '/\\b(literature|brochures?|spec sheets?|sell sheets?|data ?sheets?|spec reference|documents?|booklets?|the sheet|the source|sources?|copyright|in our literature)\\b/i' );
+$sections_required = array( '## Key specs', '## Not covered' );
 $banned            = array( '—' => 'em dash', 'patented' => '"patented"', 'warranty' => 'warranty', '$' => 'a price' );
 
 foreach ( VA_Fleet::units() as $id => $u ) {
@@ -86,6 +88,9 @@ foreach ( VA_Fleet::units() as $id => $u ) {
 	foreach ( $banned as $needle => $what ) {
 		check( "{$id}: contains no {$what}", false === stripos( $card, $needle ) );
 	}
+	// Client feedback 2026-10-21: the advisor must never reveal the materials behind
+	// its answers, so the card the model reads must not name them.
+	check( "{$id}: no source vocabulary in what the model reads", ! preg_match( SOURCE_WORDS, $card, $sm ), $sm[0] ?? '' );
 	$words = str_word_count( $card );
 	check( "{$id}: about 500 words at most (has {$words})", $words <= 560 );
 

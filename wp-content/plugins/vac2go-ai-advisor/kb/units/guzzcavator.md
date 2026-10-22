@@ -21,11 +21,11 @@ A Guzzler truck built to work both as an industrial vacuum loader and as a hydro
 - Standard: wireless remote, ladder, catwalk and railing, E-Stop, body and rear door props, back-up alarm, 8 in air-operated relief valve with wireless control, 4 in manual relief valve.
 - Optional: water heater, rear door mounted sludge pump, full opening rear door, 20 gpm water system, cold weather package, air purge, extendable boom, heated cabinet for the water pump.
 
-## Not in our literature
+## Not covered
 - Chassis, engine, weights, GVWR, vacuum hose diameter and dump angle. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
 - The water system is rated at 10 gpm; 20 gpm applies only to the optional system. Do not quote 20 gpm as standard.
-- The brochure dates from 2014, so specs may differ on the unit a customer gets.
-- Do not call the telescoping boom standard; the brochure offers a choice of booms.
+- Specs may differ on the unit a customer gets.
+- Do not call the telescoping boom standard; there is a choice of booms.
 - The dimension drawing is unlabelled; do not quote a wheelbase or overall dimensions from it.

@@ -1,6 +1,6 @@
 # Vactor 2100 Plus
 
-The Vactor 2100 Plus is a truck-mounted combination sewer cleaner (vacuum plus jetting), built either as a Fan Model or a Positive Displacement (PD) Model. Our only literature is a 2011 brochure, which leaves out many basic figures.
+The Vactor 2100 Plus is a truck-mounted combination sewer cleaner (vacuum plus jetting), built either as a Fan Model or a Positive Displacement (PD) Model. Many basic figures are not available for this unit.
 
 ## Models covered
 Which platform you get depends on the unit {src: Vactor 2100 Plus brochure p.2, p.4, p.6}
@@ -29,11 +29,11 @@ Which platform you get depends on the unit {src: Vactor 2100 Plus brochure p.2, 
 - Described features (not marked optional): IntelliView display, E-stops at operator control points, tool and pipe storage, hydraulic boom, telescoping hose reel, Jet Rodder pump, aluminum water tanks.
 - Optional: nozzle storage, tool boxes, enhanced cyclones, wireless e-stop and hose reel controls, Wireless Belly Pack, cold weather recirculation, debris pump-off and flush-out systems, hydraulic door locking, larger water tank, pump delivery system, larger hose reel, accumulator, dual-stage centrifugal compressor, dual boom controls, level wind, Armor Belt hoses, OEM nozzles, HydroExcavation Kit, 5 x 5 boom, hazard lights, arrowboards, backup cameras.
 
-## Not in our literature
+## Not covered
 - Debris body capacity, standard water tank capacity, water pump gpm and psi, Fan Model cfm and vacuum, jetting hose size, blower make and model, dump angle, chassis, engine, GVWR, dimensions, weights. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
 - 475 hp is the transfer case rating, not engine horsepower.
 - "18 Hg" is printed without "in".
-- The brochure dates from 2011; current units likely differ. For any basic figure, say it is not in our literature and a rep can confirm.
-- Vac2Go's equipment catalog lists this unit as "Vactor 2100+ / 2100i". Our literature is the 2100 Plus brochure; a rep confirms which version a customer would get.
+- Current units likely differ. For any basic figure not given here, use the wording for gaps.
+- Vac2Go's equipment catalog lists this unit as "Vactor 2100+ / 2100i". The figures here are for the 2100 Plus; a rep confirms which version a customer would get.

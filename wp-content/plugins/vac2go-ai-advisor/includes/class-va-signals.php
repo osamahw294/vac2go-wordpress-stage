@@ -51,7 +51,7 @@ class VA_Signals {
 	/**
 	 * The answer could not be given.
 	 */
-	const UNKNOWN_PATTERN = '/(\bI don[\'’]?t know\b|\bdon[\'’]?t have (that|this|those|the|any|enough) (detail|details|information|info|data|specs?)\b|\bcan[\'’]?t speak to\b|\bnot able to (answer|confirm)\b|\bpolicy question\b|\bbeyond what I can\b)/i';
+	const UNKNOWN_PATTERN = '/(\bI don[\'’]?t know\b|\bdon[\'’]?t have (that|this|those|the|any|enough) (detail|details|information|info|data|specs?)\b|\bcan[\'’]?t speak to\b|\bnot able to (answer|confirm)\b|\bpolicy question\b|\bbeyond what I can\b|\bbeyond what I[\'’]?ve presented\b)/i';
 
 	/**
 	 * Why this answer should offer a rep follow-up, or null when it should not.

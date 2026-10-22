@@ -24,7 +24,7 @@ Which configuration you get depends on the unit {src: Kaiser CV brochure p.4}
 - Optional mechanically assisted offload: 11.7 - 12.8 yd3 tank capacity {src: Kaiser CV brochure p.4}
 
 ## Typical uses
-- Hydro excavation. The brochure names no specific job list.
+- Hydro excavation.
 - Hot water digging with the optional boiler.
 - Offloading without raising the tank, using the optional assisted offload.
 
@@ -32,7 +32,7 @@ Which configuration you get depends on the unit {src: Kaiser CV brochure p.4}
 - Standard: RB-DV 145 blower, split shaft PTO drive, 6 way boom with 8" suction hose, 10 micron final filter, Cat 3560 water pump, dig hose reel, wash bars in the tank and flush nozzle in the cyclone, wireless radio remote with back-up on-board controls, insulated heated aluminum van body, powder coated tanks.
 - Optional: boiler, assisted offload, pusher, umbilical cord pendant, secondary digging hose reel, secondary steam hose reel, 100' of 1/2" hose, turbo flush, hydraulic trash pump, rear platforms, towing package, water system heat protection, weight scale system, air compressor. Other vacuum pumps (RB-DV 125, 7000i liquid ring).
 
-## Not in our literature
+## Not covered
 - Chassis make, engine, weights, GVWR, dump angle (the tank does not tip). A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
@@ -40,4 +40,3 @@ Which configuration you get depends on the unit {src: Kaiser CV brochure p.4}
 - The assisted offload option reduces debris capacity to the 11.7 - 12.8 yd3 range.
 - p.4 calls the water pump figures factory settings; p.5 calls them system capacity. Present them as factory settings.
 - Which axle configuration and vacuum pump a unit has depends on the unit.
-- The brochure dates from 2019.

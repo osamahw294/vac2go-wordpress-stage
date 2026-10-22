@@ -3,7 +3,7 @@
 A combination jet/vac sewer cleaner from the GapVax MC Series: a vacuum system and debris tank paired with a high pressure jetter on one truck.
 
 ## Key specs
-Figures come from GapVax's MC Series web page, as recorded in a Vac2Go spec reference.
+Figures are GapVax's published MC Series figures.
 - Debris tank: 10 cu yd {src: GapVax MC1510 spec reference (gapvax.com) p.1}
 - Water tank: 1,500 gallons {src: GapVax MC1510 spec reference (gapvax.com) p.1}
 - Blower vacuum: 16 to 27 in Hg {src: GapVax MC1510 spec reference (gapvax.com) p.1}
@@ -20,12 +20,12 @@ Figures come from GapVax's MC Series web page, as recorded in a Vac2Go spec refe
 - Combination jet/vac sewer cleaning. No other applications are named.
 
 ## Standard and optional
-- The source does not separate standard from optional features.
+- Standard and optional features are not separated.
 
-## Not in our literature
+## Not covered
 - Blower and pump type and model, filtration, debris body material, water heater, length, weights/GVWR, engine, chassis make. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
 - Vacuum, airflow, pump flow and pump pressure are published as ranges. Quote the range and say the exact figure depends on the unit's configuration; do not quote a single number or present the range as a performance promise.
-- The source does not explain what "180 degrees" on the hose reel refers to; quote it as written.
+- What "180 degrees" on the hose reel refers to is not stated; quote it as written.
 - The MC Series also includes other models (MC1007, MC1312, MC1512), but only the MC1510 is covered here. Do not apply these figures to them.

@@ -3,8 +3,8 @@
 The Guzzler Classic (CL) is a truck-mounted industrial vacuum loader. It recovers, contains and carries solids, dry bulk powders, liquids, slurries and thick sludge from hard to reach areas in wet/dry industrial cleaning.
 
 ## Models covered
-- Guzzler Classic (CL), the base loader described in the brochure.
-- The same brochure lists two offloading options built on the Classic, XCR and the High-Rail System. They have their own cards.
+- Guzzler Classic (CL), the base loader.
+- Two offloading options are built on the Classic: XCR and the High-Rail System. They have their own cards.
 
 ## Key specs
 - Debris body payload capacity: 18 yd3 (13.76 m3) {src: Guzzler Classic brochure p.7}
@@ -24,17 +24,17 @@ The Guzzler Classic (CL) is a truck-mounted industrial vacuum loader. It recover
 
 ## Typical uses
 - Wet/dry industrial cleaning of solids, dry bulk powders, liquids, slurries and thick sludge.
-- Industries the brochure names include steel mills, refineries, chemical, cement and power plants, mining, railroads, shipyards, pulp and paper mills, grain elevators, foundries, bridge painting, oil and gas field service and natural disaster clean-up.
+- Industries served include steel mills, refineries, chemical, cement and power plants, mining, railroads, shipyards, pulp and paper mills, grain elevators, foundries, bridge painting, oil and gas field service and natural disaster clean-up.
 
 ## Standard and optional
 - Standard: ladder, catwalk and fold-down railing; E-Stop; body and rear door props; hydraulic check valves on lift cylinders; back-up alarm; transfer case protection; relief valves. The spec list also includes a float ball shut-off, bolt-on dump tubes, roadside emergency kit and fire extinguisher.
 - Optional: telescoping boom, vane pressure offload system, full opening rear door, rear door-mounted sludge pump, XCR, High-Rail System.
 
-## Not in our literature
+## Not covered
 - Chassis make, engine, GVWR, weights, wheelbase, labelled overall dimensions, dump angle, water system, vacuum hose size and length, blower make and model. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
-- The brochure dates from 2014 and says specifications are subject to change. Vac2Go units may differ in blower, options and chassis.
-- The brochure does not say which blower (dual-lobe or tri-lobe) gives which end of the vacuum and airflow ranges. Give the range and say the exact figure depends on the unit.
+- Specifications are subject to change. Vac2Go units may differ in blower, options and chassis.
+- It is not stated which blower (dual-lobe or tri-lobe) gives which end of the vacuum and airflow ranges. Give the range and say the exact figure depends on the unit.
 - The 28.5" Hg figure belongs to the optional vane pump only, not the main blower.
-- The brochure's side drawing has unlabelled dimension lines (one runs 35' 7" from front bumper to rearmost fitting; the highest point is 13' 2" from the ground) {src: Guzzler Classic brochure p.7}. Present these only as drawing lines and have a rep confirm actual dimensions.
+- A side drawing has unlabelled dimension lines (one runs 35' 7" from front bumper to rearmost fitting; the highest point is 13' 2" from the ground) {src: Guzzler Classic brochure p.7}. Present these only as drawing lines and have a rep confirm actual dimensions.

@@ -260,7 +260,7 @@ The HV-57 body can be mounted on several Class 8 truck chassis depending on flee
 
 **Q: What are the unit’s overall dimensions and weight?**
 
-These come from Vac2Go's fleet records for the specific unit, not the manufacturer's brochure. A Vac2Go rep can confirm them.
+These depend on the specific unit. A Vac2Go rep can confirm them.
 
 **Q: Is the HV-57 a particularly large or small unit within the Industrial Vacuum category?**
 

@@ -23,17 +23,17 @@ The Super Products Mud Dog 1200 is a 12 yard truck-mounted hydro excavator with 
 - Optional liquid transfer pump: 300 gpm (1136 lpm), side mounted {src: Mud Dog 1200 brochure p.2}
 
 ## Typical uses
-- Hydro excavation. The brochure names no specific job list.
+- Hydro excavation.
 - Working in dark conditions with the boom light package.
 
 ## Standard and optional
 - Standard: single engine drive, CANbus controls, water heater, curbside water fill, winter recirculation, anti-freeze and air purge systems, internal body flush-out, hydraulic tailgate latches, full opening rear tailgate, LED and boom lighting packages, remote boom greasing.
 - Optional: Acculevel Load Sensor System, sludge pump, liquid transfer pump, dual tire chain racks, safety cone rack, heated and insulated water supply and return lines.
 
-## Not in our literature
+## Not covered
 - Dimensions, weights, GVWR, dump angle, dump height, blower make and model, chassis make. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
 - The Acculevel badge appears on p.1, but p.2 lists Acculevel as optional. Treat it as optional.
-- The brochure dates from 2016; current units may differ.
-- Vac2Go's equipment catalog lists this unit as "Mud Dog / Mud Dog Air". Our literature is the Mud Dog 1200 brochure; a rep confirms the version a customer would get.
+- Current units may differ.
+- Vac2Go's equipment catalog lists this unit as "Mud Dog / Mud Dog Air". The figures here are for the Mud Dog 1200; a rep confirms the version a customer would get.

@@ -22,16 +22,15 @@ The BossVac BV-500, a towable hydro excavation trailer with its own engine, high
 - Hose: 30 feet length, 3 inches width {src: BossVac BV-500 spec sheet p.1}
 
 ## Typical uses
-- Hydro excavation. The sheet names no specific job types.
+- Hydro excavation.
 
 ## Standard and optional
-- The sheet does not separate standard from optional equipment. The only stated choice is the hitch: bumper pull or the second type printed "PINAL". Also listed: internal wash out system.
+- Standard and optional equipment are not separated. The only stated choice is the hitch: bumper pull or the second type printed "PINAL". Also listed: internal wash out system.
 
-## Not in our literature
+## Not covered
 - Blower make and model, water pump make, boom, water heater, tank material. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
-- "PINAL" is printed that way on the sheet (likely meaning pintle); a rep can confirm the hitch type on the unit being rented.
+- The second hitch type is listed as "PINAL" (likely meaning pintle); a rep can confirm the hitch type on the unit being rented.
 - "TIER 4" is an emissions tier, not an engine model; the engine model is not given. The horsepower figure has no unit printed.
-- "Number of tanks: 2" sits with the 400 gallon water figure, and the sheet does not say whether 400 gallons is the total or per tank. Quote both as printed and do not interpret.
-- The sheet is undated; a rep can confirm it matches Vac2Go's unit.
+- "Number of tanks: 2" sits with the 400 gallon water figure, and it is not stated whether 400 gallons is the total or per tank. Quote both as listed and do not interpret.

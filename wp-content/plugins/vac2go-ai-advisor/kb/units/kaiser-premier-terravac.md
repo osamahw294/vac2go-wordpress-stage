@@ -3,7 +3,7 @@
 The Kaiser Premier TerraVac Xpose800 is a trailer-mounted hydro excavator in a compact footprint, for municipal work and smaller or hard to access jobs.
 
 ## Models covered
-- Our literature covers the TerraVac Xpose800 only {src: TerraVac brochure p.1, p.2}
+- The TerraVac Xpose800 {src: TerraVac brochure p.1, p.2}
 
 ## Key specs
 - Length: 21' {src: TerraVac brochure p.2}
@@ -31,10 +31,10 @@ The Kaiser Premier TerraVac Xpose800 is a trailer-mounted hydro excavator in a c
 - Included: suction hose, both extensions, dig lance, wash gun, hose reel, loading port reducer, drain port, door locking mechanism, water pump ignition reset (pump shuts off with the engine).
 - Optional: glycol tank.
 
-## Not in our literature
+## Not covered
 - GVWR, empty weight, axle rating, hitch or coupler type, brakes, required tow vehicle, blower type, engine make, dump angle. A Vac2Go rep can confirm these, and must confirm towing requirements before a customer tows it.
 
 ## Notes for the advisor
-- The brochure links the TerraVac to the CV Series, but its figures are much smaller. Do not imply CV Series performance.
+- The TerraVac is linked to the CV Series, but its figures are much smaller. Do not imply CV Series performance.
 - Do not describe the debris tank as stainless; only the floor is.
-- Specs come from the manufacturer brochure (footer code 12012020) and may have changed.
+- Specs may have changed on current units.

@@ -22,11 +22,10 @@ The Huber Baron HX (model Baron HX1512) is a truck-mounted hydro excavator: a hi
 - Standard accessories: 25' water fill hose, 6" x 6' dig tube, 8" x 6' pickup tubes (2), lance kit with ½" x 72" and ½" x 48" digging lances {src: Baron HX1512 2026 p.3}
 - Optional: Cold Weather Package with 700K BTU streetside burner and glycol system {src: Baron HX1512 2026 p.3}; Air Excavation Package, 185 CFM at 150 psi with ¾" x 75' air hose {src: Baron HX1512 2026 p.3}; sludge pump; directional arrow board; handheld spotlight.
 
-## Not in our literature
+## Not covered
 - Chassis make/model, engine/horsepower, GVWR/weights, overall dimensions, CDL requirement, fuel type, maximum dig depth, and a water heater as standard (heat comes only with the optional Cold Weather Package). A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
-- The three Huber documents (2025 brochure and sell sheet, 2026 combined brochure) agree on the main figures; the idle figures appear only in the 2026 document.
-- Boom reach: quote "24' reach with 6' extension". A table in the sell sheet lists 30 (ft.) {src: HydroEx Sell Sheet v05 p.2}; the documents never say whether that is the 24' plus the extension.
+- Boom reach: quote "24' reach with 6' extension". A 30 (ft.) figure is also listed {src: HydroEx Sell Sheet v05 p.2}; it is not stated whether that is the 24' plus the extension.
 - Do not say it has nine cyclones. The spec list describes a single cyclone.
 - The water pump is listed as hydraulically driven; quote that.

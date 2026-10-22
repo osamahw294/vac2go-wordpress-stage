@@ -55,7 +55,7 @@ EDITS = [
     ("Peterbilt 567", None,
      "An example chassis from the instruction above; not confirmed for Vac2Go's fleet (the HV-57 card lists chassis as not in the literature)."),
     ("These values should come from the actual Vac2Go fleet specifications rather than the base manufacturer brochure.",
-     "These come from Vac2Go's fleet records for the specific unit, not the manufacturer's brochure. A Vac2Go rep can confirm them.",
+     "These depend on the specific unit. A Vac2Go rep can confirm them.",
      "An instruction to Vac2Go, rewritten as the answer it implies."),
 ]
 

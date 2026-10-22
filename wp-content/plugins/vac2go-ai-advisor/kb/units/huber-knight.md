@@ -18,11 +18,10 @@ The Huber Knight (formerly Keith Huber) is a liquid ring vacuum truck with bagho
 - Standard: full opening hydraulically operated rear door with integrated safety cylinder, hydraulic tank lift, rear door and tank lift safety prop bars, rear work lights, LED running lights, back-up alarm, grounding reel.
 - Optional: ASME / DOT 412 {src: Knight Brochure p.2}; 20" manway {src: Knight Brochure p.2}; high pressure jetting system with integral water compartment; Huber Lock rear door; stainless steel tank with wetted stainless parts; auxiliary transfer pump; top mounted hydraulically operated 6" boom {src: Knight Brochure p.2}
 
-## Not in our literature
+## Not covered
 - Vacuum level (in Hg), pump make/model, filter sock size, jetting option flow and pressure, chassis, engine, GVWR/weights, dimensions, hose sizes and lengths, dump angle, tank pressure rating. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
-- Single source: the Knight brochure. The Knight was developed in 2008, though the brochure footer carries an older copyright date.
-- The brochure says the Knight shares the King Vac's features, but its own figures differ (pump CFM, tank size). Do not merge the two cards.
+- The Knight shares the King Vac's features, but its own figures differ (pump CFM, tank size). Do not merge the two cards.
 - Do not carry over bag sizes or water package figures from other Huber units.
 - Code, boom and jetting are options. Never say this unit has them without confirmation.

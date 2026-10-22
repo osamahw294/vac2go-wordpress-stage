@@ -30,12 +30,12 @@ Which model you get depends on the unit {src: Camel Max brochure p.2}
 - Standard: single engine, poly water tank, air purge, antifreeze system, dual accumulators, dual hydraulic cooling, level gauge, debris tank flush-out, water pump sleep mode, controls to run the water pump with or without vacuum, backup camera, body up, boom up and tailgate alarms, safety props, safety cones, sewer hose containment shield.
 - Optional: ACCULEVEL Load Sensor System, Hydro Excavation Package, powered level wind, High Dump (1200 models), hose reel tensioning, hydrant fill with auto shut off, lighting packages, chassis configurations, signboards, splash shield, Super Boom, tailgate tube rack, tool boxes, trash pump, Wastewater Recycle (1200 and 1600 models), water heater, winter recirculation, wireless remote.
 
-## Not in our literature
+## Not covered
 - Vacuum rating in Hg, blower make and model, length, width, weights, GVWR, chassis make, High Dump height or specs. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
-- The blower range is the same for all three models; the brochure does not say which unit gets which cfm.
+- The blower range is the same for all three models; which unit gets which cfm is not stated.
 - The eject angle is printed as "an 10°", which may be a misprint. Mention it only if asked, and say a rep can confirm.
 - Water pump figures are the designed capacity; the rating actually delivered may differ.
 - Heights are approximate.
-- The brochure does not say whether a dump-configured 1200 can take Wastewater Recycle.
+- It is not stated whether a dump-configured 1200 can take Wastewater Recycle.

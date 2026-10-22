@@ -83,7 +83,7 @@ Large structural cobblestones, thick unpumpable crude sludges, and certified haz
 **Q: What is the water capacity on a jetter or hydro trailer, and how long can it run before it needs a refill?**
 
 Jetter or hydro trailers typically hold 200 to 400 gallons of water, providing roughly 30 to 45 minutes of continuous digging/jetting run-time before needing a fresh water refill.
-Advisor note: Unit literature differs: the GapVax G7 Trailer Jetter brochure shows 500 or 700 gallon tanks. Use the unit's own figures when a specific unit is discussed.
+Advisor note: Unit figures differ: the GapVax G7 Trailer Jetter has 500 or 700 gallon tanks. Use the unit's own figures when a specific unit is discussed.
 
 ### Group E: Sizing and "is this the right truck": Trailer
 

@@ -1,6 +1,6 @@
 # Guzzler XCR
 
-The Guzzler XCR has no document of its own. Our only literature is one option paragraph in the Guzzler Classic brochure, which lists XCR as an offloading option of the Guzzler Classic (CL).
+The Guzzler XCR is an offloading option of the Guzzler Classic (CL).
 
 ## Key specs
 - What it is: a system with a swing-out cyclone that allows material discharge into collection vessels while vacuuming {src: Guzzler Classic brochure p.6}
@@ -11,11 +11,10 @@ The Guzzler XCR has no document of its own. Our only literature is one option pa
 - Otherwise the same industrial vacuum work as the Guzzler Classic.
 
 ## Standard and optional
-- The brochure lists XCR under "Offloading Options" for the Guzzler Classic. No other XCR equipment is described.
+- XCR is one of the Guzzler Classic's offloading options.
 
-## Not in our literature
+## Not covered
 - XCR-specific debris capacity, airflow, vacuum, blower, dimensions, weights, GVWR and chassis. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
 - Do not present the Classic's figures as XCR figures. Say the XCR is built on the Classic, exact specs depend on the unit, and a rep can confirm.
-- The brochure dates from 2014.

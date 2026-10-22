@@ -24,7 +24,7 @@ Cards are compiled from the verified fact files (`phase-2/work/unit-facts/`, not
 - Standard: <...>
 - Optional: <...>
 
-## Not in our literature
+## Not covered
 - <Things customers commonly ask that no document states: dimensions, weights/GVWR, chassis, fuel capacity, etc.> A Vac2Go rep can confirm these.
 
 ## Notes for the advisor

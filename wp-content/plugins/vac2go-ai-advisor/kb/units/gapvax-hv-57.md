@@ -17,8 +17,8 @@ A GapVax air mover with wet/dry capability, in the Industrial Vacuum category. I
 - Optional: stainless steel debris body, top-loading hydraulic booms, sound enclosure for the vacuum pump, tailgate splash shield, liquid load indicator, auxiliary lift axles, auger unloading, Hi-Rail system, wet/dry pneumatic blow-off, body pressurized system, washdown system, wireless controls. {src: HV-57 brochures p.2}
 - Which options a given Vac2Go unit carries depends on that unit; a Vac2Go rep can confirm.
 
-## Not in our literature
-- Chassis, dimensions and weight. These come from Vac2Go's fleet records, not the brochure. A Vac2Go rep can confirm them.
+## Not covered
+- Chassis, dimensions and weight. A Vac2Go rep can confirm them.
 
 ## Notes for the advisor
 - Always give these figures as the ranges above, never a single number, and add that the exact figure depends on the specific unit's configuration and a Vac2Go rep can confirm it for the truck the customer would actually get.

@@ -109,6 +109,15 @@ check( 'water has no em dashes', false === strpos( $water, '—' ) );
 $hydro = (string) @file_get_contents( "{$dir}/hydro-excavator.md" );
 check( 'hydro excavator notes that Vac2Go water trucks are not a refill source', false !== stripos( $hydro, 'not used to refill' ) );
 
+// Client feedback 2026-10-21: nothing the model reads may name the material behind it.
+foreach ( array_merge( glob( "{$dir}/*.md" ), array( __DIR__ . '/../kb/job-matching.md' ) ) as $f ) {
+	if ( 'EDITS.md' === basename( $f ) ) {
+		continue;
+	}
+	$t = (string) file_get_contents( $f );
+	check( basename( $f ) . ': no source vocabulary', ! preg_match( '/\\b(literature|brochures?|spec sheets?|sell sheets?|data ?sheets?|spec reference|booklets?|the sheet|the source)\\b|\\bsheet lists\\b/i', $t, $m ), $m[0] ?? '' );
+}
+
 $edits = (string) @file_get_contents( "{$dir}/EDITS.md" );
 check( 'EDITS.md logs 9 edits', 9 === substr_count( $edits, '- **Was:**' ) );
 check( 'EDITS.md lists the 5 advisor notes', 5 === preg_match_all( '/^- \*\*[A-Za-z -]+\*\*, after "/m', $edits ) );

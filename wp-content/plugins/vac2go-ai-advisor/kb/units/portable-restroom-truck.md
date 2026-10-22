@@ -26,10 +26,10 @@ Figures come from the build specification for this truck.
 ## Standard and optional
 - The build spec lists one configuration and does not separate standard from optional. Also listed: two 5" sight eyes on the waste compartment, fresh water sight tube, stainless hose troughs, roadside work station, LED work and clearance lights, backup alarm, two backup camera systems, bucket and spray bottle holders.
 
-## Not in our literature
+## Not covered
 - Vacuum rating (in Hg), engine horsepower (not clearly stated), GVWR, overall dimensions, empty weight. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
-- The source is a build specification, not a delivered-unit sheet; a rep can confirm the truck being rented matches it.
+- These figures are for one build; a rep can confirm the truck being rented matches it.
 - The 500 and 1,100 gallon compartment figures are stated as approximate; the 1,600 gallon figure is the stated total.
 - Only the 180 CFM peak air flow is published for the vacuum pump; there is no in Hg figure.

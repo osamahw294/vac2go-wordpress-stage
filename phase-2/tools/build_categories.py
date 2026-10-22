@@ -76,15 +76,15 @@ EDITS = [
 # (category, start of the question, note) appended after that answer.
 NOTES = [
     ("hydro-excavator", "What water capacity does a hydro excavator carry",
-     "Vac2Go's own water trucks are not used to refill a hydro excavator: Vac2Go does not support truck-to-truck water transfer (Water Q&A, 2026-10-15). The customer arranges the water source, normally a hydrant."),
+     "Vac2Go's own water trucks are not used to refill a hydro excavator: Vac2Go does not support truck-to-truck water transfer. The customer arranges the water source, normally a hydrant."),
     ("combination", "How is a combination truck different from a jetter-only trailer?",
-     "Unit literature differs from these general figures: the GapVax MC1510 sheet lists 60 to 100 GPM, and the GapVax G7 Trailer Jetter brochure shows a 3/4\" reel and 500 or 700 gallon tanks. Use the unit's own figures when a specific unit is discussed."),
+     "Unit figures differ from these general figures: the GapVax MC1510 runs 60 to 100 GPM, and the GapVax G7 Trailer Jetter has a 3/4\" reel and 500 or 700 gallon tanks. Use the unit's own figures when a specific unit is discussed."),
     ("combination", "What debris size can a combination unit vacuum",
      "Debris bodies vary by unit: the GapVax MC1510 is 10 cu yd and the Camel Max comes in 9, 12 and 16 yard versions. Use the unit's own figures when a specific unit is discussed."),
     ("trailer", "What is the water capacity on a jetter or hydro trailer",
-     "Unit literature differs: the GapVax G7 Trailer Jetter brochure shows 500 or 700 gallon tanks. Use the unit's own figures when a specific unit is discussed."),
+     "Unit figures differ: the GapVax G7 Trailer Jetter has 500 or 700 gallon tanks. Use the unit's own figures when a specific unit is discussed."),
     ("tanker", "How is a tanker different from a liquid vacuum truck?",
-     "These are general figures. For a specific unit use its own literature: Vac2Go's 130 BBL tankers are 5,460 gallons, the Huber Dominator is 3,000 to 3,300 gallons, and the Imperial unit is 5,000 gallons."),
+     "These are general figures. For a specific unit use its own figures: Vac2Go's 130 BBL tankers are 5,460 gallons, the Huber Dominator is 3,000 to 3,300 gallons, and the Imperial unit is 5,000 gallons."),
 ]
 
 SUMMARIES = {

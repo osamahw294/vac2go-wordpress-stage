@@ -1,6 +1,6 @@
 # GapVax Combo G7 Trailer Jetter
 
-A towable sewer jetter trailer: a diesel-driven high pressure water pump, water tank and jetter hose reel for line jetting, plus a washdown hose. The G7 brochure describes a jetter-only trailer with no vacuum system and no debris tank.
+A towable sewer jetter trailer: a diesel-driven high pressure water pump, water tank and jetter hose reel for line jetting, plus a washdown hose. The G7 is a jetter-only trailer with no vacuum system and no debris tank.
 
 ## Models covered
 - G7 Jetter, single reel, trailer or skid-mount.
@@ -26,11 +26,11 @@ A towable sewer jetter trailer: a diesel-driven high pressure water pump, water 
 - Standard: diesel engine, triplex pump, stainless steel fluid lines, powder coated frame, hardened steel water swivel, footage counter.
 - Optional: digital footage counter, power rotate on jetter reel, other water pump configurations, cold weather options, washdown reel options, low water alarm, wireless remote, lighting, toolbox and basket options, tow and jack options, Dual Reel, Viper.
 
-## Not in our literature
-- Any vacuum or debris capability (no vacuum system, debris tank, CFM or in Hg figure appears in the brochure).
+## Not covered
+- Any vacuum or debris capability: it has no vacuum system or debris tank, and no CFM or in Hg figure.
 - Dimensions, empty weight, GVWR of the single-reel trailer, hitch type, engine make and HP. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
-- The fleet name says "Combo", but the literature describes a jetter only. Do not say this unit can vacuum. Whether Vac2Go's unit includes or is paired with a vacuum should be confirmed with a rep.
+- The fleet name says "Combo", but the unit is a jetter only. Do not say this unit can vacuum. Whether Vac2Go's unit includes or is paired with a vacuum should be confirmed with a rep.
 - Tank size, pump option, single or Dual Reel, and camera are all per-unit choices. Do not say the rental unit has the Viper camera.
 - Some figures are printed without units ("800 x 3/4"", "30/3,000 PSI", "12,000 GVWR"); quote them exactly as printed and do not add units.

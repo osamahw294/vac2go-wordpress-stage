@@ -3,7 +3,7 @@
 The Vermeer LP XDT is a trailer-mounted vacuum excavator with its own diesel engine, PD blower, water system and hydraulic spoil tank.
 
 ## Models covered
-The sheet covers five models; which model you get depends on the unit {src: Vermeer LP XDT sheet p.2}
+Five models are listed; which model you get depends on the unit {src: Vermeer LP XDT sheet p.2}
 - LP 573: 231 in long, 92 in wide, 95 in high; empty 6,300 lb; GVWR 9,995 lb / 12,000 lb; axles (2) 7,000 lb; water 200 gal; spoil tank 500 gal
 - LP 573 Heavy: 231 in long, 97 in wide, 95 in high; empty 6,300 lb; GVWR 14,000 lb; axles (2) 7,000 lb; water 300 gal; spoil tank 500 gal
 - LP 873: 268.8 in long, 92 in wide, 95 in high; empty 7,400 lb; GVWR 14,000 lb; axles (2) 7,000 lb; water 200 gal; spoil tank 800 gal
@@ -25,18 +25,17 @@ All five models:
 - Optional SHT storage: room for 60 ft of suction hose {src: Vermeer LP XDT sheet p.1}
 
 ## Typical uses
-- Vacuum excavation. The sheet names no job list.
+- Vacuum excavation.
 - With the FlowMaster option: hydraulically exercising water valves and hydrants.
 
 ## Standard and optional
 - Standard: everything in Key specs except the options, on an I beam trailer.
 - Optional (all models): Strong Arm, recirculation kit, SHT package, FlowMaster package, hydraulic jack.
 
-## Not in our literature
+## Not covered
 - Hitch or coupler type, brakes, required tow vehicle, dump angle, tank lift height. A Vac2Go rep can confirm these, and must confirm towing requirements before a customer tows it.
 
 ## Notes for the advisor
 - Always name the model with any figure; the five differ a lot.
 - The LP 573 lists two GVWR values (9,995 lb / 12,000 lb) without explanation; a rep confirms which applies.
 - Figures are as printed even where they look out of order (the 1273 is listed shorter than the 873).
-- The sheet dates from 2021.

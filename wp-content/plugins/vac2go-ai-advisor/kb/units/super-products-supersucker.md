@@ -24,10 +24,10 @@ The Super Products Supersucker is a truck-mounted industrial vacuum loader that 
 - Standard (listed as specifications): the vacuum system, filtration, body, dump and tailgate above.
 - Optional: stainless steel components, rear worklights, hydraulic booms, high-pressure washdown systems, Pneumatic Unloading, Rail Wheel System. No specs are given for options.
 
-## Not in our literature
+## Not covered
 - Blower make and model, water system, boom and hose lengths, dump height, chassis, engine, GVWR, weights. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
 - Dimensions are approximate.
-- The brochure dates from 2012; current units may differ.
-- The brochure does not mention a High Dump. For the Super Products High Dump, see that card and do not apply Supersucker figures to it.
+- Current units may differ.
+- For the Super Products High Dump, see that card and do not apply Supersucker figures to it.

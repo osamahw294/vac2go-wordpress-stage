@@ -29,7 +29,7 @@ Transport-only tankers cannot load independently and require a vacuum truck or p
 **Q: How is a tanker different from a liquid vacuum truck?**
 
 A liquid vacuum truck carries a smaller payload (approx. 2,000 to 3,000 gallons) but is highly agile. A tanker holds a massive payload (approx. 5,000 to 6,300 gallons) but requires a large semi-tractor turn radius and flat ground to operate safely.
-Advisor note: These are general figures. For a specific unit use its own literature: Vac2Go's 130 BBL tankers are 5,460 gallons, the Huber Dominator is 3,000 to 3,300 gallons, and the Imperial unit is 5,000 gallons.
+Advisor note: These are general figures. For a specific unit use its own figures: Vac2Go's 130 BBL tankers are 5,460 gallons, the Huber Dominator is 3,000 to 3,300 gallons, and the Imperial unit is 5,000 gallons.
 
 **Q: Is barrel capacity how tankers are usually specified, and what sizes are available?**
 

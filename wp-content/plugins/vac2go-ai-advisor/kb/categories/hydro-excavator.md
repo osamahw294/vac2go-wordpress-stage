@@ -51,7 +51,7 @@ It is the wrong choice for bulk dry product recovery and large-scale dry materia
 
 Typical full-size units carry 1,200 to 1,500 gallons of clean water. Depending on nozzle size and flow rate (GPM), that provides roughly 2 to 4 hours of continuous digging before a refill is needed. Actual run time varies with the specific unit configuration, operating conditions, and water usage.
 The customer is responsible for arranging the water source, including securing hydrant permits or staging a support water truck.
-Advisor note: Vac2Go's own water trucks are not used to refill a hydro excavator: Vac2Go does not support truck-to-truck water transfer (Water Q&A, 2026-10-15). The customer arranges the water source, normally a hydrant.
+Advisor note: Vac2Go's own water trucks are not used to refill a hydro excavator: Vac2Go does not support truck-to-truck water transfer. The customer arranges the water source, normally a hydrant.
 
 **Q: Is a reclaim or recirculation option available on any units in the fleet?**
 

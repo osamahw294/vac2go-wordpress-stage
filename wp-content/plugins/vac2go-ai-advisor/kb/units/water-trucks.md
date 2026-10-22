@@ -24,10 +24,10 @@ Water trucks with a Load King 4,000 gallon steel water tank, a shaft driven pump
 - Standard: everything listed above, plus DOT/ICC compliant lights and reflectors.
 - Optional: a passenger side mid spray valve.
 
-## Not in our literature
+## Not covered
 - Pump flow (GPM) and pressure, GVWR, weights, overall truck dimensions, chassis make and model, tank lining. A Vac2Go rep can confirm these.
 
 ## Notes for the advisor
 - Non-potable only: never for drinking water or food-grade use (Vac2Go's Water Q&A; the tank also carries "NON POTABLE" decals). Clean-water service only.
 - The tank is available on a variety of chassis brands and models; the chassis on a given truck depends on the unit.
-- The Vac2Go reference describes the hose reel as rear mounted and the nozzle as adjustable; the brochure says firemans nozzle. Both describe the same reel.
+- The hose reel is rear mounted, with an adjustable fireman's nozzle.
