@@ -106,7 +106,7 @@ class VA_Signals {
 	public static function is_availability_question( $question ) {
 		// "Do you have a branch / an office / any locations ..." asks where Vac2Go is,
 		// not whether a unit is free; drop it before matching.
-		$q = preg_replace( '/\bdo you (guys )?have (a|an|any) (branch|office|location|yard|shop|rep)\w*/i', '', (string) $question );
+		$q = preg_replace( '/\bdo you (guys )?have (a|an|any) (branch|office|location|yard|shop|rep|brochure|catalog|spec sheet|sheet|manual|document)\w*/i', '', (string) $question );
 		return (bool) preg_match( self::AVAILABILITY_PATTERN, $q );
 	}
 

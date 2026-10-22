@@ -245,7 +245,7 @@ check( 'limits off (0) never block', ( function () {
 
 // Branch questions are not availability questions (2026-10-15: "I'm in St. Louis, do
 // you have a branch?" got the rental-portal line).
-foreach ( array( "I'm in St. Louis, do you have a branch that I can go to?", 'Do you have an office in Texas?', 'Do you guys have any locations in Ohio?' ) as $q ) {
+foreach ( array( "I'm in St. Louis, do you have a branch that I can go to?", 'Do you have an office in Texas?', 'Do you guys have any locations in Ohio?', 'Where do your specs come from? Do you have a brochure for the Guzzler Classic?', 'Do you have a spec sheet for the HV-57?' ) as $q ) {
 	check( "not availability: {$q}", ! VA_Signals::is_availability_question( $q ) );
 }
 check( 'still availability: do you have a hydrovac this week?', VA_Signals::is_availability_question( 'Do you have a hydrovac this week?' ) );
