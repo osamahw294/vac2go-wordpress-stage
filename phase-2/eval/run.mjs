@@ -65,7 +65,7 @@ async function askOnce(c, session) {
 		try {
 			r = await fetch(`${API}/chat`, {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': nonce },
+				headers: { 'Content-Type': 'application/json', 'X-VA-Nonce': nonce },
 				body: JSON.stringify({ session_id: session, request_id: randomUUID(), message: c.q, website: '', elapsed_ms: 15000 }),
 			});
 		} catch (e) {

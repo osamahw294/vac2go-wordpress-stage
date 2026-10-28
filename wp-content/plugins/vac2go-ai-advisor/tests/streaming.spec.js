@@ -6,7 +6,7 @@ test.describe('streaming', () => {
 	test('the stream endpoint answers as SSE, or reports 501 so the widget can fall back', async ({ request }) => {
 		const nonce = await getNonce(request);
 		const res = await request.post('/wp-json/vac2go/v1/chat/stream', {
-			headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': nonce },
+			headers: { 'Content-Type': 'application/json', 'X-VA-Nonce': nonce },
 			data: { session_id: uuid(), request_id: uuid(), message: 'What CFM does the HV-57 pull?', elapsed_ms: 9000 },
 			failOnStatusCode: false,
 			timeout: 70000,
@@ -39,7 +39,7 @@ test.describe('streaming', () => {
 			async ({ nonce, sid, rid }) => {
 				const res = await fetch('/wp-json/vac2go/v1/chat/stream', {
 					method: 'POST',
-					headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': nonce },
+					headers: { 'Content-Type': 'application/json', 'X-VA-Nonce': nonce },
 					body: JSON.stringify({
 						session_id: sid, request_id: rid,
 						message: 'Describe the HV-57 filtration system in a few sentences.',

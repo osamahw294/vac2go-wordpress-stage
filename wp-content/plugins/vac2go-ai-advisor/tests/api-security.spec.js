@@ -6,7 +6,7 @@ const CHAT = '/wp-json/vac2go/v1/chat';
 
 async function chat(request, nonce, body) {
 	return request.post(CHAT, {
-		headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': nonce },
+		headers: { 'Content-Type': 'application/json', 'X-VA-Nonce': nonce },
 		data: body,
 		failOnStatusCode: false,
 	});
@@ -140,7 +140,7 @@ test.describe('REST trust boundary', () => {
 	test('S1c: /contact rejects an unknown session', async ({ request }) => {
 		const nonce = await getNonce(request);
 		const res = await request.post('/wp-json/vac2go/v1/contact', {
-			headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': nonce },
+			headers: { 'Content-Type': 'application/json', 'X-VA-Nonce': nonce },
 			data: { session_id: uuid(), name: 'Test', email: 'test@example.com' },
 			failOnStatusCode: false,
 		});
@@ -150,7 +150,7 @@ test.describe('REST trust boundary', () => {
 	test('S9: /correction is refused to anonymous callers', async ({ request }) => {
 		const nonce = await getNonce(request);
 		const res = await request.post('/wp-json/vac2go/v1/correction', {
-			headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': nonce },
+			headers: { 'Content-Type': 'application/json', 'X-VA-Nonce': nonce },
 			data: { log_id: 1, correction_text: 'unauthorized edit' },
 			failOnStatusCode: false,
 		});

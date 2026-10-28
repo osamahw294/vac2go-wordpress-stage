@@ -9,7 +9,7 @@ const CAVEAT = /this is a high-level recommendation\. confirm specifics with a v
 async function ask(request, message, session) {
 	const nonce = await getNonce(request);
 	const res = await request.post('/wp-json/vac2go/v1/chat', {
-		headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': nonce },
+		headers: { 'Content-Type': 'application/json', 'X-VA-Nonce': nonce },
 		data: {
 			session_id: session || uuid(),
 			request_id: uuid(),

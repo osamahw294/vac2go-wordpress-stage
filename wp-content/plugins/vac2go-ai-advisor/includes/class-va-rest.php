@@ -108,11 +108,26 @@ class VA_REST {
 	}
 
 	/**
+	 * Header and nonce action for the public endpoints.
+	 *
+	 * Deliberately NOT X-WP-Nonce / 'wp_rest'. Core's rest_cookie_check_errors() only
+	 * looks at X-WP-Nonce: when a logged-in admin's cookie arrives alongside that
+	 * header, core demands the nonce match the logged-in user and rejects the request
+	 * before our permission callback runs. With our own header, core sees no nonce at
+	 * all, treats the request as user 0, and both GET /nonce and the request that uses
+	 * it agree on the same value. That lets the widget send credentials:'same-origin',
+	 * which is required for the request to carry HTTP Basic Auth (the Nexcess dev-site
+	 * password gate) while still working for logged-in admins and logged-out visitors.
+	 */
+	const PUBLIC_NONCE_HEADER = 'X-VA-Nonce';
+	const PUBLIC_NONCE_ACTION = 'va_public';
+
+	/**
 	 * The nonce is CSRF protection only; abuse is limited by the rate layers.
 	 */
 	public static function public_permission( WP_REST_Request $request ) {
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+		$nonce = $request->get_header( self::PUBLIC_NONCE_HEADER );
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, self::PUBLIC_NONCE_ACTION ) ) {
 			return new WP_Error( 'va_bad_nonce', 'Invalid or missing security token.', array( 'status' => 403 ) );
 		}
 		return true;
@@ -131,7 +146,7 @@ class VA_REST {
 	 */
 	public static function handle_nonce() {
 		return self::nocache(
-			new WP_REST_Response( array( 'nonce' => wp_create_nonce( 'wp_rest' ) ), 200 )
+			new WP_REST_Response( array( 'nonce' => wp_create_nonce( self::PUBLIC_NONCE_ACTION ) ), 200 )
 		);
 	}
 

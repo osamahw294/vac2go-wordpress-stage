@@ -67,7 +67,7 @@ async function turn(n, session, message) {
 	try {
 		const r = await fetch(`${API}/chat/stream`, {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': n, Accept: 'text/event-stream' },
+			headers: { 'Content-Type': 'application/json', 'X-VA-Nonce': n, Accept: 'text/event-stream' },
 			body: JSON.stringify({ session_id: session, request_id: randomUUID(), message, website: '', elapsed_ms: 15000 }),
 		});
 		if (!r.ok || !(r.headers.get('content-type') || '').includes('event-stream')) {

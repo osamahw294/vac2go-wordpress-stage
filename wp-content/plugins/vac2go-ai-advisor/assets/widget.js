@@ -71,26 +71,27 @@
 
 	// ---- CSRF nonce: fetched fresh at boot (never baked into cached HTML) ----
 	//
-	// NOTE: every public request below uses credentials:'omit', deliberately.
-	// These endpoints are public and must behave identically for every visitor. Sending
-	// the WordPress auth cookie drags the request into core's cookie-authentication
-	// path, where rest_cookie_check_errors() requires the nonce to match the logged-in
-	// user and rejects it with rest_cookie_invalid_nonce BEFORE our permission callback
-	// runs. That broke the chat for anyone browsing while logged into wp-admin, while
-	// working fine for real (logged-out) customers.
+	// NOTE: every public request below sends the nonce in our own X-VA-Nonce header,
+	// never X-WP-Nonce, and uses credentials:'same-origin'. Both halves matter.
 	//
-	// With no cookie sent, core skips cookie auth, and both the nonce fetch and the
-	// request that uses it run as user 0, so they always agree. The nonce remains CSRF
-	// protection only; it never authenticated anyone. Abuse is bounded by the rate
-	// layers, not by this.
+	// Core's rest_cookie_check_errors() only inspects X-WP-Nonce. When a logged-in
+	// admin's cookie arrived alongside that header, core demanded the nonce match the
+	// logged-in user and rejected the chat with rest_cookie_invalid_nonce before the
+	// plugin's permission callback ran. An earlier version worked around that with
+	// credentials:'omit', which also strips HTTP Basic Auth, so the widget could not
+	// reach the API at all behind a password-gated staging site (Nexcess dev sites).
 	//
-	// admin.js is different and MUST keep credentials:'same-origin': /correction is a
-	// genuinely privileged endpoint gated on manage_options.
+	// With a plugin-specific header core sees no nonce, treats every request as user 0,
+	// and GET /nonce and the request that uses it always agree. Cookies and Basic Auth
+	// still ride along via same-origin. The nonce remains CSRF protection only; abuse
+	// is bounded by the rate layers, not by this.
+	//
+	// admin.js is different: /correction is a genuinely privileged endpoint gated on
+	// manage_options and keeps using X-WP-Nonce so core authenticates the admin.
 	var restNonce = null;
 	function fetchNonce() {
-		// credentials:'omit' is deliberate and load-bearing, see NOTE below.
 		return fetch(cfg.restUrl + '/nonce?_=' + Date.now(), {
-			credentials: 'omit',
+			credentials: 'same-origin',
 			cache: 'no-store',
 			headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' },
 		})
@@ -105,9 +106,9 @@
 	// empty box while the advisor answers as though the thread were still going.
 	function loadHistory() {
 		return fetch(cfg.restUrl + '/history?session_id=' + encodeURIComponent(sessionId), {
-			credentials: 'omit',
+			credentials: 'same-origin',
 			cache: 'no-store',
-			headers: { 'X-WP-Nonce': restNonce || '' },
+			headers: { 'X-VA-Nonce': restNonce || '' },
 		})
 			.then(function (r) { return r.ok ? r.json() : { turns: [] }; })
 			.catch(function () { return { turns: [] }; });
@@ -403,8 +404,8 @@
 	function postChat(payload) {
 		return fetch(cfg.restUrl + '/chat', {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': restNonce || '' },
-			credentials: 'omit',
+			headers: { 'Content-Type': 'application/json', 'X-VA-Nonce': restNonce || '' },
+			credentials: 'same-origin',
 			body: JSON.stringify(payload),
 		});
 	}
@@ -420,8 +421,8 @@
 	function streamTurn(payload, typing) {
 		return fetch(cfg.restUrl + '/chat/stream', {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': restNonce || '' },
-			credentials: 'omit',
+			headers: { 'Content-Type': 'application/json', 'X-VA-Nonce': restNonce || '' },
+			credentials: 'same-origin',
 			body: JSON.stringify(payload),
 		}).then(function (r) {
 			if (r.status === 403) { return { retryNonce: true }; }
@@ -887,8 +888,8 @@
 
 		fetch(cfg.restUrl + '/contact', {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': restNonce || '' },
-			credentials: 'omit',
+			headers: { 'Content-Type': 'application/json', 'X-VA-Nonce': restNonce || '' },
+			credentials: 'same-origin',
 			body: JSON.stringify({ session_id: sessionId, name: name, email: email, phone: phone }),
 		})
 			.then(function () {

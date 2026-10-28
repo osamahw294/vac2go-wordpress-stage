@@ -190,5 +190,13 @@ check( 'the rules ask for plain text without markdown', false !== stripos( VA_Kn
 check( 'the output cap leaves room for thinking (8,000+)', VA_Knowledge::max_tokens() >= 8000, (string) VA_Knowledge::max_tokens() );
 check( 'an empty model answer is retried once', in_array( 'upstream_empty', VA_REST::RETRY_ERRORS, true ) );
 
+// Staging behind HTTP Basic Auth (2026-10-28): credentials:'omit' stripped the
+// browser's Basic Auth, so every widget request got 401. Public requests now send
+// same-origin credentials and a plugin header core ignores (X-VA-Nonce).
+$widget = (string) file_get_contents( __DIR__ . '/../assets/widget.js' );
+check( 'widget never omits credentials (Basic Auth must ride along)', false === strpos( $widget, "credentials: 'omit'" ) );
+check( 'widget sends the public nonce in X-VA-Nonce, never X-WP-Nonce', false === strpos( $widget, "'X-WP-Nonce'" ) && 5 === substr_count( $widget, "credentials: 'same-origin'" ) );
+check( 'public endpoints read X-VA-Nonce with the va_public action', 'X-VA-Nonce' === VA_REST::PUBLIC_NONCE_HEADER && 'va_public' === VA_REST::PUBLIC_NONCE_ACTION );
+
 echo "\n{$pass} passed, {$fail} failed\n";
 exit( $fail ? 1 : 0 );
